@@ -7,7 +7,7 @@ public class PlayerController : MonoBehaviour {
 	float strafeSpeed = .04f;
 	float playerBounds = 4f;
 	int age = 16, money = 1000;
-	public Text moneyText, ageText;
+	public Text moneyText, ageText, burnRateText;
 	public Slider happiness;
 
 	float loseADollarRate = 0.05f;
@@ -16,18 +16,15 @@ public class PlayerController : MonoBehaviour {
 	float ageAYearTimer = 0f;
 
 	float attrition = 0.0001f;
+	//TODO add attrition rate increases depending on if player gets wife or gf or not
 
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
 	// Update is called once per frame
 	void Update () {
 
 		//Display
 		ageText.text = "Age: " + age.ToString ();
 		moneyText.text = "Money: $" + money.ToString ();
+		burnRateText.text = "Burn Rate: -$" + Mathf.CeilToInt (ageAYearRate / loseADollarRate).ToString ();
 		happiness.value -= attrition;
 		float horizontal = Input.GetAxis ("Horizontal");
 
@@ -50,5 +47,23 @@ public class PlayerController : MonoBehaviour {
 		}
 
 
+	}
+
+	void OnTriggerEnter(Collider other) {
+		if (other.gameObject.tag == "powerUp") {
+			PowerUp temp = other.gameObject.GetComponent<PowerUp>();
+			if (temp.cost!=0f) {
+
+			}
+
+			if (temp.multiplier!=0f) {
+				loseADollarRate = loseADollarRate/temp.multiplier;
+			}
+
+			if (temp.happiness!=0f) {
+				happiness.value+=temp.happiness;
+			}
+			Destroy(other.gameObject);
+		}
 	}
 }
