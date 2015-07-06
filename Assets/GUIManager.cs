@@ -41,7 +41,10 @@ public class GUIManager : MonoBehaviour {
 			message.GetComponent<Text> ().color = positive;
 		}
 		temp.transform.SetParent (costSpawn);
-		temp.transform.localPosition = Vector3.zero;
+		temp.transform.localScale = Vector3.one;
+		temp.transform.localPosition = new Vector3(0,0,0);
+	
+
 
 	}
 
@@ -55,16 +58,18 @@ public class GUIManager : MonoBehaviour {
 			message.GetComponent<Text> ().color = positive;
 		}
 		temp.transform.SetParent (multiplierSpawn);
-		temp.transform.localPosition = Vector3.zero;
-	}
+		temp.transform.localScale = Vector3.one;
+		temp.transform.localPosition = new Vector3(0,0,0);
 
+	}
 	public void SpawnMessage (string messageString) {
-		print ("SPAWN MESSAGE");
 		GameObject temp = Instantiate (message);
 		message.GetComponent<Text> ().text = messageString;
 		message.GetComponent<Text> ().color = neutral;
 		temp.transform.SetParent (messageSpawn);
-		temp.transform.localPosition = Vector3.zero;
+		temp.transform.localScale = Vector3.one;
+		temp.transform.localPosition = new Vector3(0,0,0);
+
 	}
 
 	public void SpawnHappiness(float happy){
@@ -76,6 +81,11 @@ public class GUIManager : MonoBehaviour {
 			message.GetComponent<Text> ().text = "Happiness--";
 			message.GetComponent<Text> ().color = negative;
 		}
+		temp.transform.SetParent (happinessSpawn);
+		temp.transform.localScale = Vector3.one;
+
+//		temp.transform.localPosition = transform.parent.localPosition;
+
 	}
 
 

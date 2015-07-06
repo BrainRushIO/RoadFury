@@ -10,7 +10,7 @@ public class TextPopUp : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		transform.Translate (0f, 1f, 0f);
+//		transform.Translate (0f, 1f, 0f);
 	}
 
 	IEnumerator Suicide() {

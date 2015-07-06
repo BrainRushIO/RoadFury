@@ -53,7 +53,7 @@ public class PlayerController : MonoBehaviour {
 		if (other.gameObject.tag == "powerUp") {
 			PowerUp temp = other.gameObject.GetComponent<PowerUp>();
 			if (temp.cost!=0f) {
-
+				money-=(int)temp.cost;
 			}
 
 			if (temp.multiplier!=0f) {
