@@ -50,8 +50,8 @@ public class GUIManager : MonoBehaviour {
 
 	}
 
-	public void SpawnMultiplier (float multiplierValue) {
-		if (multiplierValue > 1) {
+	public void SpawnBurnRate (float burnRateValue) {
+		if (burnRateValue > 0) {
 			burnRate.GetComponent<ImageFlash>().Flash(negative);
 		} else {
 			burnRate.GetComponent<ImageFlash>().Flash(positive);

@@ -7,7 +7,7 @@ public class PowerUp : MonoBehaviour {
 
 	public Text thisText;
 	public string nameOfObj, guiMessage;
-	public float happiness, multiplier;
+	public float happiness, burnRate;
 	public int cost;
 	// Use this for initialization
 	void Start () {
@@ -29,8 +29,8 @@ public class PowerUp : MonoBehaviour {
 				GUIManager.s_instance.SpawnHappiness(happiness);
 			}
 
-			if (multiplier != 0) {
-				GUIManager.s_instance.SpawnMultiplier(multiplier);
+			if (burnRate != 0) {
+				GUIManager.s_instance.SpawnBurnRate(burnRate);
 
 			}
 			GUIManager.s_instance.SpawnMessage(guiMessage);
