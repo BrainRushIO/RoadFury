@@ -5,7 +5,8 @@ using UnityEngine.UI;
 public class GUIManager : MonoBehaviour {
 	public Color positive, negative, neutral;
 	public GameObject message;
-	public Transform costSpawn, multiplierSpawn, messageSpawn, happinessSpawn;
+	public Transform costSpawn, multiplierSpawn, messageSpawn;
+	public GameObject happinessBar, burnRate, moneyText;
 
 	public static GUIManager s_instance;
 	
@@ -34,11 +35,12 @@ public class GUIManager : MonoBehaviour {
 	public void SpawnCost (int costValue) {
 		GameObject temp = Instantiate (message);
 		if (costValue > 0) {
-			message.GetComponent<Text> ().text = "-$" + costValue.ToString ();
-			message.GetComponent<Text> ().color = negative;
+			temp.GetComponent<Text> ().text = "$" + costValue.ToString ();
+			moneyText.GetComponent<ImageFlash>().Flash(positive);
 		} else {
-			message.GetComponent<Text> ().text = "$" + costValue.ToString ();
-			message.GetComponent<Text> ().color = positive;
+			temp.GetComponent<Text> ().text = "$" + costValue.ToString ();
+			moneyText.GetComponent<ImageFlash>().Flash(negative);
+
 		}
 		temp.transform.SetParent (costSpawn);
 		temp.transform.localScale = Vector3.one;
@@ -49,23 +51,20 @@ public class GUIManager : MonoBehaviour {
 	}
 
 	public void SpawnMultiplier (float multiplierValue) {
-		GameObject temp = Instantiate (message);
 		if (multiplierValue > 1) {
-			message.GetComponent<Text> ().text = "Burn Rate X" + multiplierValue.ToString ();
-			message.GetComponent<Text> ().color = negative;
+			burnRate.GetComponent<ImageFlash>().Flash(negative);
 		} else {
-			message.GetComponent<Text> ().text = "Burn Rate X" + multiplierValue.ToString ();
-			message.GetComponent<Text> ().color = positive;
+			burnRate.GetComponent<ImageFlash>().Flash(positive);
+
 		}
-		temp.transform.SetParent (multiplierSpawn);
-		temp.transform.localScale = Vector3.one;
-		temp.transform.localPosition = new Vector3(0,0,0);
+	
 
 	}
 	public void SpawnMessage (string messageString) {
+		print ("MESSAGE IS: " + messageString);
 		GameObject temp = Instantiate (message);
-		message.GetComponent<Text> ().text = messageString;
-		message.GetComponent<Text> ().color = neutral;
+		temp.GetComponent<Text> ().text = messageString;
+		temp.GetComponent<Text> ().color = neutral;
 		temp.transform.SetParent (messageSpawn);
 		temp.transform.localScale = Vector3.one;
 		temp.transform.localPosition = new Vector3(0,0,0);
@@ -73,18 +72,12 @@ public class GUIManager : MonoBehaviour {
 	}
 
 	public void SpawnHappiness(float happy){
-		GameObject temp = Instantiate (message);
 		if (happy>0) {
-			message.GetComponent<Text> ().text = "Happiness++";
-			message.GetComponent<Text> ().color = positive;
+			happinessBar.GetComponent<ImageFlash>().Flash(positive);
 		} else {
-			message.GetComponent<Text> ().text = "Happiness--";
-			message.GetComponent<Text> ().color = negative;
+			happinessBar.GetComponent<ImageFlash>().Flash(negative);
 		}
-		temp.transform.SetParent (happinessSpawn);
-		temp.transform.localScale = Vector3.one;
-
-//		temp.transform.localPosition = transform.parent.localPosition;
+	
 
 	}
 

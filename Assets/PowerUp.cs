@@ -7,8 +7,8 @@ public class PowerUp : MonoBehaviour {
 
 	public Text thisText;
 	public string nameOfObj, guiMessage;
-	public float cost, happiness, multiplier;
-
+	public float happiness, multiplier;
+	public int cost;
 	// Use this for initialization
 	void Start () {
 		thisText.text = nameOfObj;
@@ -22,9 +22,8 @@ public class PowerUp : MonoBehaviour {
 	void OnTriggerEnter (Collider other) {
 
 		if (other.gameObject.tag == "Player") {
-			print ("HIT POWERUP");
 			if (cost != 0) {
-				GUIManager.s_instance.SpawnCost((int)cost);
+				GUIManager.s_instance.SpawnCost(cost);
 			}
 			if (happiness != 0) {
 				GUIManager.s_instance.SpawnHappiness(happiness);

@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour {
 
-	float strafeSpeed = .04f;
+	float strafeSpeed = .1f;
 	float playerBounds = 4f;
 	int age = 16, money = 1000;
 	public Text moneyText, ageText, burnRateText;
@@ -53,7 +53,7 @@ public class PlayerController : MonoBehaviour {
 		if (other.gameObject.tag == "powerUp") {
 			PowerUp temp = other.gameObject.GetComponent<PowerUp>();
 			if (temp.cost!=0f) {
-				money-=(int)temp.cost;
+				money+=temp.cost;
 			}
 
 			if (temp.multiplier!=0f) {

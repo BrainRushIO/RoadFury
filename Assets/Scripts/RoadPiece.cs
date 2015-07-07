@@ -10,22 +10,19 @@ public class RoadPiece : MonoBehaviour {
 	void Start () {
 		int randomSpawnPosition = Random.Range (0, pickUpSpawnPoints.Length - 1);
 		int randomSpawnValue = Random.Range (1, 100);
-		if (randomSpawnValue < 30) {
+		if (randomSpawnValue < 50) {
 			GameObject temp = Instantiate(smallPickUpPrefabs[Random.Range(0, smallPickUpPrefabs.Count-1)]);
 			temp.transform.SetParent(pickUpSpawnPoints[randomSpawnPosition]);
 			temp.transform.localPosition =  new Vector3(0,0,10);
-		} else if (randomSpawnValue >= 30 && randomSpawnValue < 50) {
+		} else if (randomSpawnValue >= 51 && randomSpawnValue < 60) {
 			GameObject temp = Instantiate(mediumPickUpPrefabs[Random.Range(0, mediumPickUpPrefabs.Count-1)]);
 			temp.transform.SetParent(pickUpSpawnPoints[randomSpawnPosition]);
 			temp.transform.localPosition =  new Vector3(0,0,10);
-		} else if (randomSpawnValue >= 50 && randomSpawnValue < 60) {
+		} else if (randomSpawnValue >= 60 && randomSpawnValue < 63) {
 			GameObject temp = Instantiate(bigPickUpPrefabs[Random.Range(0, bigPickUpPrefabs.Count-1)]);
 			temp.transform.SetParent(pickUpSpawnPoints[randomSpawnPosition]);
 			temp.transform.localPosition =  new Vector3(0,0,10);
 		}
-
-
-		
 	}
 
 	void OnTriggerEnter (Collider other) {

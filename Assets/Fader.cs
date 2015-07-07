@@ -20,6 +20,7 @@ public class Fader : MonoBehaviour {
 	Color currColor;
 	public Color customStartColor, customEndColor;
 	void Start() {
+		if(fading) StartFade();
 		sprite = GetComponent<SpriteRenderer> ();
 		image = GetComponent<Image> ();
 		text = GetComponent<Text> ();
@@ -68,6 +69,7 @@ public class Fader : MonoBehaviour {
 				text.color = currColor;
 			}
 			if (image != null) {
+
 				image.color = currColor;
 			}
 			if (fracJourney >= 1) {
