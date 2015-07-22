@@ -3,14 +3,14 @@ using System.Collections;
 
 public class RotateSkyBox : MonoBehaviour {
 
-	Skybox thisSkyBox;
-
-	// Use this for initialization
-	void Start () {
-		thisSkyBox = GetComponent<Skybox>();
+	public float rot = 0;
+	public Skybox sky;
+	void Start() {
+		sky = GetComponent<Skybox> ();
 	}
-	
-	// Update is called once per frame
 	void Update () {
+		rot += 2 * Time.deltaTime;
+		rot %= 360;
+		sky.material.SetFloat ("_Rotation", rot);
 	}
 }
