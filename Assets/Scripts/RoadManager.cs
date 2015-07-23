@@ -29,10 +29,13 @@ public class RoadManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		gameObject.transform.Translate (0, 0, -currentSpeed, Space.Self);
+		if (GameManager.s_instance.currentGameState == GameState.Playing){
+			gameObject.transform.Translate (0, 0, -currentSpeed, Space.Self);
+		}
 	}
 
-	public void SpawnNewPiece () {
+	//called from RoadPiece on collision
+	public void SpawnNewPiece () { 
 		GameObject newPiece = Instantiate (roadPiecePrefab);
 		newPiece.transform.SetParent (RoadManager.s_instance.transform, true);
 		newPiece.transform.localPosition = new Vector3 (0, 0, lastPieceSpawned.transform.localPosition.z + distanceBetweenPieces);

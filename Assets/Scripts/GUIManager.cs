@@ -4,6 +4,7 @@ using UnityEngine.UI;
 
 public class GUIManager : MonoBehaviour {
 	public Color positive, negative, neutral;
+	public GameObject OnRoadGUI, InventoryGUI;
 	public GameObject message;
 	public Transform costSpawn, multiplierSpawn, messageSpawn;
 	public GameObject happinessBar, burnRate, moneyText;
@@ -52,9 +53,9 @@ public class GUIManager : MonoBehaviour {
 
 	public void SpawnBurnRate (float burnRateValue) {
 		if (burnRateValue > 0) {
-			burnRate.GetComponent<ImageFlash>().Flash(negative);
-		} else {
 			burnRate.GetComponent<ImageFlash>().Flash(positive);
+		} else {
+			burnRate.GetComponent<ImageFlash>().Flash(negative);
 
 		}
 	
@@ -79,6 +80,16 @@ public class GUIManager : MonoBehaviour {
 		}
 	
 
+	}
+
+	public void SwitchFromGameToInventoryGUI() {
+		OnRoadGUI.SetActive(false);
+		InventoryGUI.SetActive(true);
+	}
+
+	public void SwitchFromInventoryToGameGUI() {
+		OnRoadGUI.SetActive(true);
+		InventoryGUI.SetActive(false);
 	}
 
 

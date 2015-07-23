@@ -2,7 +2,7 @@
 using System.Collections;
 using UnityEngine.UI;
 
-public enum GameState {Playing, DecisionMode, InventoryMode};
+public enum GameState {Playing, DecisionMode, InventoryMode, GameOver};
 public enum AgeState {YoungAdult, Adult, OldAdult, SeniorCitizen};
 public enum CareerState {BusBoy, FryCook, Manager, StoreManager, RegionalManager, OperationsDirector, VPofOperations, COO, CEO, Retired};
 
@@ -10,6 +10,8 @@ public class GameManager : MonoBehaviour {
 
 	public GameState currentGameState = GameState.Playing;
 	public static GameManager s_instance;
+	Quaternion cameraOnRoadRotation, cameraOnInventoryRotation;
+	public GameObject houseAndFamily;
 
 	void Awake(){
 		if (s_instance==null) {
@@ -31,40 +33,105 @@ public class GameManager : MonoBehaviour {
 	public float loseADollarTimer = 0f;
 	public float ageAYearRate = 10f;
 	public float ageAYearTimer = 0f;
-	
+
+	//switches
+	bool switchToInventory;
+	bool switchToGame;
+
+	//lerps
+	float cameraRotateStartTime;
+	float cameraRotateDuration = .5f;
+	bool isCamRotateUp, isCamRotateDown;
+
 	float attrition = 0.0001f;
 	//TODO add attrition rate increases depending on if player gets wife or gf or not
 	
 	void Start () {
+		houseAndFamily.SetActive(false);
 		SetNewBurnRate(-200);
+		cameraOnRoadRotation = Camera.main.transform.localRotation;
+		cameraOnInventoryRotation = Quaternion.Euler(300f,0,0);
 	}
-	
+
+
+
+	//Swipe up to switchToInventory
+	//Swipe down to switchToRoad
+
 	// Update is called once per frame
 	void Update () {
-		
-		//Display
-		ageText.text = "Age: " + age.ToString ();
-		moneyText.text = "Money: $" + money.ToString ();
-		burnRateText.text = "Cash Flow: $" + Mathf.CeilToInt (burnRateValue).ToString ();
-		happiness.value -= attrition;
-		
-		//timers
-		ageAYearTimer += Time.deltaTime;
-		if (ageAYearTimer > ageAYearRate) {
-			ageAYearTimer = 0;
-			age++;
+		switch (currentGameState) {
+		case GameState.Playing :
+			//Display
+			ageText.text = "Age: " + age.ToString ();
+			moneyText.text = "Money: $" + money.ToString ();
+			burnRateText.text = "Cash Flow: $" + Mathf.CeilToInt (burnRateValue).ToString ();
+			happiness.value -= attrition;
+			
+			//timers
+			ageAYearTimer += Time.deltaTime;
+			if (ageAYearTimer > ageAYearRate) {
+				ageAYearTimer = 0;
+				age++;
+			}
+			
+			loseADollarTimer += Time.deltaTime;
+			if (loseADollarTimer > Mathf.Abs(loseADollarRate) && loseADollarRate < 0) {
+				loseADollarTimer = 0;
+				money--;
+			}
+			else if (loseADollarTimer > Mathf.Abs(loseADollarRate) && loseADollarRate > 0) {
+				loseADollarTimer = 0;
+				money++;
+			}
+			if (happiness.value <= 0) {
+				print ("GAMEOVER");
+				currentGameState = GameState.GameOver;
+			}
+
+			if (switchToInventory) {
+				houseAndFamily.SetActive(true);
+				GUIManager.s_instance.SwitchFromGameToInventoryGUI();
+				switchToInventory = false;
+				PanCameraToInventory();
+				currentGameState = GameState.InventoryMode;
+			}
+			break;
+		case GameState.InventoryMode :
+			if (isCamRotateUp) {
+				float cameraRotatePercentage = (Time.time - cameraRotateStartTime) / cameraRotateDuration;
+				Camera.main.transform.localRotation = Quaternion.Lerp(cameraOnRoadRotation, cameraOnInventoryRotation, cameraRotatePercentage);
+				if (cameraRotatePercentage > .97f){
+					isCamRotateUp = false;
+				}
+			}
+
+			if (isCamRotateDown) {
+				float cameraRotatePercentage = (Time.time - cameraRotateStartTime) / cameraRotateDuration;
+				Camera.main.transform.localRotation = Quaternion.Lerp(cameraOnInventoryRotation, cameraOnRoadRotation, cameraRotatePercentage);
+				if (cameraRotatePercentage > .97f){
+					isCamRotateDown = false;
+					currentGameState = GameState.Playing;
+				}
+			}
+
+			if (switchToGame) {
+				houseAndFamily.SetActive(false);
+				GUIManager.s_instance.SwitchFromInventoryToGameGUI();
+				switchToGame = false;
+				PanCameraToRoad();
+			}
+			break;
 		}
-		
-		loseADollarTimer += Time.deltaTime;
-		if (loseADollarTimer > Mathf.Abs(loseADollarRate) && loseADollarRate < 0) {
-			loseADollarTimer = 0;
-			money--;
+		//Test purposes
+		if (Input.GetKey(KeyCode.M)){
+			switchToInventory = true;
+			switchToGame = false;
 		}
-		else if (loseADollarTimer > Mathf.Abs(loseADollarRate) && loseADollarRate > 0) {
-			loseADollarTimer = 0;
-			money++;
+		if (Input.GetKey(KeyCode.N)){
+			switchToGame = true;
+			switchToInventory = false;
 		}
-		
 		
 	}
 	
@@ -72,5 +139,17 @@ public class GameManager : MonoBehaviour {
 		loseADollarRate = ageAYearRate / (newBurnRate);
 		print ("loseADollarRate" + loseADollarRate); 
 	}
+
+	void PanCameraToInventory(){
+		isCamRotateUp = true;
+		cameraRotateStartTime = Time.time;
+
+
+	}
+	void PanCameraToRoad(){
+		isCamRotateDown = true;
+		cameraRotateStartTime = Time.time;
+	}
+
 
 }
