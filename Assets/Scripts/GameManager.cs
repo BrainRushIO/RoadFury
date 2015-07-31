@@ -5,6 +5,7 @@ using UnityEngine.UI;
 public enum GameState {Playing, DecisionMode, InventoryMode, GameOver};
 public enum AgeState {YoungAdult, Adult, OldAdult, SeniorCitizen};
 public enum CareerState {BusBoy, FryCook, Manager, StoreManager, RegionalManager, OperationsDirector, VPofOperations, COO, CEO, Retired};
+public enum CareerType {Medical, BusinessFinance, Engineering, Entertainment, GovernmentLegal}
 
 public class GameManager : MonoBehaviour {
 
@@ -47,7 +48,7 @@ public class GameManager : MonoBehaviour {
 	//TODO add attrition rate increases depending on if player gets wife or gf or not
 	
 	void Start () {
-		houseAndFamily.SetActive(false);
+//		houseAndFamily.SetActive(false);
 		SetNewBurnRate(-200);
 		cameraOnRoadRotation = Camera.main.transform.localRotation;
 		cameraOnInventoryRotation = Quaternion.Euler(300f,0,0);
@@ -90,7 +91,7 @@ public class GameManager : MonoBehaviour {
 			}
 
 			if (switchToInventory) {
-				houseAndFamily.SetActive(true);
+//				houseAndFamily.SetActive(true);
 				GUIManager.s_instance.SwitchFromGameToInventoryGUI();
 				switchToInventory = false;
 				PanCameraToInventory();
@@ -116,7 +117,7 @@ public class GameManager : MonoBehaviour {
 			}
 
 			if (switchToGame) {
-				houseAndFamily.SetActive(false);
+//				houseAndFamily.SetActive(false);
 				GUIManager.s_instance.SwitchFromInventoryToGameGUI();
 				switchToGame = false;
 				PanCameraToRoad();

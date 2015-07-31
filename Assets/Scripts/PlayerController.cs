@@ -18,7 +18,6 @@ public class PlayerController : MonoBehaviour {
 		if (Mathf.Abs (transform.position.x + (horizontal * strafeSpeed)) < playerBounds) {
 			transform.Translate(horizontal * strafeSpeed, 0, 0);
 		}
-
 	}
 	
 	void OnTriggerEnter(Collider other) {
@@ -36,7 +35,9 @@ public class PlayerController : MonoBehaviour {
 			if (temp.happiness!=0f) {
 				GameManager.s_instance.happiness.value+=temp.happiness;
 			}
-			Destroy(other.gameObject);
+			if (other.gameObject.GetComponent<PowerUp>().thisPowerUpType == PowerUp.PowerUpType.None){
+				Destroy(other.gameObject);
+			}
 		}
 	}
 }
