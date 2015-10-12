@@ -2,14 +2,14 @@
 using System.Collections;
 using UnityEngine.UI;
 
-public enum GameState {Playing, DecisionMode, InventoryMode, GameOver};
+public enum GameState {IntroScreen, MainMenu, Tutorial, Playing, DecisionMode, InventoryMode, GameOver};
 public enum AgeState {YoungAdult, Adult, OldAdult, SeniorCitizen};
 public enum CareerState {BusBoy, FryCook, Manager, StoreManager, RegionalManager, OperationsDirector, VPofOperations, COO, CEO, Retired};
 public enum CareerType {Medical, BusinessFinance, Engineering, Entertainment, GovernmentLegal}
 
 public class GameManager : MonoBehaviour {
 
-	public GameState currentGameState = GameState.Playing;
+	public GameState currentGameState = GameState.IntroScreen;
 	public static GameManager s_instance;
 	Quaternion cameraOnRoadRotation, cameraOnInventoryRotation;
 	public GameObject houseAndFamily;
@@ -38,7 +38,8 @@ public class GameManager : MonoBehaviour {
 	//switches
 	bool switchToInventory;
 	bool switchToGame;
-
+	bool userPressedStart = false;
+	bool tutorialIsOver = false;
 	//lerps
 	float cameraRotateStartTime;
 	float cameraRotateDuration = .5f;
@@ -62,6 +63,21 @@ public class GameManager : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		switch (currentGameState) {
+
+		case GameState.IntroScreen :
+
+			break;
+
+		case GameState.MainMenu : 
+			if (userPressedStart) {
+
+			}
+			break;
+
+		case GameState.Tutorial :
+
+			break;
+
 		case GameState.Playing :
 			//Display
 			ageText.text = "Age: " + age.ToString ();
@@ -144,12 +160,15 @@ public class GameManager : MonoBehaviour {
 	void PanCameraToInventory(){
 		isCamRotateUp = true;
 		cameraRotateStartTime = Time.time;
-
-
 	}
+
 	void PanCameraToRoad(){
 		isCamRotateDown = true;
 		cameraRotateStartTime = Time.time;
+	}
+
+	public void StartGame () {
+		currentGameState = GameState.Tutorial;
 	}
 
 
