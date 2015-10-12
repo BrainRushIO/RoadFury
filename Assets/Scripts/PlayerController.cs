@@ -14,6 +14,18 @@ public class PlayerController : MonoBehaviour {
 	void Update () {
 		float horizontal = Input.GetAxis ("Horizontal");
 
+	
+		if (Input.touchCount > 0) {
+			Touch touch = Input.GetTouch(0);
+			if (touch.position.x > Screen.width/2) {
+				//go right
+				horizontal = 1f;
+			}
+			else if (touch.position.x < Screen.width/2) {
+				horizontal = -1f;
+			}
+		}
+
 		//bound player
 		if (Mathf.Abs (transform.position.x + (horizontal * strafeSpeed)) < playerBounds) {
 			transform.Translate(horizontal * strafeSpeed, 0, 0);
