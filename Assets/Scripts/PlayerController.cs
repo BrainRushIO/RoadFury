@@ -4,10 +4,10 @@ using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour {
 
-	float strafeSpeed = .1f;
+	float strafeSpeed = .1f, moveSpeed = .1f;
 	float playerBounds = 4f;
-
-
+	public GameObject currentRoadSection;
+	bool isOnHorizontalRoad = false;
 	float attrition = 0.0001f;
 	//TODO add attrition rate increases depending on if player gets wife or gf or not
 
@@ -27,29 +27,48 @@ public class PlayerController : MonoBehaviour {
 		}
 
 		//bound player
-		if (Mathf.Abs (transform.position.x + (horizontal * strafeSpeed)) < playerBounds) {
-			transform.Translate(horizontal * strafeSpeed, 0, 0);
+		if (!isOnHorizontalRoad) {
+			if (Mathf.Abs (transform.position.x + (horizontal * strafeSpeed)) < playerBounds + currentRoadSection.transform.position.x) {
+				transform.Translate (horizontal * strafeSpeed, 0, 0);
+			}
+		} else {
+			if (Mathf.Abs (transform.position.z + (horizontal * strafeSpeed)) < playerBounds + currentRoadSection.transform.position.z) {
+				transform.Translate (horizontal * strafeSpeed, 0, 0);
+			}
 		}
+
+		transform.Translate (Vector3.forward*moveSpeed);
 	}
 	
 	void OnTriggerEnter(Collider other) {
 		if (other.gameObject.tag == "powerUp") {
-			PowerUp temp = other.gameObject.GetComponent<PowerUp>();
-			if (temp.cost!=0f) {
-				GameManager.s_instance.money+=temp.cost;
+			PowerUp temp = other.gameObject.GetComponent<PowerUp> ();
+			if (temp.cost != 0f) {
+				GameManager.s_instance.money += temp.cost;
 			}
 
-			if (temp.burnRate!=0f) {
-				GameManager.s_instance.burnRateValue+=temp.burnRate;
-				GameManager.s_instance.SetNewBurnRate(GameManager.s_instance.burnRateValue);
+			if (temp.burnRate != 0f) {
+				GameManager.s_instance.burnRateValue += temp.burnRate;
+				GameManager.s_instance.SetNewBurnRate (GameManager.s_instance.burnRateValue);
 			}
 
-			if (temp.happiness!=0f) {
-				GameManager.s_instance.happiness.value+=temp.happiness;
+			if (temp.happiness != 0f) {
+				GameManager.s_instance.happiness.value += temp.happiness;
 			}
-			if (other.gameObject.GetComponent<PowerUp>().thisPowerUpType == PowerUp.PowerUpType.None){
-				Destroy(other.gameObject);
+			if (other.gameObject.GetComponent<PowerUp> ().thisPowerUpType == PowerUp.PowerUpType.None) {
+				Destroy (other.gameObject);
 			}
+		} else if (other.tag == "branch") {
+			//rotating player 90 degrees depending on what it says
+		}
+	}
+
+	void OnTriggerExit(Collider other) {
+		if (other.tag == "branch") {
+			//rotating player 90 degrees depending on what it says
+			transform.Rotate(Vector3.up, other.GetComponent<RoadBranch>().degreeToTurnBy);
+			currentRoadSection = other.GetComponent<RoadBranch>().nextRoadBranch;
+			isOnHorizontalRoad = !isOnHorizontalRoad;
 		}
 	}
 }
