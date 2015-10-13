@@ -17,16 +17,19 @@ public class HoverFollowCam : MonoBehaviour
 	
 	void Start()
 	{
+		player = GameObject.FindGameObjectWithTag("Player").transform;
+
 		camPos = GameObject.FindGameObjectWithTag("CamPos").transform;
 	}
 	
 	
 	void Update()
 	{
-//		transform.LookAt(new Vector3(player.position.x, player.position.y+verticalLookOffset, player.position.z));
 		switch (thisCameraMode) {
 		case CameraMode.normalMode :
 			transform.position -= (transform.position - camPos.position) * smoothRate *Time.deltaTime;
+//			transform.LookAt(new Vector3(player.position.x, player.position.y+verticalLookOffset, player.position.z));
+
 			break;
 			
 		}

@@ -66,7 +66,9 @@ public class PlayerController : MonoBehaviour {
 	void OnTriggerExit(Collider other) {
 		if (other.tag == "branch") {
 			//rotating player 90 degrees depending on what it says
+			print("rotate by: " +other.GetComponent<RoadBranch>().degreeToTurnBy);
 			transform.Rotate(Vector3.up, other.GetComponent<RoadBranch>().degreeToTurnBy);
+			Camera.main.transform.Rotate(Vector3.up, other.GetComponent<RoadBranch>().degreeToTurnBy);
 			currentRoadSection = other.GetComponent<RoadBranch>().nextRoadBranch;
 			isOnHorizontalRoad = !isOnHorizontalRoad;
 		}
