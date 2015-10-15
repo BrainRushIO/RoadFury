@@ -2,14 +2,14 @@
 using System.Collections;
 using UnityEngine.UI;
 
-public enum GameState {IntroScreen, MainMenu, Tutorial, Playing, DecisionMode, InventoryMode, GameOver};
+public enum GameState {IntroScreen, MainMenu, Tutorial, Playing, Cutscene, DecisionMode, InventoryMode, GameOver};
 public enum AgeState {YoungAdult, Adult, OldAdult, SeniorCitizen};
 public enum CareerState {BusBoy, FryCook, Manager, StoreManager, RegionalManager, OperationsDirector, VPofOperations, COO, CEO, Retired};
 public enum CareerType {Medical, BusinessFinance, Engineering, Entertainment, GovernmentLegal}
 
 public class GameManager : MonoBehaviour {
 
-	public GameState currentGameState = GameState.IntroScreen;
+	public GameState currentGameState = GameState.Playing;
 	public static GameManager s_instance;
 	Quaternion cameraOnRoadRotation, cameraOnInventoryRotation;
 	public GameObject houseAndFamily;
@@ -40,6 +40,7 @@ public class GameManager : MonoBehaviour {
 	bool switchToGame;
 	bool userPressedStart = false;
 	bool tutorialIsOver = false;
+	bool switchToCutScene;
 	//lerps
 	float cameraRotateStartTime;
 	float cameraRotateDuration = .5f;
@@ -62,6 +63,7 @@ public class GameManager : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
+		print (currentGameState);
 		switch (currentGameState) {
 
 		case GameState.IntroScreen :
@@ -79,32 +81,36 @@ public class GameManager : MonoBehaviour {
 			break;
 
 		case GameState.Playing :
+
+			if (switchToCutScene) {
+				currentGameState = GameState.Cutscene;
+			}
+
 			//Display
-			ageText.text = "Age: " + age.ToString ();
-			moneyText.text = "Money: $" + money.ToString ();
-			burnRateText.text = "Cash Flow: $" + Mathf.CeilToInt (burnRateValue).ToString ();
-			happiness.value -= attrition;
+//			ageText.text = "Age: " + age.ToString ();
+//			moneyText.text = "Money: $" + money.ToString ();
+//			burnRateText.text = "Cash Flow: $" + Mathf.CeilToInt (burnRateValue).ToString ();
+//			happiness.value -= attrition;
 			
-			//timers
-			ageAYearTimer += Time.deltaTime;
-			if (ageAYearTimer > ageAYearRate) {
-				ageAYearTimer = 0;
-				age++;
-			}
-			
-			loseADollarTimer += Time.deltaTime;
-			if (loseADollarTimer > Mathf.Abs(loseADollarRate) && loseADollarRate < 0) {
-				loseADollarTimer = 0;
-				money--;
-			}
-			else if (loseADollarTimer > Mathf.Abs(loseADollarRate) && loseADollarRate > 0) {
-				loseADollarTimer = 0;
-				money++;
-			}
-			if (happiness.value <= 0) {
-				print ("GAMEOVER");
-				currentGameState = GameState.GameOver;
-			}
+//			//timers
+//			ageAYearTimer += Time.deltaTime;
+//			if (ageAYearTimer > ageAYearRate) {
+//				ageAYearTimer = 0;
+//				age++;
+//			}
+//			
+//			loseADollarTimer += Time.deltaTime;
+//			if (loseADollarTimer > Mathf.Abs(loseADollarRate) && loseADollarRate < 0) {
+//				loseADollarTimer = 0;
+//				money--;
+//			}
+//			else if (loseADollarTimer > Mathf.Abs(loseADollarRate) && loseADollarRate > 0) {
+//				loseADollarTimer = 0;
+//				money++;
+//			}
+//			if (happiness.value <= 0) {
+//				currentGameState = GameState.GameOver;
+//			}
 
 			if (switchToInventory) {
 //				houseAndFamily.SetActive(true);
@@ -112,6 +118,12 @@ public class GameManager : MonoBehaviour {
 				switchToInventory = false;
 				PanCameraToInventory();
 				currentGameState = GameState.InventoryMode;
+			}
+			break;
+
+		case GameState.Cutscene : 
+			if (switchToGame) {
+				currentGameState = GameState.Playing;
 			}
 			break;
 		case GameState.InventoryMode :
@@ -171,5 +183,15 @@ public class GameManager : MonoBehaviour {
 		currentGameState = GameState.Tutorial;
 	}
 
+	public void SwitchToCutscene () {
+		GameObject.FindGameObjectWithTag ("Player").GetComponent<Cinematographer> ().RollCamera();
+		switchToGame = false;
+		switchToCutScene = true;
+	}
+
+	public void SwitchToGame () {
+		switchToGame = true;
+		switchToCutScene = false;
+	}
 
 }

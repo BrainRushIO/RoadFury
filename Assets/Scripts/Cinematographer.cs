@@ -30,9 +30,9 @@ public class Cinematographer : MonoBehaviour {
 
 	public void RollCamera () {
 		pauseTimer = Time.time;
-		Camera.main.transform.rotation = quaternions[currentIndex].rotation;
-		Camera.main.transform.position = quaternions[currentIndex].position;
-		textUIObjects[currentIndex].SetActive(true);
+		Camera.main.transform.localRotation = quaternions[currentIndex].localRotation;
+		Camera.main.transform.localPosition = quaternions[currentIndex].localPosition;
+//		textUIObjects[currentIndex].SetActive(true);
 		hasStarted = true;
 
 	}
@@ -44,23 +44,24 @@ public class Cinematographer : MonoBehaviour {
 				if (currentIndex < quaternions.Count - 1) {
 					GotoNextPosition();
 				}
-				else {
-					textUIObjects[currentIndex].SetActive(false);
+				else if (!isLerping) {
+//					textUIObjects[currentIndex].SetActive(false);
 					Camera.main.GetComponent<HoverFollowCam>().enabled = true;
 					hasStarted = false;
+					GameManager.s_instance.SwitchToGame();
+
 				}
 
 			}
 
 
 			if (isLerping) {
-				float fraction = (Time.time - lerpTimer	)/ lerpDuration;
-				Camera.main.transform.rotation = Quaternion.Lerp(lerpStart, lerpEnd, fraction);
-				Camera.main.transform.position = Vector3.Lerp (lerpPositionStart, lerpPositionEnd, fraction * fraction * (3.0f - 2.0f * fraction));
+				float fraction = (Time.time - lerpTimer	)/lerpDuration;
+				Camera.main.transform.localRotation = Quaternion.Lerp(lerpStart, lerpEnd, fraction);
+				Camera.main.transform.localPosition = Vector3.Lerp (lerpPositionStart, lerpPositionEnd, fraction * fraction * (3.0f - 2.0f * fraction));
 				if (fraction > .9999f) {
-					Camera.main.transform.rotation = Quaternion.Lerp(lerpStart, lerpEnd, 1f);
-					Camera.main.transform.position = Vector3.Lerp (lerpPositionStart, lerpPositionEnd, 1f);
-
+					Camera.main.transform.localRotation = Quaternion.Lerp(lerpStart, lerpEnd, 1f);
+					Camera.main.transform.localPosition = Vector3.Lerp (lerpPositionStart, lerpPositionEnd, 1f);
 					isLerping = false;
 				}
 			}
@@ -71,13 +72,13 @@ public class Cinematographer : MonoBehaviour {
 	void GotoNextPosition () {
 		pauseTimer = Time.time;
 		lerpTimer = Time.time;
-		textUIObjects[currentIndex].SetActive(false);
+//		textUIObjects[currentIndex].SetActive(false);
 		currentIndex++;
-		textUIObjects[currentIndex].SetActive(true);
-		lerpEnd = quaternions[currentIndex].rotation;
-		lerpStart = Camera.main.transform.rotation;
-		lerpPositionStart = Camera.main.transform.position;
-		lerpPositionEnd = quaternions[currentIndex].position;
+//		textUIObjects[currentIndex].SetActive(true);
+		lerpStart = Camera.main.transform.localRotation;
+		lerpPositionStart = Camera.main.transform.localPosition;
+		lerpEnd = quaternions[currentIndex].localRotation;
+		lerpPositionEnd = quaternions[currentIndex].localPosition;
 		isLerping = true;
 
 	}

@@ -18,31 +18,33 @@ public class PlayerController : MonoBehaviour {
 
 
 	void Update () {
-		float horizontal = Input.GetAxis ("Horizontal");
-		anim.SetFloat ("Turn", horizontal * strafeSpeed * 7);
+		if (GameManager.s_instance.currentGameState == GameState.Playing) {
+			float horizontal = Input.GetAxis ("Horizontal");
+			anim.SetFloat ("Turn", horizontal * strafeSpeed * 7);
+
 	
-		if (Input.touchCount > 0) {
-			Touch touch = Input.GetTouch(0);
-			if (touch.position.x > Screen.width/2) {
-				//go right
-				horizontal = 1f;
+			if (Input.touchCount > 0) {
+				Touch touch = Input.GetTouch (0);
+				if (touch.position.x > Screen.width / 2) {
+					//go right
+					horizontal = 1f;
 
 
-			}
-			else if (touch.position.x < Screen.width/2) {
-				horizontal = -1f;
+				} else if (touch.position.x < Screen.width / 2) {
+					horizontal = -1f;
 			
+				}
 			}
-		}
 
-		//bound player
-		if (!isOnHorizontalRoad) {
-			if (Mathf.Abs (transform.position.x + (horizontal * strafeSpeed)) < playerBounds + currentRoadSection.transform.position.x) {
-				transform.Translate (horizontal * strafeSpeed, 0, 0);
-			}
-		} else {
-			if (Mathf.Abs (transform.position.z-currentRoadSection.transform.position.z - (horizontal * strafeSpeed) ) < playerBounds) {
-				transform.Translate (horizontal * strafeSpeed, 0, 0);
+			//bound player
+			if (!isOnHorizontalRoad) {
+				if (Mathf.Abs (transform.position.x + (horizontal * strafeSpeed)) < playerBounds + currentRoadSection.transform.position.x) {
+					transform.Translate (horizontal * strafeSpeed, 0, 0);
+				}
+			} else {
+				if (Mathf.Abs (transform.position.z - currentRoadSection.transform.position.z - (horizontal * strafeSpeed)) < playerBounds) {
+					transform.Translate (horizontal * strafeSpeed, 0, 0);
+				}
 			}
 		}
 
@@ -68,6 +70,8 @@ public class PlayerController : MonoBehaviour {
 				Destroy (other.gameObject);
 			}
 		} else if (other.tag == "branch") {
+			GameManager.s_instance.SwitchToCutscene();
+
 			//rotating player 90 degrees depending on what it says
 		}
 	}
@@ -77,9 +81,9 @@ public class PlayerController : MonoBehaviour {
 			//rotating player 90 degrees depending on what it says
 			print("rotate by: " +other.GetComponent<RoadBranch>().degreeToTurnBy);
 			transform.Rotate(Vector3.up, other.GetComponent<RoadBranch>().degreeToTurnBy);
-			Camera.main.transform.Rotate(Vector3.up, other.GetComponent<RoadBranch>().degreeToTurnBy);
 			currentRoadSection = other.GetComponent<RoadBranch>().nextRoadBranch;
 			isOnHorizontalRoad = !isOnHorizontalRoad;
+
 		}
 	}
 }
