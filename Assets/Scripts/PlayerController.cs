@@ -19,7 +19,7 @@ public class PlayerController : MonoBehaviour {
 
 	void Update () {
 		float horizontal = Input.GetAxis ("Horizontal");
-		anim.SetFloat ("Turn", horizontal);
+		anim.SetFloat ("Turn", horizontal * strafeSpeed * 7);
 	
 		if (Input.touchCount > 0) {
 			Touch touch = Input.GetTouch(0);
