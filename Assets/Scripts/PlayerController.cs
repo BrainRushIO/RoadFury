@@ -9,20 +9,29 @@ public class PlayerController : MonoBehaviour {
 	public GameObject currentRoadSection;
 	bool isOnHorizontalRoad = false;
 	float attrition = 0.0001f;
+	private Animator anim;
 	//TODO add attrition rate increases depending on if player gets wife or gf or not
+	void Start(){
+		anim = GetComponent<Animator> ();
+	
+	}
+
 
 	void Update () {
 		float horizontal = Input.GetAxis ("Horizontal");
-
+		anim.SetFloat ("Turn", horizontal);
 	
 		if (Input.touchCount > 0) {
 			Touch touch = Input.GetTouch(0);
 			if (touch.position.x > Screen.width/2) {
 				//go right
 				horizontal = 1f;
+
+
 			}
 			else if (touch.position.x < Screen.width/2) {
 				horizontal = -1f;
+			
 			}
 		}
 
