@@ -32,7 +32,7 @@ public class PlayerController : MonoBehaviour {
 				transform.Translate (horizontal * strafeSpeed, 0, 0);
 			}
 		} else {
-			if (Mathf.Abs (transform.position.z + (horizontal * strafeSpeed)) < playerBounds + currentRoadSection.transform.position.z) {
+			if (Mathf.Abs (transform.position.z-currentRoadSection.transform.position.z - (horizontal * strafeSpeed) ) < playerBounds) {
 				transform.Translate (horizontal * strafeSpeed, 0, 0);
 			}
 		}
