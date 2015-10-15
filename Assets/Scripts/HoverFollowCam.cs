@@ -27,9 +27,10 @@ public class HoverFollowCam : MonoBehaviour
 	{
 		switch (thisCameraMode) {
 		case CameraMode.normalMode :
-			transform.position -= (transform.position - camPos.position) * smoothRate *Time.deltaTime;
+			if (GameManager.s_instance.currentGameState == GameState.Playing) {
+				transform.localPosition -= (transform.localPosition - camPos.localPosition) * smoothRate *Time.deltaTime;
 //			transform.LookAt(new Vector3(player.position.x, player.position.y+verticalLookOffset, player.position.z));
-
+			}
 			break;
 			
 		}
