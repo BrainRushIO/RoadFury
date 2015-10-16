@@ -41,8 +41,6 @@ public class PlayerController : MonoBehaviour {
 		}
 		if (GameManager.s_instance.currentGameState == GameState.Playing) {
 			float horizontal = Input.GetAxis ("Horizontal");
-			anim.SetFloat ("Turn", horizontal * strafeSpeed * 7);
-
 	
 			if (Input.touchCount > 0) {
 				Touch touch = Input.GetTouch (0);
@@ -57,6 +55,10 @@ public class PlayerController : MonoBehaviour {
 				}
 			}
 
+			anim.SetFloat ("Turn", horizontal * .7f);
+
+
+
 			//bound player
 			if (!isOnHorizontalRoad) {
 				if (Mathf.Abs (transform.position.x + (horizontal * strafeSpeed)) < playerBounds + currentRoadSection.transform.position.x) {
@@ -67,8 +69,9 @@ public class PlayerController : MonoBehaviour {
 					transform.Translate (horizontal * strafeSpeed, 0, 0);
 				}
 			}
+		} else {
+			anim.SetFloat ("Turn", 0);
 		}
-
 		transform.Translate (Vector3.forward*moveSpeed);
 	}
 	

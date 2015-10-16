@@ -46,7 +46,6 @@ public class Cinematographer : MonoBehaviour {
 				}
 				else if (!isLerping) {
 //					textUIObjects[currentIndex].SetActive(false);
-					Camera.main.GetComponent<HoverFollowCam>().enabled = true;
 					hasStarted = false;
 					GameManager.s_instance.SwitchToGame();
 

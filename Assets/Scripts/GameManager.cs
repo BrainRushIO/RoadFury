@@ -63,7 +63,6 @@ public class GameManager : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-		print (currentGameState);
 		switch (currentGameState) {
 
 		case GameState.IntroScreen :
@@ -184,12 +183,16 @@ public class GameManager : MonoBehaviour {
 	}
 
 	public void SwitchToCutscene () {
-		GameObject.FindGameObjectWithTag ("Player").GetComponent<Cinematographer> ().RollCamera();
+		Camera.main.GetComponent<Cinematographer> ().RollCamera();
 		switchToGame = false;
 		switchToCutScene = true;
+		Camera.main.GetComponent<HoverFollowCam>().enabled = false;
+
 	}
 
 	public void SwitchToGame () {
+		Camera.main.GetComponent<HoverFollowCam>().enabled = true;
+
 		switchToGame = true;
 		switchToCutScene = false;
 	}
