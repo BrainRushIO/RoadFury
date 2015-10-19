@@ -39,6 +39,9 @@ public class PlayerController : MonoBehaviour {
 				isRotateLerp = false;
 			}
 		}
+		if (GameManager.s_instance.currentGameState == GameState.Cutscene) {
+			transform.Translate (Vector3.forward*moveSpeed);
+		}
 		if (GameManager.s_instance.currentGameState == GameState.Playing) {
 			float horizontal = Input.GetAxis ("Horizontal");
 	

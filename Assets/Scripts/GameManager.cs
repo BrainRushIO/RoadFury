@@ -90,6 +90,7 @@ public class GameManager : MonoBehaviour {
 		case GameState.Playing :
 
 			if (switchToCutScene) {
+				slideTimer = 0;
 				currentGameState = GameState.Cutscene;
 			}
 
@@ -157,22 +158,21 @@ public class GameManager : MonoBehaviour {
 		slideTimer += Time.deltaTime;
 		if (slideTimer > slideDuration) {
 			if (textIterator == currentGUIseries.transform.childCount-1) {
+				slideTimer = 0;
 				if (currentGameState == GameState.Tutorial) {
 					EndTutorial();
 				}
 				else {
-					//
+					currentGUIseries.SetActive (false);
 				}
 			}
-			else if (textIterator < currentGUIseries.transform.childCount -1) {
+			else if (textIterator < currentGUIseries.transform.childCount - 1) {
 				currentGUIseries.transform.GetChild(textIterator).gameObject.SetActive(false);
 				textIterator++;
 				currentGUIseries.transform.GetChild(textIterator).gameObject.SetActive(true);
 				slideTimer = 0;
 			}
 		}
-
-
 	}
 
 	public void SwitchToCutscene () {
@@ -186,7 +186,6 @@ public class GameManager : MonoBehaviour {
 
 	public void SwitchToGame () {
 		Camera.main.GetComponent<HoverFollowCam>().enabled = true;
-
 		switchToGame = true;
 		switchToCutScene = false;
 	}
