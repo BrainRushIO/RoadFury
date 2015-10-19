@@ -46,10 +46,11 @@ public class GameManager : MonoBehaviour {
 
 	public GameObject tutorialCam;
 	public GameObject MainMenuGUI, MainMenuText;
-	public GameObject TutorialGUIs;
-	int tutorialIterator = 0;
+	int textIterator = 0;
 	float slideDuration = 3f;
-	float sliderTimer;
+	float slideTimer;
+
+	public GameObject currentGUIseries;
 
 
 	float attrition = 0.0001f;
@@ -70,19 +71,26 @@ public class GameManager : MonoBehaviour {
 
 		case GameState.MainMenu : 
 			if (userPressedStart) {
-
+				currentGameState = GameState.Tutorial;
 			}
 			break;
 
 		case GameState.Tutorial :
+			if (Input.GetKeyDown(KeyCode.Space)) {
+				EndTutorial();
+			}
 			if (tutorialIsOver) {
 				currentGameState = GameState.Playing;
+			}
+			else {
+				RunCutSceneText();
 			}
 			break;
 
 		case GameState.Playing :
 
 			if (switchToCutScene) {
+				slideTimer = 0;
 				currentGameState = GameState.Cutscene;
 			}
 
@@ -115,39 +123,60 @@ public class GameManager : MonoBehaviour {
 			break;
 
 		case GameState.Cutscene : 
+			RunCutSceneText();
 			if (switchToGame) {
 				currentGameState = GameState.Playing;
 			}
 			break;
 		}
-		//Test purposes
-		if (Input.GetKey(KeyCode.M)){
-			switchToInventory = true;
-			switchToGame = false;
-		}
-		if (Input.GetKey(KeyCode.N)){
-			switchToGame = true;
-			switchToInventory = false;
-		}
-		
+
 	}
 	
 	public void SetNewBurnRate(float newBurnRate){
 		loseADollarRate = ageAYearRate / (newBurnRate);
-	}
-	
-	void StartTutorial () {
-
 	}
 
 	public void StartGame () {
 		userPressedStart = true;
 		MainMenuGUI.SetActive (false);
 		MainMenuText.SetActive (false);
-		TutorialGUIs.SetActive (true);
+		currentGUIseries.SetActive (true);
+		Camera.main.transform.SetParent(GameObject.FindGameObjectWithTag("Player").transform);
+		tutorialCam.GetComponent<Cinematographer> ().quaternions [0] = Camera.main.transform;
+		tutorialCam.GetComponent<Cinematographer> ().RollCamera ();
+	}
+
+	public void EndTutorial () {
+		tutorialIsOver = true;
+		currentGUIseries.SetActive (false);
+		GameObject.FindGameObjectWithTag ("CamPos").GetComponent<Cinematographer> ().RollCamera ();
+		GameObject.FindGameObjectWithTag ("Player").GetComponent<Animator> ().SetTrigger ("run");
+
+	}
+
+	void RunCutSceneText () {
+		slideTimer += Time.deltaTime;
+		if (slideTimer > slideDuration) {
+			if (textIterator == currentGUIseries.transform.childCount-1) {
+				slideTimer = 0;
+				if (currentGameState == GameState.Tutorial) {
+					EndTutorial();
+				}
+				else {
+					currentGUIseries.SetActive (false);
+				}
+			}
+			else if (textIterator < currentGUIseries.transform.childCount - 1) {
+				currentGUIseries.transform.GetChild(textIterator).gameObject.SetActive(false);
+				textIterator++;
+				currentGUIseries.transform.GetChild(textIterator).gameObject.SetActive(true);
+				slideTimer = 0;
+			}
+		}
 	}
 
 	public void SwitchToCutscene () {
+		textIterator = 0;
 		Camera.main.GetComponent<Cinematographer> ().RollCamera();
 		switchToGame = false;
 		switchToCutScene = true;
@@ -157,7 +186,6 @@ public class GameManager : MonoBehaviour {
 
 	public void SwitchToGame () {
 		Camera.main.GetComponent<HoverFollowCam>().enabled = true;
-
 		switchToGame = true;
 		switchToCutScene = false;
 	}

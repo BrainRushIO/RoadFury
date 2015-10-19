@@ -25,14 +25,13 @@ public class Cinematographer : MonoBehaviour {
 	Vector3 lerpPositionStart, lerpPositionEnd;
 	//lerp
 	float lerpTimer;
-	float lerpDuration = 3f;
+	public float lerpDuration = 3f;
 	bool isLerping;
 
 	public void RollCamera () {
 		pauseTimer = Time.time;
 		Camera.main.transform.localRotation = quaternions[currentIndex].localRotation;
 		Camera.main.transform.localPosition = quaternions[currentIndex].localPosition;
-//		textUIObjects[currentIndex].SetActive(true);
 		hasStarted = true;
 
 	}

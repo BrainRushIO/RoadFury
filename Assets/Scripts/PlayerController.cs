@@ -39,6 +39,9 @@ public class PlayerController : MonoBehaviour {
 				isRotateLerp = false;
 			}
 		}
+		if (GameManager.s_instance.currentGameState == GameState.Cutscene) {
+			transform.Translate (Vector3.forward*moveSpeed);
+		}
 		if (GameManager.s_instance.currentGameState == GameState.Playing) {
 			float horizontal = Input.GetAxis ("Horizontal");
 	
@@ -95,9 +98,9 @@ public class PlayerController : MonoBehaviour {
 				Destroy (other.gameObject);
 			}
 		} else if (other.tag == "branch") {
+			GameManager.s_instance.currentGUIseries = other.GetComponent<RoadBranch>().GUIObject;
+			GameManager.s_instance.currentGUIseries.SetActive(true);
 			GameManager.s_instance.SwitchToCutscene();
-
-			//rotating player 90 degrees depending on what it says
 		}
 	}
 
