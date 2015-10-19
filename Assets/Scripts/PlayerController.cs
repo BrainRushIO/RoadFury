@@ -56,7 +56,7 @@ public class PlayerController : MonoBehaviour {
 			}
 
 			anim.SetFloat ("Turn", horizontal * .7f);
-
+			transform.Translate (Vector3.forward*moveSpeed);
 
 
 			//bound player
@@ -68,11 +68,12 @@ public class PlayerController : MonoBehaviour {
 				if (Mathf.Abs (transform.position.z - currentRoadSection.transform.position.z - (horizontal * strafeSpeed)) < playerBounds) {
 					transform.Translate (horizontal * strafeSpeed, 0, 0);
 				}
+
 			}
 		} else {
 			anim.SetFloat ("Turn", 0);
 		}
-		transform.Translate (Vector3.forward*moveSpeed);
+
 	}
 	
 	void OnTriggerEnter(Collider other) {
