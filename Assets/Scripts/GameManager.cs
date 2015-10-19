@@ -46,10 +46,11 @@ public class GameManager : MonoBehaviour {
 
 	public GameObject tutorialCam;
 	public GameObject MainMenuGUI, MainMenuText;
-	public GameObject TutorialGUIs;
-	int tutorialIterator = 0;
+	int textIterator = 0;
 	float slideDuration = 3f;
 	float slideTimer;
+
+	public GameObject currentGUIseries;
 
 
 	float attrition = 0.0001f;
@@ -82,7 +83,7 @@ public class GameManager : MonoBehaviour {
 				currentGameState = GameState.Playing;
 			}
 			else {
-				RunTutorial();
+				RunCutSceneText();
 			}
 			break;
 
@@ -121,6 +122,7 @@ public class GameManager : MonoBehaviour {
 			break;
 
 		case GameState.Cutscene : 
+			RunCutSceneText();
 			if (switchToGame) {
 				currentGameState = GameState.Playing;
 			}
@@ -137,7 +139,7 @@ public class GameManager : MonoBehaviour {
 		userPressedStart = true;
 		MainMenuGUI.SetActive (false);
 		MainMenuText.SetActive (false);
-		TutorialGUIs.SetActive (true);
+		currentGUIseries.SetActive (true);
 		Camera.main.transform.SetParent(GameObject.FindGameObjectWithTag("Player").transform);
 		tutorialCam.GetComponent<Cinematographer> ().quaternions [0] = Camera.main.transform;
 		tutorialCam.GetComponent<Cinematographer> ().RollCamera ();
@@ -145,22 +147,27 @@ public class GameManager : MonoBehaviour {
 
 	public void EndTutorial () {
 		tutorialIsOver = true;
-		TutorialGUIs.SetActive (false);
+		currentGUIseries.SetActive (false);
 		GameObject.FindGameObjectWithTag ("CamPos").GetComponent<Cinematographer> ().RollCamera ();
 		GameObject.FindGameObjectWithTag ("Player").GetComponent<Animator> ().SetTrigger ("run");
 
 	}
 
-	void RunTutorial () {
+	void RunCutSceneText () {
 		slideTimer += Time.deltaTime;
 		if (slideTimer > slideDuration) {
-			if (tutorialIterator == TutorialGUIs.transform.childCount-1) {
-				EndTutorial();
+			if (textIterator == currentGUIseries.transform.childCount-1) {
+				if (currentGameState == GameState.Tutorial) {
+					EndTutorial();
+				}
+				else {
+					//
+				}
 			}
-			else if (tutorialIterator < TutorialGUIs.transform.childCount) {
-				TutorialGUIs.transform.GetChild(tutorialIterator).gameObject.SetActive(false);
-				tutorialIterator++;
-				TutorialGUIs.transform.GetChild(tutorialIterator).gameObject.SetActive(true);
+			else if (textIterator < currentGUIseries.transform.childCount -1) {
+				currentGUIseries.transform.GetChild(textIterator).gameObject.SetActive(false);
+				textIterator++;
+				currentGUIseries.transform.GetChild(textIterator).gameObject.SetActive(true);
 				slideTimer = 0;
 			}
 		}
@@ -169,6 +176,7 @@ public class GameManager : MonoBehaviour {
 	}
 
 	public void SwitchToCutscene () {
+		textIterator = 0;
 		Camera.main.GetComponent<Cinematographer> ().RollCamera();
 		switchToGame = false;
 		switchToCutScene = true;
