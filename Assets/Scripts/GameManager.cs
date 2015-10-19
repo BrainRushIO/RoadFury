@@ -49,7 +49,7 @@ public class GameManager : MonoBehaviour {
 	public GameObject TutorialGUIs;
 	int tutorialIterator = 0;
 	float slideDuration = 3f;
-	float sliderTimer;
+	float slideTimer;
 
 
 	float attrition = 0.0001f;
@@ -70,13 +70,19 @@ public class GameManager : MonoBehaviour {
 
 		case GameState.MainMenu : 
 			if (userPressedStart) {
-
+				currentGameState = GameState.Tutorial;
 			}
 			break;
 
 		case GameState.Tutorial :
+			if (Input.GetKeyDown(KeyCode.Space)) {
+				EndTutorial();
+			}
 			if (tutorialIsOver) {
 				currentGameState = GameState.Playing;
+			}
+			else {
+				RunTutorial();
 			}
 			break;
 
@@ -120,24 +126,11 @@ public class GameManager : MonoBehaviour {
 			}
 			break;
 		}
-		//Test purposes
-		if (Input.GetKey(KeyCode.M)){
-			switchToInventory = true;
-			switchToGame = false;
-		}
-		if (Input.GetKey(KeyCode.N)){
-			switchToGame = true;
-			switchToInventory = false;
-		}
-		
+
 	}
 	
 	public void SetNewBurnRate(float newBurnRate){
 		loseADollarRate = ageAYearRate / (newBurnRate);
-	}
-	
-	void StartTutorial () {
-
 	}
 
 	public void StartGame () {
@@ -145,6 +138,34 @@ public class GameManager : MonoBehaviour {
 		MainMenuGUI.SetActive (false);
 		MainMenuText.SetActive (false);
 		TutorialGUIs.SetActive (true);
+		Camera.main.transform.SetParent(GameObject.FindGameObjectWithTag("Player").transform);
+		tutorialCam.GetComponent<Cinematographer> ().quaternions [0] = Camera.main.transform;
+		tutorialCam.GetComponent<Cinematographer> ().RollCamera ();
+	}
+
+	public void EndTutorial () {
+		tutorialIsOver = true;
+		TutorialGUIs.SetActive (false);
+		GameObject.FindGameObjectWithTag ("CamPos").GetComponent<Cinematographer> ().RollCamera ();
+		GameObject.FindGameObjectWithTag ("Player").GetComponent<Animator> ().SetTrigger ("run");
+
+	}
+
+	void RunTutorial () {
+		slideTimer += Time.deltaTime;
+		if (slideTimer > slideDuration) {
+			if (tutorialIterator == TutorialGUIs.transform.childCount-1) {
+				EndTutorial();
+			}
+			else if (tutorialIterator < TutorialGUIs.transform.childCount) {
+				TutorialGUIs.transform.GetChild(tutorialIterator).gameObject.SetActive(false);
+				tutorialIterator++;
+				TutorialGUIs.transform.GetChild(tutorialIterator).gameObject.SetActive(true);
+				slideTimer = 0;
+			}
+		}
+
+
 	}
 
 	public void SwitchToCutscene () {
