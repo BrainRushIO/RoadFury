@@ -10,18 +10,37 @@ public class PlayerController : MonoBehaviour {
 	bool isOnHorizontalRoad = false;
 	float attrition = 0.0001f;
 	private Animator anim;
+
+	bool isRotateLerp;
+	float rotateLerpTimer;
+	float rotateLerpDuration = 1f;
+	Quaternion startLerp, endLerp;
+
 	//TODO add attrition rate increases depending on if player gets wife or gf or not
 	void Start(){
 		anim = GetComponent<Animator> ();
 	
 	}
 
+	void StartRotateLerp() {
+		startLerp = transform.rotation;
+		rotateLerpTimer = Time.time;
+		isRotateLerp = true;
+	}
+
 
 	void Update () {
+		if (isRotateLerp) {
+			float perc = (Time.time - rotateLerpTimer) / rotateLerpDuration;
+			transform.rotation = Quaternion.Lerp(startLerp, endLerp, perc);
+			if (perc > .99) {
+				perc = 1;
+				Quaternion.Lerp(startLerp, endLerp,perc);
+				isRotateLerp = false;
+			}
+		}
 		if (GameManager.s_instance.currentGameState == GameState.Playing) {
 			float horizontal = Input.GetAxis ("Horizontal");
-			anim.SetFloat ("Turn", horizontal * strafeSpeed * 7);
-
 	
 			if (Input.touchCount > 0) {
 				Touch touch = Input.GetTouch (0);
@@ -36,6 +55,10 @@ public class PlayerController : MonoBehaviour {
 				}
 			}
 
+			anim.SetFloat ("Turn", horizontal * .7f);
+			transform.Translate (Vector3.forward*moveSpeed);
+
+
 			//bound player
 			if (!isOnHorizontalRoad) {
 				if (Mathf.Abs (transform.position.x + (horizontal * strafeSpeed)) < playerBounds + currentRoadSection.transform.position.x) {
@@ -45,10 +68,12 @@ public class PlayerController : MonoBehaviour {
 				if (Mathf.Abs (transform.position.z - currentRoadSection.transform.position.z - (horizontal * strafeSpeed)) < playerBounds) {
 					transform.Translate (horizontal * strafeSpeed, 0, 0);
 				}
+
 			}
+		} else {
+			anim.SetFloat ("Turn", 0);
 		}
 
-		transform.Translate (Vector3.forward*moveSpeed);
 	}
 	
 	void OnTriggerEnter(Collider other) {
@@ -79,8 +104,8 @@ public class PlayerController : MonoBehaviour {
 	void OnTriggerExit(Collider other) {
 		if (other.tag == "branch") {
 			//rotating player 90 degrees depending on what it says
-			print("rotate by: " +other.GetComponent<RoadBranch>().degreeToTurnBy);
-			transform.Rotate(Vector3.up, other.GetComponent<RoadBranch>().degreeToTurnBy);
+			endLerp = transform.rotation * Quaternion.Euler(0,other.GetComponent<RoadBranch>().degreeToTurnBy,0);
+			StartRotateLerp();
 			currentRoadSection = other.GetComponent<RoadBranch>().nextRoadBranch;
 			isOnHorizontalRoad = !isOnHorizontalRoad;
 

@@ -18,7 +18,6 @@ public class HoverFollowCam : MonoBehaviour
 	void Start()
 	{
 		player = GameObject.FindGameObjectWithTag("Player").transform;
-
 		camPos = GameObject.FindGameObjectWithTag("CamPos").transform;
 	}
 	
@@ -29,20 +28,8 @@ public class HoverFollowCam : MonoBehaviour
 		case CameraMode.normalMode :
 			if (GameManager.s_instance.currentGameState == GameState.Playing) {
 				transform.localPosition -= (transform.localPosition - camPos.localPosition) * smoothRate *Time.deltaTime;
-//			transform.LookAt(new Vector3(player.position.x, player.position.y+verticalLookOffset, player.position.z));
 			}
 			break;
-			
 		}
-
 	}
-	
-	void FixedUpdate() {
-
-		//		transform.position = Vector3.SmoothDamp(transform.position, camPos.position, ref refVelocity, smoothTime);
-	}
-	
-	
-	//We have two orders of business, firstly we must have the camera always be moving to camPos, this will be triggered when it is a certain distance away from camPos
-	//Further down the line, we will have to deal with walls and things, how do we avoid the camera getting thrown behind a wall, for this we will have to write a detection system on the camera for when it is approaching 
 }
