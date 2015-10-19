@@ -11,8 +11,6 @@ public class GameManager : MonoBehaviour {
 
 	public GameState currentGameState = GameState.Playing;
 	public static GameManager s_instance;
-	Quaternion cameraOnRoadRotation, cameraOnInventoryRotation;
-	public GameObject houseAndFamily;
 
 	void Awake(){
 		if (s_instance==null) {
@@ -46,14 +44,19 @@ public class GameManager : MonoBehaviour {
 	float cameraRotateDuration = .5f;
 	bool isCamRotateUp, isCamRotateDown;
 
+	public GameObject tutorialCam;
+	public GameObject MainMenuGUI, MainMenuText;
+	public GameObject TutorialGUIs;
+	int tutorialIterator = 0;
+	float slideDuration = 3f;
+	float sliderTimer;
+
+
 	float attrition = 0.0001f;
 	//TODO add attrition rate increases depending on if player gets wife or gf or not
 	
 	void Start () {
-//		houseAndFamily.SetActive(false);
 		SetNewBurnRate(-200);
-		cameraOnRoadRotation = Camera.main.transform.localRotation;
-		cameraOnInventoryRotation = Quaternion.Euler(300f,0,0);
 	}
 
 
@@ -65,10 +68,6 @@ public class GameManager : MonoBehaviour {
 	void Update () {
 		switch (currentGameState) {
 
-		case GameState.IntroScreen :
-
-			break;
-
 		case GameState.MainMenu : 
 			if (userPressedStart) {
 
@@ -76,7 +75,9 @@ public class GameManager : MonoBehaviour {
 			break;
 
 		case GameState.Tutorial :
-
+			if (tutorialIsOver) {
+				currentGameState = GameState.Playing;
+			}
 			break;
 
 		case GameState.Playing :
@@ -111,43 +112,11 @@ public class GameManager : MonoBehaviour {
 //				currentGameState = GameState.GameOver;
 //			}
 
-			if (switchToInventory) {
-//				houseAndFamily.SetActive(true);
-				GUIManager.s_instance.SwitchFromGameToInventoryGUI();
-				switchToInventory = false;
-				PanCameraToInventory();
-				currentGameState = GameState.InventoryMode;
-			}
 			break;
 
 		case GameState.Cutscene : 
 			if (switchToGame) {
 				currentGameState = GameState.Playing;
-			}
-			break;
-		case GameState.InventoryMode :
-			if (isCamRotateUp) {
-				float cameraRotatePercentage = (Time.time - cameraRotateStartTime) / cameraRotateDuration;
-				Camera.main.transform.localRotation = Quaternion.Lerp(cameraOnRoadRotation, cameraOnInventoryRotation, cameraRotatePercentage);
-				if (cameraRotatePercentage > .97f){
-					isCamRotateUp = false;
-				}
-			}
-
-			if (isCamRotateDown) {
-				float cameraRotatePercentage = (Time.time - cameraRotateStartTime) / cameraRotateDuration;
-				Camera.main.transform.localRotation = Quaternion.Lerp(cameraOnInventoryRotation, cameraOnRoadRotation, cameraRotatePercentage);
-				if (cameraRotatePercentage > .97f){
-					isCamRotateDown = false;
-					currentGameState = GameState.Playing;
-				}
-			}
-
-			if (switchToGame) {
-//				houseAndFamily.SetActive(false);
-				GUIManager.s_instance.SwitchFromInventoryToGameGUI();
-				switchToGame = false;
-				PanCameraToRoad();
 			}
 			break;
 		}
@@ -165,21 +134,17 @@ public class GameManager : MonoBehaviour {
 	
 	public void SetNewBurnRate(float newBurnRate){
 		loseADollarRate = ageAYearRate / (newBurnRate);
-		print ("loseADollarRate" + loseADollarRate); 
 	}
+	
+	void StartTutorial () {
 
-	void PanCameraToInventory(){
-		isCamRotateUp = true;
-		cameraRotateStartTime = Time.time;
-	}
-
-	void PanCameraToRoad(){
-		isCamRotateDown = true;
-		cameraRotateStartTime = Time.time;
 	}
 
 	public void StartGame () {
-		currentGameState = GameState.Tutorial;
+		userPressedStart = true;
+		MainMenuGUI.SetActive (false);
+		MainMenuText.SetActive (false);
+		TutorialGUIs.SetActive (true);
 	}
 
 	public void SwitchToCutscene () {
