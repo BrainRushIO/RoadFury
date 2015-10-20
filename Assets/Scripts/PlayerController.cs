@@ -91,7 +91,7 @@ public class PlayerController : MonoBehaviour {
 			}
 
 			if (temp.happiness != 0f) {
-				GameManager.s_instance.happiness.value += temp.happiness;
+				GUIManager.s_instance.happinessBar.value += temp.happiness;
 			}
 			if (other.gameObject.GetComponent<PowerUp> ().thisPowerUpType == PowerUp.PowerUpType.None) {
 				Destroy (other.gameObject);

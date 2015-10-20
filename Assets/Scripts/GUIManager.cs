@@ -76,9 +76,9 @@ public class GUIManager : MonoBehaviour {
 
 	public void SpawnHappiness(float happy){
 		if (happy>0) {
-			happinessBar.GetComponent<ImageFlash>().Flash(positive);
+			happinessBar.GetComponentInChildren<ImageFlash>().Flash(positive);
 		} else {
-			happinessBar.GetComponent<ImageFlash>().Flash(negative);
+			happinessBar.GetComponentInChildren<ImageFlash>().Flash(negative);
 		}
 	
 
