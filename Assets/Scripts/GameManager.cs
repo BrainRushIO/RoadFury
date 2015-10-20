@@ -58,6 +58,11 @@ public class GameManager : MonoBehaviour {
 	
 	void Start () {
 		SetNewBurnRate(-200);
+		Screen.orientation = ScreenOrientation.Portrait;
+		Screen.autorotateToLandscapeLeft = false;
+		Screen.autorotateToLandscapeRight = false;
+		Screen.autorotateToPortraitUpsideDown = false;
+
 	}
 
 
@@ -88,7 +93,7 @@ public class GameManager : MonoBehaviour {
 			break;
 
 		case GameState.Playing :
-
+			print (switchToCutScene);
 			if (switchToCutScene) {
 				slideTimer = 0;
 				currentGameState = GameState.Cutscene;
@@ -177,9 +182,9 @@ public class GameManager : MonoBehaviour {
 
 	public void SwitchToCutscene () {
 		textIterator = 0;
-		Camera.main.GetComponent<Cinematographer> ().RollCamera();
 		switchToGame = false;
 		switchToCutScene = true;
+		Camera.main.GetComponent<Cinematographer> ().RollCamera();
 		Camera.main.GetComponent<HoverFollowCam>().enabled = false;
 
 	}

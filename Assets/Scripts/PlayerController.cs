@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour {
 
-	float strafeSpeed = .1f, moveSpeed = .1f;
+	float strafeSpeed = .1f, moveSpeed = .2f;
 	float playerBounds = 4f;
 	public GameObject currentRoadSection;
 	bool isOnHorizontalRoad = false;
@@ -101,6 +101,7 @@ public class PlayerController : MonoBehaviour {
 			GameManager.s_instance.currentGUIseries = other.GetComponent<RoadBranch>().GUIObject;
 			GameManager.s_instance.currentGUIseries.SetActive(true);
 			GameManager.s_instance.SwitchToCutscene();
+			print ("HIT BRANCH");
 		}
 	}
 

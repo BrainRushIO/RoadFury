@@ -47,7 +47,7 @@ public class Cinematographer : MonoBehaviour {
 //					textUIObjects[currentIndex].SetActive(false);
 					hasStarted = false;
 					GameManager.s_instance.SwitchToGame();
-
+					currentIndex =0;
 				}
 
 			}
