@@ -4,11 +4,10 @@ using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour {
 
-	float strafeSpeed = .1f, moveSpeed = .2f;
+	float strafeSpeed = .1f, moveSpeed = .1f;
 	float playerBounds = 4f;
 	public GameObject currentRoadSection;
 	bool isOnHorizontalRoad = false;
-	float attrition = 0.0001f;
 	private Animator anim;
 
 	bool isRotateLerp;
@@ -87,8 +86,8 @@ public class PlayerController : MonoBehaviour {
 			}
 
 			if (temp.burnRate != 0f) {
-				GameManager.s_instance.burnRateValue += temp.burnRate;
-				GameManager.s_instance.SetNewBurnRate (GameManager.s_instance.burnRateValue);
+				GameManager.s_instance.costOfLiving += temp.burnRate;
+				GameManager.s_instance.SetNewBurnRate (GameManager.s_instance.costOfLiving);
 			}
 
 			if (temp.happiness != 0f) {

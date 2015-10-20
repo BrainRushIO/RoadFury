@@ -7,7 +7,8 @@ public class GUIManager : MonoBehaviour {
 	public GameObject OnRoadGUI, InventoryGUI;
 	public GameObject message;
 	public Transform costSpawn, multiplierSpawn, messageSpawn;
-	public GameObject happinessBar, burnRate, moneyText;
+	public Slider happinessBar; 
+	public Text burnRate, moneyText;
 
 	public static GUIManager s_instance;
 	
@@ -30,7 +31,9 @@ public class GUIManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-	
+		moneyText.text = "Money: $" + GameManager.s_instance.money.ToString ();
+		burnRate.text = "Cash Flow: $" + Mathf.CeilToInt (GameManager.s_instance.costOfLiving).ToString ();
+		happinessBar.value -= GameManager.s_instance.attrition;
 	}
 
 	public void SpawnCost (int costValue) {
@@ -62,7 +65,6 @@ public class GUIManager : MonoBehaviour {
 
 	}
 	public void SpawnMessage (string messageString) {
-		print ("MESSAGE IS: " + messageString);
 		GameObject temp = Instantiate (message);
 		temp.GetComponent<Text> ().text = messageString;
 		temp.GetComponent<Text> ().color = neutral;

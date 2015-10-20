@@ -21,13 +21,14 @@ public class GameManager : MonoBehaviour {
 		}
 	}
 
+	public float attrition = .1f;
 	public float strafeSpeed = .1f;
 	public float playerBounds = 4f;
 	public int age = 16, money = 1000;
+	public float costOfLiving = -200;
 	public Text moneyText, ageText, burnRateText;
 	public Slider happiness;
-	
-	public float burnRateValue = -200;
+
 	public float loseADollarRate = 0;
 	public float loseADollarTimer = 0f;
 	public float ageAYearRate = 10f;
@@ -45,6 +46,7 @@ public class GameManager : MonoBehaviour {
 	bool isCamRotateUp, isCamRotateDown;
 
 	public GameObject tutorialCam;
+	public GameObject inGameGUI;
 	public GameObject MainMenuGUI, MainMenuText;
 	int textIterator = 0;
 	float slideDuration = 3f;
@@ -53,7 +55,6 @@ public class GameManager : MonoBehaviour {
 	public GameObject currentGUIseries;
 
 
-	float attrition = 0.0001f;
 	//TODO add attrition rate increases depending on if player gets wife or gf or not
 	
 	void Start () {
@@ -93,37 +94,21 @@ public class GameManager : MonoBehaviour {
 			break;
 
 		case GameState.Playing :
-			print (switchToCutScene);
+			
+			loseADollarTimer += Time.deltaTime;
+			if (loseADollarTimer > Mathf.Abs(loseADollarRate) && loseADollarRate < 0) {
+				loseADollarTimer = 0;
+				money--;
+			}
+			else if (loseADollarTimer > Mathf.Abs(loseADollarRate) && loseADollarRate > 0) {
+				loseADollarTimer = 0;
+				money++;
+			}
+
 			if (switchToCutScene) {
 				slideTimer = 0;
 				currentGameState = GameState.Cutscene;
 			}
-
-			//Display
-//			ageText.text = "Age: " + age.ToString ();
-//			moneyText.text = "Money: $" + money.ToString ();
-//			burnRateText.text = "Cash Flow: $" + Mathf.CeilToInt (burnRateValue).ToString ();
-//			happiness.value -= attrition;
-			
-//			//timers
-//			ageAYearTimer += Time.deltaTime;
-//			if (ageAYearTimer > ageAYearRate) {
-//				ageAYearTimer = 0;
-//				age++;
-//			}
-//			
-//			loseADollarTimer += Time.deltaTime;
-//			if (loseADollarTimer > Mathf.Abs(loseADollarRate) && loseADollarRate < 0) {
-//				loseADollarTimer = 0;
-//				money--;
-//			}
-//			else if (loseADollarTimer > Mathf.Abs(loseADollarRate) && loseADollarRate > 0) {
-//				loseADollarTimer = 0;
-//				money++;
-//			}
-//			if (happiness.value <= 0) {
-//				currentGameState = GameState.GameOver;
-//			}
 
 			break;
 
@@ -138,7 +123,7 @@ public class GameManager : MonoBehaviour {
 	}
 	
 	public void SetNewBurnRate(float newBurnRate){
-		loseADollarRate = ageAYearRate / (newBurnRate);
+		loseADollarRate = 60f / (newBurnRate);
 	}
 
 	public void StartGame () {
@@ -181,6 +166,7 @@ public class GameManager : MonoBehaviour {
 	}
 
 	public void SwitchToCutscene () {
+		inGameGUI.SetActive (false);
 		textIterator = 0;
 		switchToGame = false;
 		switchToCutScene = true;
@@ -193,6 +179,7 @@ public class GameManager : MonoBehaviour {
 		Camera.main.GetComponent<HoverFollowCam>().enabled = true;
 		if (currentGameState != GameState.Tutorial) {
 			currentGUIseries.SetActive (false);
+			inGameGUI.SetActive (true);
 
 		}
 		switchToGame = true;
