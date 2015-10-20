@@ -23,33 +23,33 @@ public class PowerUp : MonoBehaviour {
 
 	void OnTriggerEnter (Collider other) {
 
-		if (other.gameObject.tag == "Player") {
-			if (cost != 0) {
-				GUIManager.s_instance.SpawnCost(cost);
-			}
-			if (happiness != 0) {
-				GUIManager.s_instance.SpawnHappiness(happiness);
-			}
-
-			if (burnRate != 0) {
-				GUIManager.s_instance.SpawnBurnRate(burnRate);
-
-			}
-			GUIManager.s_instance.SpawnMessage(guiMessage);
-
-			if (thisPowerUpType == PowerUpType.Girlfriend) {
-				transform.SetParent(GameObject.FindGameObjectWithTag("Wife").transform);
-				transform.localPosition = Vector3.zero;
-				print ("GF");
-			}
-			if (thisPowerUpType == PowerUpType.Pet) {
-				transform.SetParent(GameObject.FindGameObjectWithTag("Pet").transform);
-				transform.localPosition = Vector3.zero;
-				transform.localScale = Vector3.one;
-				transform.localRotation = transform.parent.rotation;
-				print ("PET");
-			}
-		}
+//		if (other.gameObject.tag == "Player") {
+//			if (cost != 0) {
+//				GUIManager.s_instance.SpawnCost(cost);
+//			}
+//			if (happiness != 0) {
+//				GUIManager.s_instance.SpawnHappiness(happiness);
+//			}
+//
+//			if (burnRate != 0) {
+//				GUIManager.s_instance.SpawnBurnRate(burnRate);
+//
+//			}
+//			GUIManager.s_instance.SpawnMessage(guiMessage);
+//
+//			if (thisPowerUpType == PowerUpType.Girlfriend) {
+//				transform.SetParent(GameObject.FindGameObjectWithTag("Wife").transform);
+//				transform.localPosition = Vector3.zero;
+//				print ("GF");
+//			}
+//			if (thisPowerUpType == PowerUpType.Pet) {
+//				transform.SetParent(GameObject.FindGameObjectWithTag("Pet").transform);
+//				transform.localPosition = Vector3.zero;
+//				transform.localScale = Vector3.one;
+//				transform.localRotation = transform.parent.rotation;
+//				print ("PET");
+//			}
+//		}
 
 
 		if (other.gameObject.tag == "roadKiller") {
