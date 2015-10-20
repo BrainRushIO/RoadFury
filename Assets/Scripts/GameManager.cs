@@ -190,6 +190,7 @@ public class GameManager : MonoBehaviour {
 	}
 
 	public void SwitchToGame () {
+		currentGUIseries.SetActive (false);
 		Camera.main.GetComponent<HoverFollowCam>().enabled = true;
 		switchToGame = true;
 		switchToCutScene = false;
