@@ -6,17 +6,23 @@ public class Business : MonoBehaviour {
 
 	public int indexID;
 	public int growthProbability;		// Between 1 - 100
-	//public int currentRandomNumber;
 	public float revenueStream;
 	public float valuation;
+
+	void Awake() {
+		indexID = Business.GenerateIndex();
+	}
 
 	void Start () {
 		growthProbability = Random.Range( 1, 101 );
 	}
-	
-	// Update is called once per frame
-	void Update () {
-	
+
+	void OnEnable() {
+		PlayerStats.OnYearCompleted += CalculateGrowthRatio;
+	}
+
+	void OnDisable() {
+		PlayerStats.OnYearCompleted -= CalculateGrowthRatio;
 	}
 
 	private void CalculateGrowthRatio() {
@@ -46,7 +52,7 @@ public class Business : MonoBehaviour {
 			valuation *= 1.2f;
 		// else val--
 		else
-			growth *= 0.8f; //TODO update this number to something better
+			growth *= 0.8f; //TODO:Eric update this number to something better
 	}
 
 	public static int GenerateIndex() {

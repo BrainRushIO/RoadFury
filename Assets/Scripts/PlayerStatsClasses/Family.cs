@@ -24,7 +24,7 @@ public class Family : MonoBehaviour {
 	}
 
 	public void GetMarried() {
-		PlayerStats.s_instance.happiness++; // TODO set this to a value
+		PlayerStats.s_instance.happiness++; // TODO:Eric set this to a value
 	}
 
 	public void GetDivorced() {
