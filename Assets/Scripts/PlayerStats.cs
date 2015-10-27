@@ -21,10 +21,8 @@ public class PlayerStats : MonoBehaviour {
 
 	public List<Business> playerBusinesses;
 	public List<Loan> playerLoans;
-	// a year is 15 seconds
-	// cashFlow is per year
-	// happinessDecreaseRate is applied at the end of the year
-	// happiness is between 0 - 1
+
+	private float moneyAtBeginningOfYear;
 
 	public static PlayerStats s_instance { get {return _playerStats;} }
 
@@ -37,10 +35,19 @@ public class PlayerStats : MonoBehaviour {
 		}
 	}
 
+	void Start() {
+		moneyAtBeginningOfYear = money;
+	}
+
 	void Update () {
 		// Add cashFlow to money
-		// Always subtract happiness
-		// If happiness <= 0 then game over
+		money = Mathf.Lerp( moneyAtBeginningOfYear, moneyAtBeginningOfYear+cashFlow, yearTimer/yearCompletionTime );
+
+		// Happiness calculation / check
+		happiness -= happinessDecreateRate*Time.deltaTime;
+		if( happiness <= 0f )
+			//TODO: GameOver
+
 		yearTimer += Time.deltaTime;
 		if( yearTimer >= yearCompletionTime ) {
 			yearTimer = 0f;
