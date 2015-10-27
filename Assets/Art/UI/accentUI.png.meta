@@ -1,12 +1,12 @@
 fileFormatVersion: 2
 guid: ee9bea1a229d72c47962917205acf158
-timeCreated: 1445985303
+timeCreated: 1445985660
 licenseType: Pro
 TextureImporter:
   fileIDToRecycleName:
-    21300000: accentUI_0
-    21300002: accentUI_1
-    21300004: accentUI_2
+    21300000: Accent_Blue
+    21300002: Accent_Green
+    21300004: Accent_Red
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -53,7 +53,7 @@ TextureImporter:
   buildTargetSettings: []
   spriteSheet:
     sprites:
-    - name: accentUI_0
+    - name: Accent_Blue
       rect:
         serializedVersion: 2
         x: 276
@@ -61,9 +61,9 @@ TextureImporter:
         width: 298
         height: 277
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: accentUI_1
+    - name: Accent_Green
       rect:
         serializedVersion: 2
         x: 5
@@ -71,9 +71,9 @@ TextureImporter:
         width: 735
         height: 690
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: accentUI_2
+    - name: Accent_Red
       rect:
         serializedVersion: 2
         x: 792
@@ -81,7 +81,7 @@ TextureImporter:
         width: 183
         height: 188
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
   spritePackingTag: 
   userData: 
