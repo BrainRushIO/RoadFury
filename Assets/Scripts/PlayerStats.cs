@@ -70,12 +70,13 @@ public class PlayerStats : MonoBehaviour {
 
 	}
 
-	public void IncreaseLoanPaymentRate (Loan thisLoan) {
-		thisLoan.annualPayment *= 2f;
+	public void IncreaseLoanPaymentRate (int thisIndex) {
+		playerLoans[thisIndex].annualPaymentPercentage *= 2f;
 	}
 
 	public void PayOffLoan(int index) {
-
+		//check if enough money
+		//pay off loan
 	}
 
 	public void AddBusiness () {

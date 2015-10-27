@@ -14,7 +14,10 @@ public class PitStopGUIManager : MonoBehaviour {
 	public int lastIndexClicked; //used to refer to index in list of player Loan/Business/etc...
 
 	public void HandlePitStopClick(int index) {
-		lastIndexClicked = index;
+		if (PitStopState == PitStopState.Loans ||
+		    PitStopState == PitStopState.Investment ||
+		    PitStopState == PitStopState.RealEstate ||
+		    PitStopState == PitStopState.Business) lastIndexClicked = index;
 
 		switch (currentPitStopState) {
 		case PitStopState.Main :
@@ -46,6 +49,18 @@ public class PitStopGUIManager : MonoBehaviour {
 			else {
 				currentPitStopState = PitStopState.Main;
 			}
+			break;
+
+		case PitStopState.SelectLoan :
+			if (lastIndexClicked == 2) {
+				PlayerStats.s_instance.PayOffLoan(lastIndexClicked);
+			}
+			else if (lastIndexClicked == 3) {
+				PlayerStats.s_instance.IncreaseLoanPaymentRate(lastIndexClicked);
+			}
+			else if (lastIndexClicked == 7) {
+				currentPitStopState = PitStopState.Loans;
+			}
 
 			break;
 		}
@@ -75,13 +90,10 @@ public class PitStopGUIManager : MonoBehaviour {
 			break;
 		case PitStopState.SelectLoan :
 			allTextObjects[0].text = PlayerStats.s_instance.playerLoans[lastIndexClicked].loanName;
-			allTextObjects[1].text = "Annual Payment: " + PlayerStats.s_instance.playerLoans[lastIndexClicked].annualPayment+"%";
-
-			allTextObjects[2].text = "Pay Off";
+			allTextObjects[1].text = "Annual Payment: " + PlayerStats.s_instance.playerLoans[lastIndexClicked].annualPaymentPercentage*100+"%";
+			allTextObjects[2].text = "Pay Off Loan";
 			allTextObjects[3].text = "Double Annual Payment";
 			allTextObjects[7].text = "Back";
-
-
 			break;
 			
 			
