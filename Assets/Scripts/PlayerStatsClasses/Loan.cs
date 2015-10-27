@@ -15,6 +15,13 @@ public class Loan : MonoBehaviour {
 	}
 
 	//subscribe to year event
+	void OnEnable() {
+		PlayerStats.OnYearCompleted += AnnualUpdate;
+	}
+
+	void OnDisable() {
+		PlayerStats.OnYearCompleted -= AnnualUpdate;
+	}
 
 	private void AnnualUpdate() {
 		loanAmount = (loanAmount *= interestRate) - annualPayment;

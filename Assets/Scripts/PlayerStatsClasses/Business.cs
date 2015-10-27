@@ -16,10 +16,13 @@ public class Business : MonoBehaviour {
 	void Start () {
 		growthProbability = Random.Range( 1, 101 );
 	}
-	
-	// Update is called once per frame
-	void Update () {
-	
+
+	void OnEnable() {
+		PlayerStats.OnYearCompleted += CalculateGrowthRatio;
+	}
+
+	void OnDisable() {
+		PlayerStats.OnYearCompleted -= CalculateGrowthRatio;
 	}
 
 	private void CalculateGrowthRatio() {
