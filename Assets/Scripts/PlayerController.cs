@@ -111,6 +111,10 @@ public class PlayerController : MonoBehaviour {
 			StartRotateLerp();
 			currentRoadSection = other.GetComponent<RoadBranch>().nextRoadBranch;
 			isOnHorizontalRoad = !isOnHorizontalRoad;
+			if(other.GetComponent<RoadBranch>().GUIObject.name == "Retire"){
+				anim.SetTrigger ("Retired");
+				transform.Translate(0,0,0);
+			}
 
 		}
 	}
