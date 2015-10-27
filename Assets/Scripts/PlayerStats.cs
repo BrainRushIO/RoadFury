@@ -2,19 +2,31 @@
 using System.Collections;
 
 public class PlayerStats : MonoBehaviour {
+	private static PlayerStats _playerStats;
 
 	public float secondsPerYear = 15f;
 
-	private int age;
-	private float money;
-	private float cashFlow;
-	private float happiness;
-	private float happinessDecreateRate;
+	public int age;
+	public float money;
+	public float cashFlow;
+	public float happiness;
+	public float happinessDecreateRate;
 
 	// a year is 15 seconds
 	// cashFlow is per year
 	// happinessDecreaseRate is applied at the end of the year
 	// happiness is between 0 - 1
+
+	public static PlayerStats s_instance { get {return _playerStats;} }
+
+	void Awake() {
+		if( _playerStats == null )
+			_playerStats = this;
+		else if( _playerStats != this ) {
+			Destroy(this.gameObject);
+			Debug.LogWarning("Deleted duplicate playerstats");
+		}
+	}
 
 	void Start () {
 		age = 16;
@@ -25,6 +37,12 @@ public class PlayerStats : MonoBehaviour {
 	}
 
 	void Update () {
-		
+		// Add cashFlow to money
+		// Always subtract happiness
+		// If happiness <= 0 then game over
+	}
+
+	public void SetCashFlow() {
+		// TODO:Look at all things that could affect this and do it
 	}
 }
