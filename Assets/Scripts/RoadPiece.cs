@@ -13,7 +13,7 @@ public class RoadPiece : MonoBehaviour {
 		if (randomSpawnValue < 50) {
 			GameObject temp = Instantiate(smallPickUpPrefabs[Random.Range(0, smallPickUpPrefabs.Count-1)]);
 			temp.transform.SetParent(pickUpSpawnPoints[randomSpawnPosition]);
-			temp.transform.localPosition =  new Vector3(0,0,10);
+			temp.transform.localPosition =  new Vector3(0,0,0);
 		} else if (randomSpawnValue >= 51 && randomSpawnValue < 60) {
 			GameObject temp = Instantiate(mediumPickUpPrefabs[Random.Range(0, mediumPickUpPrefabs.Count-1)]);
 			temp.transform.SetParent(pickUpSpawnPoints[randomSpawnPosition]);
