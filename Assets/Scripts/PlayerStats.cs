@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class PlayerStats : MonoBehaviour {
 	private static PlayerStats _playerStats;
@@ -12,6 +13,8 @@ public class PlayerStats : MonoBehaviour {
 	public float happiness;
 	public float happinessDecreateRate;
 
+	public List<Business> playerBusinesses;
+	public List<Loan> playerLoans;
 	// a year is 15 seconds
 	// cashFlow is per year
 	// happinessDecreaseRate is applied at the end of the year
@@ -45,4 +48,26 @@ public class PlayerStats : MonoBehaviour {
 	public void SetCashFlow() {
 		// TODO:Look at all things that could affect this and do it
 	}
+
+	public void AddLoan() {
+
+	}
+
+	public void IncreaseLoanPaymentRate () {
+
+	}
+
+	public void PayOffLoan(int index) {
+
+	}
+
+	public void AddBusiness () {
+
+	}
+
+	public void SellBusiness (int index) {
+
+	}
+
+
 }

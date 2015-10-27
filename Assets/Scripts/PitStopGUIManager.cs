@@ -30,6 +30,25 @@ public class PitStopGUIManager : MonoBehaviour {
 
 		switch (currentPitStopState) {
 		case PitStopState.Main :
+			allTextObjects[0].text = "Loans";
+			allTextObjects[1].text = "Investments";
+			allTextObjects[2].text = "Businesses";
+			allTextObjects[3].text = "Real Estate";
+			allTextObjects[4].text = "Family";
+			allTextObjects[7].text = "Back to the Road";
+			break;
+		case PitStopState.Loan :
+			allTextObjects[0].text = "Loans";
+			allTextObjects[1].text = "Investments";
+			allTextObjects[2].text = "Businesses";
+			allTextObjects[3].text = "Real Estate";
+			allTextObjects[4].text = "Family";
+
+
+
+			
+			
+			
 
 			break;
 
