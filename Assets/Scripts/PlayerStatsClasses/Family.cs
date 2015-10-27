@@ -14,25 +14,9 @@ public class Family : MonoBehaviour {
 
 		//if married
 		// money --
-		// if( divorced )
-		// Playerstats.money -= numKids * childSupport
 	}
 
 	public void GetMarried() {
 		PlayerStats.s_instance.happiness++; // TODO:Eric set this to a value
-	}
-
-	public void GetDivorced() {
-		PlayerStats.s_instance.money /= 2f;
-	}
-
-	public void GetNumKids() {
-		int numKids = 0;
-		if( kid1 != null )
-			numKids++;
-		if( kid2 != null )
-			numKids++;
-
-		return numKids;
 	}
 }
