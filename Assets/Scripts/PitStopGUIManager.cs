@@ -14,10 +14,10 @@ public class PitStopGUIManager : MonoBehaviour {
 	public int lastIndexClicked; //used to refer to index in list of player Loan/Business/etc...
 
 	public void HandlePitStopClick(int index) {
-		if (PitStopState == PitStopState.Loans ||
-		    PitStopState == PitStopState.Investment ||
-		    PitStopState == PitStopState.RealEstate ||
-		    PitStopState == PitStopState.Business) lastIndexClicked = index;
+		if (currentPitStopState == PitStopState.Loans ||
+		    currentPitStopState == PitStopState.Investment ||
+		    currentPitStopState == PitStopState.RealEstate ||
+		    currentPitStopState == PitStopState.Business) lastIndexClicked = index;
 
 		switch (currentPitStopState) {
 		case PitStopState.Main :
