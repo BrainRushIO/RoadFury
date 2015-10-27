@@ -8,9 +8,8 @@ public class PlayerStats : MonoBehaviour {
 	// Year completion event
 	public delegate void YearCompletion();
 	public static event YearCompletion OnYearCompleted;
+	
 	private float yearTimer = 0f;
-	public float yearCompletionTime = 15f;
-
 	public float secondsPerYear = 15f;
 
 	public int age = 16;
@@ -41,7 +40,7 @@ public class PlayerStats : MonoBehaviour {
 
 	void Update () {
 		// Add cashFlow to money
-		money = Mathf.Lerp( moneyAtBeginningOfYear, moneyAtBeginningOfYear+cashFlow, yearTimer/yearCompletionTime );
+		money = Mathf.Lerp( moneyAtBeginningOfYear, moneyAtBeginningOfYear+cashFlow, yearTimer/secondsPerYear );
 
 		// Happiness calculation / check
 		happiness -= happinessDecreateRate*Time.deltaTime;
@@ -49,7 +48,7 @@ public class PlayerStats : MonoBehaviour {
 			//TODO: GameOver
 
 		yearTimer += Time.deltaTime;
-		if( yearTimer >= yearCompletionTime ) {
+		if( yearTimer >= secondsPerYear ) {
 			yearTimer = 0f;
 			OnYearCompleted();
 		}
