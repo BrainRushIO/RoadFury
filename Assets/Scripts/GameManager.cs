@@ -2,7 +2,7 @@
 using System.Collections;
 using UnityEngine.UI;
 
-public enum GameState {IntroScreen, MainMenu, Tutorial, Playing, Cutscene, DecisionMode, InventoryMode, GameOver};
+public enum GameState {Pause, MainMenu, Intro, Playing, Cutscene, PitStop, InventoryMode, GameOver, Win};
 public enum AgeState {YoungAdult, Adult, OldAdult, SeniorCitizen};
 public enum CareerState {BusBoy, FryCook, Manager, StoreManager, RegionalManager, OperationsDirector, VPofOperations, COO, CEO, Retired};
 public enum CareerType {Medical, BusinessFinance, Engineering, Entertainment, GovernmentLegal}

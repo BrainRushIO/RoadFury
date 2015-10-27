@@ -10,6 +10,9 @@ public class GUIManager : MonoBehaviour {
 	public Slider happinessBar; 
 	public Text burnRate, moneyText;
 
+	public GameObject pitStopCanvas;
+
+
 	public static GUIManager s_instance;
 	
 	
@@ -34,6 +37,7 @@ public class GUIManager : MonoBehaviour {
 		moneyText.text = "Money: $" + GameManager.s_instance.money.ToString ();
 		burnRate.text = "Cash Flow: $" + Mathf.CeilToInt (GameManager.s_instance.costOfLiving).ToString ();
 		happinessBar.value -= GameManager.s_instance.attrition;
+
 	}
 
 	public void SpawnCost (int costValue) {
