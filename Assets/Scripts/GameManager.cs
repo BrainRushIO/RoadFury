@@ -180,7 +180,6 @@ public class GameManager : MonoBehaviour {
 		if (currentGameState != GameState.Intro) {
 			currentGUIseries.SetActive (false);
 			inGameGUI.SetActive (true);
-
 		}
 		switchToGame = true;
 
