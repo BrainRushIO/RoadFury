@@ -4,19 +4,30 @@ using System.Collections;
 public class Family : MonoBehaviour {
 
 	public GameObject wife, kid1, kid2, dog;
+
 	public bool isMarried;
-	public bool isDivorced;
+	private float marriageMoneyCost;			// TODO Set marriage values
+	private float marriageHappinessReward;
 
-	private float familyCost;		// per person at some value TODO: Set some value
-	
-	void Update () {
-		// Family cost
+	public int numKids = 0;
+	public float kidMoneyCost;			// TODO Set child values
+	public float kidHappinessReward;
 
-		//if married
-		// money --
-	}
+	private float familyCost;
 
 	public void GetMarried() {
-		PlayerStats.s_instance.happiness++; // TODO:Eric set this to a value
+		isMarried = true;
+		PlayerStats.s_instance.happiness += marriageHappinessReward;
+		PlayerStats.s_instance.cashFlow -= marriageMoneyCost;
+
+		// TODO Activate wife model
+	}
+
+	public void AddKid() {
+		numKids++;
+		PlayerStats.s_instance.happiness += kidHappinessReward;
+		PlayerStats.s_instance.cashFlow -= kidMoneyCost;
+
+		// TODO Activate child models
 	}
 }

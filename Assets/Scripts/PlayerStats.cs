@@ -17,7 +17,6 @@ public class PlayerStats : MonoBehaviour {
 	public float cashFlow = -200f;
 	public float happiness = 0.5f;
 	public float happinessDecreateRate = 0.1f;
-	private float moneyAtBeginningOfYear;
 
 	public List<Business> playerBusinesses;
 	public List<Loan> playerLoans;
@@ -35,7 +34,6 @@ public class PlayerStats : MonoBehaviour {
 	}
 
 	void Start() {
-		moneyAtBeginningOfYear = money;
 		playerFamily = new Family();
 	}
 
@@ -54,7 +52,6 @@ public class PlayerStats : MonoBehaviour {
 		yearTimer += Time.deltaTime;
 		if( yearTimer >= secondsPerYear ) {
 			age++;
-			moneyAtBeginningOfYear = money;
 			yearTimer = 0f;
 
 			if( OnYearCompleted != null )
@@ -87,5 +84,13 @@ public class PlayerStats : MonoBehaviour {
 
 	public void SellBusiness (int index) {
 
+	}
+
+	public void GetMarried() {
+		playerFamily.GetMarried();
+	}
+
+	public void AddKid() {
+		playerFamily.AddKid();
 	}
 }
