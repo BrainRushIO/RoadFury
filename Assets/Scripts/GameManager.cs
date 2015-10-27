@@ -177,7 +177,7 @@ public class GameManager : MonoBehaviour {
 
 	public void SwitchToGame () {
 		Camera.main.GetComponent<HoverFollowCam>().enabled = true;
-		if (currentGameState != GameState.Tutorial) {
+		if (currentGameState != GameState.Intro) {
 			currentGUIseries.SetActive (false);
 			inGameGUI.SetActive (true);
 
