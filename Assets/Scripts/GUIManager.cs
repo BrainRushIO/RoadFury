@@ -3,6 +3,8 @@ using System.Collections;
 using UnityEngine.UI;
 
 public class GUIManager : MonoBehaviour {
+
+
 	public Color positive, negative, neutral;
 	public GameObject OnRoadGUI, InventoryGUI;
 	public GameObject message;
@@ -10,9 +12,7 @@ public class GUIManager : MonoBehaviour {
 	public Slider happinessBar; 
 	public Text burnRate, moneyText;
 
-	public GameObject pitStopCanvas;
-
-
+	
 	public static GUIManager s_instance;
 	
 	
@@ -26,12 +26,8 @@ public class GUIManager : MonoBehaviour {
 			}
 		}
 	}
+	
 
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
 	// Update is called once per frame
 	void Update () {
 		moneyText.text = "Money: $" + GameManager.s_instance.money.ToString ();
@@ -39,6 +35,9 @@ public class GUIManager : MonoBehaviour {
 		happinessBar.value -= GameManager.s_instance.attrition;
 
 	}
+
+
+
 
 	public void SpawnCost (int costValue) {
 		GameObject temp = Instantiate (message);
@@ -53,9 +52,6 @@ public class GUIManager : MonoBehaviour {
 		temp.transform.SetParent (costSpawn);
 		temp.transform.localScale = Vector3.one;
 		temp.transform.localPosition = new Vector3(0,0,0);
-	
-
-
 	}
 
 	public void SpawnBurnRate (float burnRateValue) {
@@ -78,24 +74,16 @@ public class GUIManager : MonoBehaviour {
 
 	}
 
+	public void DisplayAreYouSure () {
+
+	}
+
 	public void SpawnHappiness(float happy){
 		if (happy>0) {
 			happinessBar.GetComponentInChildren<ImageFlash>().Flash(positive);
 		} else {
 			happinessBar.GetComponentInChildren<ImageFlash>().Flash(negative);
 		}
-	
-
-	}
-
-	public void SwitchFromGameToInventoryGUI() {
-		OnRoadGUI.SetActive(false);
-		InventoryGUI.SetActive(true);
-	}
-
-	public void SwitchFromInventoryToGameGUI() {
-		OnRoadGUI.SetActive(true);
-		InventoryGUI.SetActive(false);
 	}
 
 
