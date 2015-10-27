@@ -46,7 +46,7 @@ public class Business : MonoBehaviour {
 			valuation *= 1.2f;
 		// else val--
 		else
-			value *= 0.8f; //TODO update this number to something better
+			growth *= 0.8f; //TODO update this number to something better
 	}
 
 	public static int GenerateIndex() {
