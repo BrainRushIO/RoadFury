@@ -11,6 +11,7 @@ public class Family : MonoBehaviour {
 	
 	void Update () {
 		// Family cost
+
 		//if married
 		// money --
 		// if( divorced )
@@ -23,5 +24,15 @@ public class Family : MonoBehaviour {
 
 	public void GetDivorced() {
 		PlayerStats.s_instance.money /= 2f;
+	}
+
+	public void GetNumKids() {
+		int numKids = 0;
+		if( kid1 != null )
+			numKids++;
+		if( kid2 != null )
+			numKids++;
+
+		return numKids;
 	}
 }

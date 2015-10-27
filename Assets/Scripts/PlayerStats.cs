@@ -21,7 +21,7 @@ public class PlayerStats : MonoBehaviour {
 
 	public List<Business> playerBusinesses;
 	public List<Loan> playerLoans;
-
+	public Family playerFamily;
 
 	public static PlayerStats s_instance { get {return _playerStats;} }
 
@@ -36,19 +36,21 @@ public class PlayerStats : MonoBehaviour {
 
 	void Start() {
 		moneyAtBeginningOfYear = money;
+		playerFamily = new Family();
 	}
 
 	void Update () {
 		// Add cashFlow to money
-		money = Mathf.Lerp( moneyAtBeginningOfYear, moneyAtBeginningOfYear+cashFlow, yearTimer/secondsPerYear );
+		money += cashFlow * (1/secondsPerYear) * Time.deltaTime;
 
 		// Happiness calculation / check
 		happiness -= happinessDecreateRate*Time.deltaTime;
 		if( happiness <= 0f ) {
-			//TODO: GameOver
+			// TODO: GameOver
 			Debug.Log( "Happiness fell bellow 0, you are dead." );
 		}
 
+		// Year calculation
 		yearTimer += Time.deltaTime;
 		if( yearTimer >= secondsPerYear ) {
 			age++;
@@ -86,6 +88,4 @@ public class PlayerStats : MonoBehaviour {
 	public void SellBusiness (int index) {
 
 	}
-
-
 }
