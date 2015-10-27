@@ -6,7 +6,7 @@ public class Business : MonoBehaviour {
 	public float revenueStream;
 	public float valuation;
 
-	void Start () {
+	void Awake () {
 		growthProbability = Random.Range( 1, 101 );
 	}
 
