@@ -2,16 +2,9 @@
 using System.Collections;
 
 public class Business : MonoBehaviour {
-	private static int currentIndex = 0;
-
-	public int indexID;
 	public int growthProbability;		// Between 1 - 100
 	public float revenueStream;
 	public float valuation;
-
-	void Awake() {
-		indexID = Business.GenerateIndex();
-	}
 
 	void Start () {
 		growthProbability = Random.Range( 1, 101 );
@@ -53,11 +46,5 @@ public class Business : MonoBehaviour {
 		// else val--
 		else
 			growth *= 0.8f; //TODO:Eric update this number to something better
-	}
-
-	public static int GenerateIndex() {
-		// Returns index and adds one for the next generation
-		currentIndex++;
-		return currentIndex-1;
 	}
 }
