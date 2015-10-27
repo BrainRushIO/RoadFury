@@ -53,8 +53,8 @@ public class PlayerStats : MonoBehaviour {
 
 	}
 
-	public void IncreaseLoanPaymentRate () {
-
+	public void IncreaseLoanPaymentRate (Loan thisLoan) {
+		thisLoan.annualPayment *= 2f;
 	}
 
 	public void PayOffLoan(int index) {

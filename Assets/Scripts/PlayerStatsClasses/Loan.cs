@@ -3,30 +3,17 @@ using System.Collections;
 
 public class Loan : MonoBehaviour {
 
-	int indexID;
-	float loanAmount;
-	float interestRate;
-	float annualPayment;
+	public int indexID;
+	public float loanAmount;
+	public float interestRate;
+	public float annualPayment;
+	public string loanName;
 
-	void Start () {
-	
-	}
-
-	void Update () {
-	
-	}
+	//subscribe to year event
 
 	private void AnnualUpdate() {
 		loanAmount = (loanAmount *= interestRate) - annualPayment;
 		PlayerStats.s_instance.money -= annualPayment;
 	}
-
-	private void PayOffLoan() {
-		PlayerStats.s_instance.money -= loanAmount;
-		// TODO: PlayerStats.removeLoan( indedID );
-	}
-
-	private void IncreaseAnnualPayment() {
-		annualPayment *= 2f;
-	}
+	
 }

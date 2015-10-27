@@ -38,11 +38,10 @@ public class PitStopGUIManager : MonoBehaviour {
 			allTextObjects[7].text = "Back to the Road";
 			break;
 		case PitStopState.Loan :
-			allTextObjects[0].text = "Loans";
-			allTextObjects[1].text = "Investments";
-			allTextObjects[2].text = "Businesses";
-			allTextObjects[3].text = "Real Estate";
-			allTextObjects[4].text = "Family";
+			int playerLoansCount = PlayerStats.s_instance.playerLoans.Count;
+			for (int i = 0; i < playerLoansCount; i++) {
+
+			}
 
 
 
