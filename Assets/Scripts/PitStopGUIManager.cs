@@ -7,20 +7,14 @@ public class PitStopGUIManager : MonoBehaviour {
 
 	
 	public GameObject pitStopCanvas;
-	public enum PitStopState {Main, Family, Business, Loan, Investment, RealEstate};
+	public enum PitStopState {Main, Family, Business, Loans, SelectLoan, Investment, RealEstate};
 	public PitStopState currentPitStopState = PitStopState.Main;
 	public List<Text> allTextObjects;
 
-	public void SwitchToSubMenu () {
-		
-	}
-	
-	public void SwitchToDecision () {
-		
-	}
-	
-	public void SwitchToMenu () {
-		
+	public int lastIndexClicked;
+
+	public void HandlePitStopClick(int index) {
+
 	}
 
 	public void DisplayCurrentMenu() {
@@ -37,14 +31,20 @@ public class PitStopGUIManager : MonoBehaviour {
 			allTextObjects[4].text = "Family";
 			allTextObjects[7].text = "Back to the Road";
 			break;
-		case PitStopState.Loan :
+		case PitStopState.Loans :
 			int playerLoansCount = PlayerStats.s_instance.playerLoans.Count;
 			for (int i = 0; i < playerLoansCount; i++) {
-
+				allTextObjects[i].text = PlayerStats.s_instance.playerLoans[i].loanName;
 			}
+			allTextObjects[7].text = "Back";
+			break;
+		case PitStopState.SelectLoan :
 
 
-
+			break;
+			
+			
+			
 			
 			
 			
