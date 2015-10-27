@@ -77,11 +77,11 @@ public class GameManager : MonoBehaviour {
 
 		case GameState.MainMenu : 
 			if (userPressedStart) {
-				currentGameState = GameState.Tutorial;
+				currentGameState = GameState.Intro;
 			}
 			break;
 
-		case GameState.Tutorial :
+		case GameState.Intro :
 			if (Input.GetKeyDown(KeyCode.Space)) {
 				EndTutorial();
 			}
@@ -149,7 +149,7 @@ public class GameManager : MonoBehaviour {
 		if (slideTimer > slideDuration) {
 			if (textIterator == currentGUIseries.transform.childCount-1) {
 				slideTimer = 0;
-				if (currentGameState == GameState.Tutorial) {
+				if (currentGameState == GameState.Intro) {
 					EndTutorial();
 				}
 				else {
