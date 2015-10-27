@@ -49,7 +49,7 @@ public class PlayerStats : MonoBehaviour {
 		// TODO:Look at all things that could affect this and do it
 	}
 
-	public void AddLoan() {
+	public void AddLoan(string loanName, float loanAmount) {
 
 	}
 
