@@ -8,13 +8,7 @@ public class Family : MonoBehaviour {
 	public bool isDivorced;
 
 	private float familyCost;		// per person at some value TODO: Set some value
-
-	// Use this for initialization
-	void Start () {
 	
-	}
-	
-	// Update is called once per frame
 	void Update () {
 		// Family cost
 		//if married

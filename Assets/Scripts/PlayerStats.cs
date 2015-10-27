@@ -8,9 +8,8 @@ public class PlayerStats : MonoBehaviour {
 	// Year completion event
 	public delegate void YearCompletion();
 	public static event YearCompletion OnYearCompleted;
-	private float yearTimer = 0f;
-	public float yearCompletionTime = 15f;
-
+	
+	public float yearTimer = 0f;
 	public float secondsPerYear = 15f;
 
 	public int age = 16;
@@ -18,13 +17,11 @@ public class PlayerStats : MonoBehaviour {
 	public float cashFlow = -200f;
 	public float happiness = 0.5f;
 	public float happinessDecreateRate = 0.1f;
+	private float moneyAtBeginningOfYear;
 
 	public List<Business> playerBusinesses;
 	public List<Loan> playerLoans;
-	// a year is 15 seconds
-	// cashFlow is per year
-	// happinessDecreaseRate is applied at the end of the year
-	// happiness is between 0 - 1
+
 
 	public static PlayerStats s_instance { get {return _playerStats;} }
 
@@ -37,14 +34,31 @@ public class PlayerStats : MonoBehaviour {
 		}
 	}
 
+	void Start() {
+		moneyAtBeginningOfYear = money;
+	}
+
 	void Update () {
 		// Add cashFlow to money
-		// Always subtract happiness
-		// If happiness <= 0 then game over
+		money = Mathf.Lerp( moneyAtBeginningOfYear, moneyAtBeginningOfYear+cashFlow, yearTimer/secondsPerYear );
+
+		// Happiness calculation / check
+		happiness -= happinessDecreateRate*Time.deltaTime;
+		if( happiness <= 0f ) {
+			//TODO: GameOver
+			Debug.Log( "Happiness fell bellow 0, you are dead." );
+		}
+
 		yearTimer += Time.deltaTime;
-		if( yearTimer >= yearCompletionTime ) {
+		if( yearTimer >= secondsPerYear ) {
+			age++;
+			moneyAtBeginningOfYear = money;
 			yearTimer = 0f;
-			OnYearCompleted();
+
+			if( OnYearCompleted != null )
+				OnYearCompleted();
+			else
+				Debug.LogWarning( "OnYearCompleted() is null. (No script subscribed to event)" );
 		}
 	}
 

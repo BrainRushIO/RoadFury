@@ -2,8 +2,6 @@
 using System.Collections;
 
 public class Investment : MonoBehaviour {
-	private static int currentIndex = 0;
-
 	float growthPerYear;
 	float monetaryValue;
 
@@ -22,11 +20,5 @@ public class Investment : MonoBehaviour {
 
 	void AddMoreMoney() {
 
-	}
-
-	public static int GenerateIndex() {
-		// Returns index and adds one for the next generation
-		currentIndex++;
-		return currentIndex-1;
 	}
 }
