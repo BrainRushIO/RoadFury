@@ -3,7 +3,7 @@ using System.Collections;
 
 public class Family : MonoBehaviour {
 
-	public GameObject wife, kid1, kid2, dog;
+	public GameObject wife, kid1, kid2;
 
 	public bool isMarried;
 	private float marriageMoneyCost;			// TODO Set marriage values

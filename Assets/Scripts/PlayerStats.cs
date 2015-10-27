@@ -20,6 +20,7 @@ public class PlayerStats : MonoBehaviour {
 
 	public List<Business> playerBusinesses;
 	public List<Loan> playerLoans;
+	public List<Investment> playerInvestments;
 	public Family playerFamily;
 
 	public static PlayerStats s_instance { get {return _playerStats;} }
