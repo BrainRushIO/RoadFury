@@ -21,6 +21,7 @@ public class PlayerStats : MonoBehaviour {
 	public List<Business> playerBusinesses;
 	public List<Loan> playerLoans;
 	public List<Investment> playerInvestments;
+	public List<RealEstate> playerRealEstate;
 	public Family playerFamily;
 
 	public static PlayerStats s_instance { get {return _playerStats;} }
@@ -66,6 +67,7 @@ public class PlayerStats : MonoBehaviour {
 		// TODO:Look at all things that could affect this and do it
 	}
 
+	#region Loan
 	public void AddLoan(string loanName, float loanAmount) {
 
 	}
@@ -78,6 +80,7 @@ public class PlayerStats : MonoBehaviour {
 		//check if enough money
 		//pay off loan
 	}
+	#endregion
 
 	public void AddBusiness (float initInvestment) {
 		money -= initInvestment;
@@ -94,6 +97,7 @@ public class PlayerStats : MonoBehaviour {
 
 	}
 
+	#region Family
 	public void GetMarried() {
 		playerFamily.GetMarried();
 	}
@@ -101,7 +105,9 @@ public class PlayerStats : MonoBehaviour {
 	public void AddKid() {
 		playerFamily.AddKid();
 	}
+	#endregion
 
+	#region Business
 	public void WorkOvertime(int businessIndex) {
 
 	}
@@ -126,4 +132,29 @@ public class PlayerStats : MonoBehaviour {
 			return false;
 		}
 	}
+	#endregion
+
+	#region RealEstate
+	public bool CanBuyNewRealEstate( int realEstateTier ) {
+		float realEstateCost = 1000000000;
+		if ( realEstateTier== 0) {
+			realEstateCost = 10000f;
+		}
+		else if (realEstateTier == 1) {
+			realEstateCost = 100000f;
+		}
+		else if (realEstateTier == 2) {
+			realEstateCost = 1000000f;
+		}
+		
+		if( realEstateCost <= money ) {
+			money -= realEstateCost;
+			//TODO add new real estate to real estate list
+			return true;
+		}
+
+		Debug.LogWarning( "Not enough money to buy real estate." );
+		return false;
+	}
+	#endregion
 }

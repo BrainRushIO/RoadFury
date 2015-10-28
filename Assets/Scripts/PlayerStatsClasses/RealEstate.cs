@@ -3,13 +3,5 @@ using System.Collections;
 
 public class RealEstate : MonoBehaviour {
 
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
+	float realEstateValue; //cost brackets 50k-100k, 100k-500k, 500k+
 }

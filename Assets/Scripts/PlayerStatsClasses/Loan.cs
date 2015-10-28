@@ -6,7 +6,7 @@ public class Loan : MonoBehaviour {
 	public float loanAmount;
 	public float initLoanAmount;
 	public float interestRate = 1.05f;
-	public float annualPaymentPercentage = .1f;
+	public float annualPaymentPercentage = 0.1f;
 	public string loanName;
 
 	//subscribe to year event
@@ -18,8 +18,16 @@ public class Loan : MonoBehaviour {
 		PlayerStats.OnYearCompleted -= AnnualUpdate;
 	}
 
+	public void SetInitialLoanAmount( float newAmount ) {
+		initLoanAmount = newAmount;
+	}
+
+	public void SetAnnualPaymentPercentage( float newPercentage ) {
+		annualPaymentPercentage = newPercentage;
+	}
+
 	private void AnnualUpdate() {
-		loanAmount = (loanAmount *= interestRate) - annualPaymentPercentage*initLoanAmount;
+		loanAmount = (loanAmount * interestRate) - annualPaymentPercentage*initLoanAmount;
 		PlayerStats.s_instance.money -= annualPaymentPercentage*initLoanAmount;
 	}
 }
