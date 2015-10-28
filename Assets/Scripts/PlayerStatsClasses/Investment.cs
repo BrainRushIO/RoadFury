@@ -3,7 +3,8 @@ using System.Collections;
 
 public class Investment : MonoBehaviour {
 
-	public static float MaxMoneyAddedPerYear = 5000f;
+	public static float MAX_MONEY_ADDED_PER_YEAR_TO_IRA = 5000f;
+	private const float YEARS_BEFORE_IRA_LIQUIDATION = 5F;
 
 	public float annualGrowthRate;	// TODO set these values
 	public float monetaryValue;
@@ -40,6 +41,13 @@ public class Investment : MonoBehaviour {
 	/// </summary>
 	/// <param name="percentage">Percentage to liquidate From 0.01 to 1.0</param>
 	public void Liquidate( float percentage ) {
+
+		if( thisInvestmentType == InvestmentType.IRA && initializationYear < initializationYear + YEARS_BEFORE_IRA_LIQUIDATION ) {
+			// TODO Add GUI saying this
+			Debug.LogWarning( "You have to wait 5 years before you can liquidate an IRA" );
+			return;
+		}
+
 		Mathf.Clamp01( percentage );
 		float modifyAmount = monetaryValue*percentage;
 		PlayerStats.s_instance.money += modifyAmount;

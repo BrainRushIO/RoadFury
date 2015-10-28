@@ -165,17 +165,22 @@ public class PlayerStats : MonoBehaviour {
 		if( playerInvestments.Count < MAX_INVESTMENTS ) {
 			Investment newInvestment = new Investment();
 			newInvestment.thisInvestmentType = thisType;
+			playerInvestments.Add( newInvestment );
 		} else {
 			Debug.LogWarning( "You've maxed out the amount of investments you can have." );
 		}
 	}
 
 	public bool AddMoneyToInvestment( int index, float amount ) {
-		if( playerInvestments[index].moneyAddedThisYear+amount <= Investment.MaxMoneyAddedPerYear || money >= amount ) {
+		if ( money >= amount ) {
+			// If this is an IRA and we have invested too much money this year
+			if( playerInvestments[index].thisInvestmentType == Investment.InvestmentType.IRA && playerInvestments[index].moneyAddedThisYear+amount <= Investment.MAX_MONEY_ADDED_PER_YEAR_TO_IRA )
+				return false;
+
 			playerInvestments[index].AddMoreMoney( amount );
 			return true;
 		} else {
-			Debug.LogWarning( "You're exceeding the amount of money you can add to this investment per year. ($" + Investment.MaxMoneyAddedPerYear +") or you lack the money to do this.");
+			Debug.LogWarning( "You're exceeding the amount of money you can add to this investment per year. ($" + Investment.MAX_MONEY_ADDED_PER_YEAR_TO_IRA +") or you lack the money to do this.");
 			return false;
 		}
 	}
