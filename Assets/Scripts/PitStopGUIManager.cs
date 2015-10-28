@@ -7,7 +7,7 @@ public class PitStopGUIManager : MonoBehaviour {
 
 	
 	public GameObject pitStopCanvas;
-	public enum PitStopState {Main, Family, Business, SelectBusiness, StartNewBusiness, Loans, SelectLoan, Investment, SelectInvestment, RealEstate};
+	public enum PitStopState {Main, Business, SelectBusiness, StartNewBusiness, Loans, SelectLoan, Investment, SelectInvestment, RealEstate, SelectRealEstate};
 	public PitStopState currentPitStopState = PitStopState.Main;
 	public List<Text> allTextObjects;
 
@@ -34,9 +34,7 @@ public class PitStopGUIManager : MonoBehaviour {
 			case 3 :
 				currentPitStopState = PitStopState.RealEstate;
 				break;
-			case 4 :
-				currentPitStopState = PitStopState.Family;
-				break;
+			
 			case 7 :
 				//goback to road
 				break;
@@ -104,7 +102,7 @@ public class PitStopGUIManager : MonoBehaviour {
 				currentPitStopState = PitStopState.StartNewBusiness;
 			}
 			else if (lastIndexClicked == 7) {
-				currentPitStopState = PitStopState.Business;
+				currentPitStopState = PitStopState.Main;
 			}
 			else {
 				Debug.LogWarning("Index out of bounds in PitStopGUIManager");
@@ -129,9 +127,24 @@ public class PitStopGUIManager : MonoBehaviour {
 				}
 			}
 			else if (index == 7) {
-				currentPitStopState = PitStopState.Business;
+				currentPitStopState = PitStopState.Main;
 			}
 			break;
+		case PitStopState.RealEstate :
+			if (lastIndexClicked < 4 && PlayerStats.s_instance.playerRealEstate[lastIndexClicked]!=null) {
+				currentPitStopState = PitStopState.SelectRealEstate;
+			}
+
+			break;
+		case PitStopState.SelectRealEstate :
+			if (index == 6) {
+//				PlayerStats.s_instance. sell real estate
+			}
+			else if (index == 7) {
+				currentPitStopState = PitStopState.RealEstate;
+			}
+			break;
+		
 		}
 		DisplayCurrentMenu();
 	}
@@ -231,8 +244,27 @@ public class PitStopGUIManager : MonoBehaviour {
 			allTextObjects[7].text = "Back";
 
 			break;
-		}
+		case PitStopState.RealEstate :
+			int playerRealEstateCount = PlayerStats.s_instance.playerRealEstate.Count;
+			for (int i = 0; i < playerRealEstateCount; i++) {
+				allTextObjects[i].text = PlayerStats.s_instance.playerRealEstate[i].realEstateName;
+			}
+			allTextObjects[4].text = "Buy House for 50K";
+			allTextObjects[5].text = "Buy House for 500K";
+			allTextObjects[6].text = "Buy House for 5M";
+			allTextObjects[7].text = "Back";
+		
+			break;
+		case PitStopState.SelectRealEstate :
+			allTextObjects[0].text = PlayerStats.s_instance.playerRealEstate[lastIndexClicked].realEstateName;
+			allTextObjects[1].text = "Liquid Value: $" + PlayerStats.s_instance.playerRealEstate[lastIndexClicked].realEstateValue;
 
+			allTextObjects[6].text = "Sell for $" + PlayerStats.s_instance.playerRealEstate[lastIndexClicked].realEstateValue;;
+			allTextObjects[7].text = "Back";
+			
+			break;
+		
+		}
 
 	}
 
