@@ -26,6 +26,8 @@ public class PlayerStats : MonoBehaviour {
 
 	public static PlayerStats s_instance { get {return _playerStats;} }
 
+	private const int MAX_INVESTMENTS = 4;		// TODO: Maybe modify this.
+
 	void Awake() {
 		if( _playerStats == null )
 			_playerStats = this;
@@ -158,12 +160,37 @@ public class PlayerStats : MonoBehaviour {
 	}
 	#endregion
 
+	#region Investment
 	public void AddInvestment(Investment.InvestmentType thisType) {
+		if( playerInvestments.Count < MAX_INVESTMENTS ) {
+			Investment newInvestment = new Investment();
+			newInvestment.thisInvestmentType = thisType;
+			playerInvestments.Add( newInvestment );
+		} else {
+			Debug.LogWarning( "You've maxed out the amount of investments you can have." );
+		}
+	}
 
+	public bool AddMoneyToInvestment( int index, float amount ) {
+		if ( money >= amount ) {
+			// If this is an IRA and we have invested too much money this year
+			if( playerInvestments[index].thisInvestmentType == Investment.InvestmentType.IRA && playerInvestments[index].moneyAddedThisYear+amount <= Investment.MAX_MONEY_ADDED_PER_YEAR_TO_IRA )
+				return false;
+
+			playerInvestments[index].AddMoreMoney( amount );
+			return true;
+		} else {
+			Debug.LogWarning( "You're exceeding the amount of money you can add to this investment per year. ($" + Investment.MAX_MONEY_ADDED_PER_YEAR_TO_IRA +") or you lack the money to do this.");
+			return false;
+		}
+	}
+
+	public void LiquidateInvestment( int index, float percentage ) {
+		playerInvestments[index].Liquidate( percentage );
 	}
 
 	public void HandleInvestmentModification (int index, int lastIndex) {
 
 	}
-
+	#endregion
 }

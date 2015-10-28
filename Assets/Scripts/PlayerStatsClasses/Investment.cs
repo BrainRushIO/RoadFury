@@ -3,12 +3,18 @@ using System.Collections;
 
 public class Investment : MonoBehaviour {
 
+	public static float MAX_MONEY_ADDED_PER_YEAR_TO_IRA = 5000f;
+	private const float YEARS_BEFORE_IRA_LIQUIDATION = 5F;
+
 	public float annualGrowthRate;	// TODO set these values
-	float monetaryValue;
-	int initializationYear;
+	public float monetaryValue;
+	public int initializationYear;
 	public string investmentName;
+	public float moneyAddedThisYear = 0f;
+
 	public enum InvestmentType {Stock, Mutual, IRA};
 	public InvestmentType thisInvestmentType;
+	
 	void OnEnable() {
 		PlayerStats.OnYearCompleted += AnnualUpdate;
 	}
@@ -23,17 +29,34 @@ public class Investment : MonoBehaviour {
 
 	void AnnualUpdate() {
 		monetaryValue *= annualGrowthRate;
+		moneyAddedThisYear = 0f;
 	}
 
-	void AddMoreMoney( float percentage ) {
-		float percentToValue = PlayerStats.s_instance.money * percentage;
-		monetaryValue += percentToValue;
-		PlayerStats.s_instance.money -= percentToValue;
+	public void AddMoreMoney( float amount ) {
+		monetaryValue += amount;
+		PlayerStats.s_instance.money -= amount;
 	}
+	/// <summary>
+	/// Liquidate by the specified percentage.
+	/// </summary>
+	/// <param name="percentage">Percentage to liquidate From 0.01 to 1.0</param>
+	public void Liquidate( float percentage ) {
 
-	public void Liquidate() {
-		PlayerStats.s_instance.money = monetaryValue;
-		PlayerStats.s_instance.playerInvestments.Remove( this );
-		Destroy( this );
+		if( thisInvestmentType == InvestmentType.IRA && initializationYear < initializationYear + YEARS_BEFORE_IRA_LIQUIDATION ) {
+			// TODO Add GUI saying this
+			Debug.LogWarning( "You have to wait 5 years before you can liquidate an IRA" );
+			return;
+		}
+
+		Mathf.Clamp01( percentage );
+		float modifyAmount = monetaryValue*percentage;
+		PlayerStats.s_instance.money += modifyAmount;
+		monetaryValue -= modifyAmount;
+
+		if( percentage == 1f ) {
+			Debug.Log( "Removing "+investmentName+" from investments." );
+			PlayerStats.s_instance.playerInvestments.Remove( this );
+			Destroy( this );
+		}
 	}
 }
