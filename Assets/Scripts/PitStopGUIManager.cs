@@ -63,6 +63,39 @@ public class PitStopGUIManager : MonoBehaviour {
 			}
 
 			break;
+		case PitStopState.Investment :
+			if (lastIndexClicked < 4 && PlayerStats.s_instance.playerInvestments[lastIndexClicked]!=null) {
+				currentPitStopState = PitStopState.SelectInvestment;
+			}
+			else if (lastIndexClicked == 4) {
+				PlayerStats.s_instance.AddInvestment(Investment.InvestmentType.Stock);
+			}
+
+			else if (lastIndexClicked == 5) {
+				PlayerStats.s_instance.AddInvestment(Investment.InvestmentType.Mutual);
+			}
+
+			else if (lastIndexClicked == 6) {
+				PlayerStats.s_instance.AddInvestment(Investment.InvestmentType.IRA);
+			} else {
+				currentPitStopState = PitStopState.Main;
+			}
+			break;
+		case PitStopState.SelectInvestment :
+			if (PlayerStats.s_instance.playerInvestments[lastIndexClicked].thisInvestmentType == Investment.InvestmentType.Stock) {
+				if (index == 2) {
+					
+				}
+			}
+			else if (PlayerStats.s_instance.playerInvestments[lastIndexClicked].thisInvestmentType == Investment.InvestmentType.Mutual) {
+				
+			}
+
+			else if (PlayerStats.s_instance.playerInvestments[lastIndexClicked].thisInvestmentType == Investment.InvestmentType.IRA) {
+				
+			}
+			break;
+
 		case PitStopState.Business :
 			if (lastIndexClicked < 6 && PlayerStats.s_instance.playerBusinesses[lastIndexClicked]!=null) {
 				currentPitStopState = PitStopState.SelectBusiness;
@@ -145,19 +178,29 @@ public class PitStopGUIManager : MonoBehaviour {
 
 		case PitStopState.SelectInvestment :
 			if (PlayerStats.s_instance.playerInvestments[lastIndexClicked].thisInvestmentType == Investment.InvestmentType.IRA) {
-				allTextObjects[0].text = "Add $100";
-				allTextObjects[1].text = "Annual Payment: " + PlayerStats.s_instance.playerLoans[lastIndexClicked].annualPaymentPercentage*100+"%";
-				allTextObjects[2].text = "Pay Off Loan";
-				allTextObjects[3].text = "Double Annual Payment";
+
+				allTextObjects[2].text = "Add $100";
+				allTextObjects[3].text = "Add $1000";
+				allTextObjects[4].text = "Max Out ($5000 limit per Year)";
+				allTextObjects[5].text = "Close IRA";
 			}
 			else if (PlayerStats.s_instance.playerInvestments[lastIndexClicked].thisInvestmentType == Investment.InvestmentType.Stock) {
-
+				allTextObjects[2].text = "Add $10,000";
+				allTextObjects[3].text = "Add $500,000";
+				allTextObjects[4].text = "Liquidate All Stocks";
+				allTextObjects[5].text = "Liquidate 50% Stocks";
+				allTextObjects[6].text = "Liquidate 10% Stocks";
 
 			}
 			else if (PlayerStats.s_instance.playerInvestments[lastIndexClicked].thisInvestmentType == Investment.InvestmentType.Mutual) {
-
+				allTextObjects[2].text = "Add $1,000";
+				allTextObjects[3].text = "Add $50,000";
+				allTextObjects[4].text = "Liquidate Mutual Fund";
+				allTextObjects[5].text = "Liquidate 50% of Mutual Fund";
+				allTextObjects[6].text = "Liquidate 10% of Mutual Fund";
 			}
-
+			allTextObjects[0].text = PlayerStats.s_instance.playerInvestments[lastIndexClicked].investmentName;
+			allTextObjects[1].text = "Annual Growth Rate: " + PlayerStats.s_instance.playerInvestments[lastIndexClicked].annualGrowthRate*100 + "%";
 			allTextObjects[7].text = "Back";
 
 			break;

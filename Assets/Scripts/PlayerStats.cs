@@ -147,14 +147,23 @@ public class PlayerStats : MonoBehaviour {
 			realEstateCost = 1000000f;
 		}
 		
-		if( realEstateCost <= money ) {
+		if (realEstateCost <= money) {
 			money -= realEstateCost;
 			//TODO add new real estate to real estate list
 			return true;
+		} else {
+			Debug.LogWarning ("Not enough money to buy real estate.");
+			return false;
 		}
-
-		Debug.LogWarning( "Not enough money to buy real estate." );
-		return false;
 	}
 	#endregion
+
+	public void AddInvestment(Investment.InvestmentType thisType) {
+
+	}
+
+	public void HandleInvestmentModification (int index, int lastIndex) {
+
+	}
+
 }

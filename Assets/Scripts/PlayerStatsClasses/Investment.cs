@@ -3,7 +3,7 @@ using System.Collections;
 
 public class Investment : MonoBehaviour {
 
-	float growthPerYear;	// TODO set these values
+	public float annualGrowthRate;	// TODO set these values
 	float monetaryValue;
 	int initializationYear;
 	public string investmentName;
@@ -22,7 +22,7 @@ public class Investment : MonoBehaviour {
 	}
 
 	void AnnualUpdate() {
-		monetaryValue *= growthPerYear;
+		monetaryValue *= annualGrowthRate;
 	}
 
 	void AddMoreMoney( float percentage ) {
