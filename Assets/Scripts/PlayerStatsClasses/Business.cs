@@ -2,9 +2,13 @@
 using System.Collections;
 
 public class Business : MonoBehaviour {
+
+	//businesses can be createad at 3 tiers, 10k, 100k, 1 million
 	public int growthProbability;		// Between 1 - 100
 	public float revenueStream;
 	public float valuation;
+	public string businessName;
+	public float initialInvestment;
 
 	void Awake () {
 		growthProbability = Random.Range( 1, 101 );

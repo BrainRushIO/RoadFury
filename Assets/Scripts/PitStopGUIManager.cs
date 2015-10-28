@@ -7,7 +7,7 @@ public class PitStopGUIManager : MonoBehaviour {
 
 	
 	public GameObject pitStopCanvas;
-	public enum PitStopState {Main, Family, Business, Loans, SelectLoan, Investment, RealEstate};
+	public enum PitStopState {Main, Family, Business, SelectBusiness, StartNewBusiness, Loans, SelectLoan, Investment, SelectInvestment, RealEstate};
 	public PitStopState currentPitStopState = PitStopState.Main;
 	public List<Text> allTextObjects;
 
@@ -96,15 +96,32 @@ public class PitStopGUIManager : MonoBehaviour {
 			allTextObjects[7].text = "Back";
 			break;
 			
+		case PitStopState.Business :
+			int playerBusinessCount = PlayerStats.s_instance.playerBusinesses.Count;
+			for (int i = 0; i < playerBusinessCount; i++) {
+				allTextObjects[i].text = PlayerStats.s_instance.playerBusinesses[i].businessName;
+			}
+			allTextObjects[6].text = "Start a new Business";
+			allTextObjects[7].text = "Back";
+
+			break;
 			
-			
-			
-			
-			
+		case PitStopState.SelectBusiness :
+			allTextObjects[0].text = PlayerStats.s_instance.playerBusinesses[lastIndexClicked].businessName;
+			allTextObjects[1].text = "Revenue: " + PlayerStats.s_instance.playerBusinesses[lastIndexClicked].revenueStream;
+			allTextObjects[2].text = "Work Overtime";
+			allTextObjects[3].text = "Sell Business for " + PlayerStats.s_instance.playerBusinesses[lastIndexClicked].valuation;
+			allTextObjects[7].text = "Back";
 
 			break;
 
+		case PitStopState.StartNewBusiness :
+			allTextObjects[0].text = "Invest 10K";
+			allTextObjects[1].text = "Invest 100K";
+			allTextObjects[2].text = "Invest 1M";
+			allTextObjects[7].text = "Back";
 
+			break;
 		}
 
 

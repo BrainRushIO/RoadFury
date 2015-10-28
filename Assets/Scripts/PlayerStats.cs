@@ -81,8 +81,14 @@ public class PlayerStats : MonoBehaviour {
 		//pay off loan
 	}
 
-	public void AddBusiness () {
+	public void AddBusiness (float initInvestment) {
+		if (initInvestment == 10000f) {
 
+		} else if (initInvestment == 100000f) {
+
+		} else if (initInvestment == 1000000f) {
+
+		}
 	}
 
 	public void SellBusiness (int index) {
