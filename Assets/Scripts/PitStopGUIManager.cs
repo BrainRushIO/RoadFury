@@ -63,6 +63,46 @@ public class PitStopGUIManager : MonoBehaviour {
 			}
 
 			break;
+		case PitStopState.Business :
+			if (lastIndexClicked < 6 && PlayerStats.s_instance.playerBusinesses[lastIndexClicked]!=null) {
+				currentPitStopState = PitStopState.SelectBusiness;
+			}
+			else if (lastIndexClicked == 6) {
+				currentPitStopState = PitStopState.StartNewBusiness;
+			}
+			else if (lastIndexClicked == 7) {
+				currentPitStopState = PitStopState.Business;
+			}
+			else {
+				Debug.LogWarning("Index out of bounds in PitStopGUIManager");
+			}
+			break;
+		case PitStopState.SelectBusiness :
+			if (index == 2) {
+				PlayerStats.s_instance.WorkOvertime(lastIndexClicked);
+			}
+			else if (index == 3) {
+				PlayerStats.s_instance.SellBusiness(lastIndexClicked);
+				currentPitStopState = PitStopState.Business;
+			}
+			else if (index == 7) {
+				currentPitStopState = PitStopState.Business;
+			}
+			break;
+		case PitStopState.StartNewBusiness :
+			if (index < 3) {
+				if (PlayerStats.s_instance.CanStartNewBusiness(index)){
+					currentPitStopState = PitStopState.Business;
+				}
+			}
+			else if (index == 7) {
+				currentPitStopState = PitStopState.Business;
+			}
+//			allTextObjects[0].text = "Invest 10K";
+//			allTextObjects[1].text = "Invest 100K";
+//			allTextObjects[2].text = "Invest 1M";
+//			allTextObjects[7].text = "Back";
+			break;
 		}
 		DisplayCurrentMenu();
 	}

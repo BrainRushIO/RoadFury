@@ -80,6 +80,7 @@ public class PlayerStats : MonoBehaviour {
 	}
 
 	public void AddBusiness (float initInvestment) {
+		money -= initInvestment;
 		if (initInvestment == 10000f) {
 
 		} else if (initInvestment == 100000f) {
@@ -99,5 +100,26 @@ public class PlayerStats : MonoBehaviour {
 
 	public void AddKid() {
 		playerFamily.AddKid();
+	}
+
+	public void WorkOvertime(int businessIndex) {
+
+	}
+
+	public bool CanStartNewBusiness(int businessType) {
+		float businessCost;
+		if (businessType == 0) {
+			businessCost = 10000f;
+		}
+		else if (businessType == 1) {
+			businessCost = 100000f;
+		}
+		else if (businessType == 2) {
+			businessCost = 1000000f;
+		}
+
+		if (businessCost < money && playerBusinesses.Count < 7) {
+			AddBusiness(businessCost);
+		}
 	}
 }
