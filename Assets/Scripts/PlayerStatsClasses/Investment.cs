@@ -3,12 +3,17 @@ using System.Collections;
 
 public class Investment : MonoBehaviour {
 
+	public static float MaxMoneyAddedPerYear = 5000f;
+
 	public float annualGrowthRate;	// TODO set these values
-	float monetaryValue;
-	int initializationYear;
+	public float monetaryValue;
+	public int initializationYear;
 	public string investmentName;
+	public float moneyAddedThisYear = 0f;
+
 	public enum InvestmentType {Stock, Mutual, IRA};
 	public InvestmentType thisInvestmentType;
+	
 	void OnEnable() {
 		PlayerStats.OnYearCompleted += AnnualUpdate;
 	}
@@ -23,17 +28,27 @@ public class Investment : MonoBehaviour {
 
 	void AnnualUpdate() {
 		monetaryValue *= annualGrowthRate;
+		moneyAddedThisYear = 0f;
 	}
 
-	void AddMoreMoney( float percentage ) {
-		float percentToValue = PlayerStats.s_instance.money * percentage;
-		monetaryValue += percentToValue;
-		PlayerStats.s_instance.money -= percentToValue;
+	public void AddMoreMoney( float amount ) {
+		monetaryValue += amount;
+		PlayerStats.s_instance.money -= amount;
 	}
+	/// <summary>
+	/// Liquidate by the specified percentage.
+	/// </summary>
+	/// <param name="percentage">Percentage to liquidate From 0.01 to 1.0</param>
+	public void Liquidate( float percentage ) {
+		Mathf.Clamp01( percentage );
+		float modifyAmount = monetaryValue*percentage;
+		PlayerStats.s_instance.money += modifyAmount;
+		monetaryValue -= modifyAmount;
 
-	public void Liquidate() {
-		PlayerStats.s_instance.money = monetaryValue;
-		PlayerStats.s_instance.playerInvestments.Remove( this );
-		Destroy( this );
+		if( percentage == 1f ) {
+			Debug.Log( "Removing "+investmentName+" from investments." );
+			PlayerStats.s_instance.playerInvestments.Remove( this );
+			Destroy( this );
+		}
 	}
 }
