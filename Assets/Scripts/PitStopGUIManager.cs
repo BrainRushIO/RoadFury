@@ -137,9 +137,27 @@ public class PitStopGUIManager : MonoBehaviour {
 			for (int i = 0; i < playerInvestmentsCount; i++) {
 				allTextObjects[i].text = PlayerStats.s_instance.playerInvestments[i].investmentName;
 			}		
-			allTextObjects[4].text = "Purchase Stocks";
-			allTextObjects[5].text = "Purchase Mutual Fundx";
-			allTextObjects[6].text = "Start new Retirement Plan (IRA) 5K";
+			allTextObjects[4].text = "Purchase Stocks $50,000";
+			allTextObjects[5].text = "Purchase Mutual Fund $5,000";
+			allTextObjects[6].text = "Setup IRA $100";
+			allTextObjects[7].text = "Back";
+			break;
+
+		case PitStopState.SelectInvestment :
+			if (PlayerStats.s_instance.playerInvestments[lastIndexClicked].thisInvestmentType == Investment.InvestmentType.IRA) {
+				allTextObjects[0].text = "Add $100";
+				allTextObjects[1].text = "Annual Payment: " + PlayerStats.s_instance.playerLoans[lastIndexClicked].annualPaymentPercentage*100+"%";
+				allTextObjects[2].text = "Pay Off Loan";
+				allTextObjects[3].text = "Double Annual Payment";
+			}
+			else if (PlayerStats.s_instance.playerInvestments[lastIndexClicked].thisInvestmentType == Investment.InvestmentType.Stock) {
+
+
+			}
+			else if (PlayerStats.s_instance.playerInvestments[lastIndexClicked].thisInvestmentType == Investment.InvestmentType.Mutual) {
+
+			}
+
 			allTextObjects[7].text = "Back";
 
 			break;

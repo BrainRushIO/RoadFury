@@ -5,8 +5,10 @@ public class Investment : MonoBehaviour {
 
 	float growthPerYear;	// TODO set these values
 	float monetaryValue;
+	int initializationYear;
 	public string investmentName;
-
+	public enum InvestmentType {Stock, Mutual, IRA};
+	public InvestmentType thisInvestmentType;
 	void OnEnable() {
 		PlayerStats.OnYearCompleted += AnnualUpdate;
 	}
