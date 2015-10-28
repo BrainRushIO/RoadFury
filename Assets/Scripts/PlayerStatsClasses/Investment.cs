@@ -5,6 +5,7 @@ public class Investment : MonoBehaviour {
 
 	float growthPerYear;	// TODO set these values
 	float monetaryValue;
+	public string investmentName;
 
 	void OnEnable() {
 		PlayerStats.OnYearCompleted += AnnualUpdate;

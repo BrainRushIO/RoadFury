@@ -107,7 +107,7 @@ public class PlayerStats : MonoBehaviour {
 	}
 
 	public bool CanStartNewBusiness(int businessType) {
-		float businessCost;
+		float businessCost = 0;
 		if (businessType == 0) {
 			businessCost = 10000f;
 		}
@@ -118,8 +118,12 @@ public class PlayerStats : MonoBehaviour {
 			businessCost = 1000000f;
 		}
 
-		if (businessCost < money && playerBusinesses.Count < 7) {
-			AddBusiness(businessCost);
+		if (businessCost < money && playerBusinesses.Count < 7 && businessCost!=0) {
+			AddBusiness (businessCost);
+			return true;
+		} else {
+			Debug.Log("Cannot start business");
+			return false;
 		}
 	}
 }

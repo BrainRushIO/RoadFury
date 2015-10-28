@@ -98,10 +98,6 @@ public class PitStopGUIManager : MonoBehaviour {
 			else if (index == 7) {
 				currentPitStopState = PitStopState.Business;
 			}
-//			allTextObjects[0].text = "Invest 10K";
-//			allTextObjects[1].text = "Invest 100K";
-//			allTextObjects[2].text = "Invest 1M";
-//			allTextObjects[7].text = "Back";
 			break;
 		}
 		DisplayCurrentMenu();
@@ -135,7 +131,19 @@ public class PitStopGUIManager : MonoBehaviour {
 			allTextObjects[3].text = "Double Annual Payment";
 			allTextObjects[7].text = "Back";
 			break;
-			
+
+		case PitStopState.Investment :
+			int playerInvestmentsCount = PlayerStats.s_instance.playerInvestments.Count;
+			for (int i = 0; i < playerInvestmentsCount; i++) {
+				allTextObjects[i].text = PlayerStats.s_instance.playerInvestments[i].investmentName;
+			}		
+			allTextObjects[4].text = "Purchase Stocks";
+			allTextObjects[5].text = "Purchase Mutual Fundx";
+			allTextObjects[6].text = "Start new Retirement Plan (IRA) 5K";
+			allTextObjects[7].text = "Back";
+
+			break;
+
 		case PitStopState.Business :
 			int playerBusinessCount = PlayerStats.s_instance.playerBusinesses.Count;
 			for (int i = 0; i < playerBusinessCount; i++) {
