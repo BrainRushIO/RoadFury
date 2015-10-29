@@ -26,7 +26,8 @@ public class PlayerStats : MonoBehaviour {
 
 	public static PlayerStats s_instance { get {return _playerStats;} }
 
-	private const int MAX_INVESTMENTS = 4;		// TODO: Maybe modify this.
+	private const int MAX_INVESTMENTS = 4;
+	private const int MAX_BUSINESSES = 7;
 
 	void Awake() {
 		if( _playerStats == null )
@@ -116,35 +117,31 @@ public class PlayerStats : MonoBehaviour {
 	#endregion
 
 	#region Business
-	public void AddBusiness (float initInvestment) {
-		money -= initInvestment;
-		if (initInvestment == 10000f) {
-			
-		} else if (initInvestment == 100000f) {
-			
-		} else if (initInvestment == 1000000f) {
-			
-		}
+	public bool CanStartNewBusiness(int businessType) {
+		float businessCost = Business.BusinessPrices[businessType];
+		if (businessCost < money && playerBusinesses.Count < MAX_BUSINESSES && businessCost!=0)
+			return true;
+		else
+			Debug.Log("Cannot start business");
+		return false;
+	}
+
+	public void AddBusiness ( int businessType ) {
+		Business newBusiness = new Business();
+		newBusiness.initialInvestment = Business.BusinessPrices[businessType];
+		money -= Business.BusinessPrices[businessType];
+		playerBusinesses.Add( newBusiness );
 	}
 	
 	public void SellBusiness (int index) {
-		
+		Business selectedBusiness = playerBusinesses[index];
+		money += selectedBusiness.valuation;
+		playerBusinesses.Remove( selectedBusiness );
+		Destroy( selectedBusiness );
 	}
 
 	public void WorkOvertime(int businessIndex) {
-
-	}
-
-	public bool CanStartNewBusiness(int businessType) {
-		float businessCost = Business.BusinessPrices[businessType];
-
-		if (businessCost < money && playerBusinesses.Count < 7 && businessCost!=0) {
-			AddBusiness (businessCost);
-			return true;
-		} else {
-			Debug.Log("Cannot start business");
-			return false;
-		}
+		// TODO Decide conversion rate between Happiness/Money
 	}
 	#endregion
 
