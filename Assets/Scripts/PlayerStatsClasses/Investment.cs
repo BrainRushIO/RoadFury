@@ -30,7 +30,9 @@ public class Investment : MonoBehaviour {
 	void AnnualUpdate() {
 		switch( thisInvestmentType ) {
 		case InvestmentType.Stock:
+			break;
 		case InvestmentType.Mutual:
+			break;
 		case InvestmentType.IRA:
 			break;
 		}

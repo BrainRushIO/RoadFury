@@ -20,10 +20,7 @@ public class Loan : MonoBehaviour {
 
 	public void SetInitialLoanAmount( float newAmount ) {
 		initLoanAmount = newAmount;
-	}
-
-	public void SetAnnualPaymentPercentage( float newPercentage ) {
-		annualPaymentPercentage = newPercentage;
+		loanAmount = initLoanAmount;
 	}
 
 	private void AnnualUpdate() {

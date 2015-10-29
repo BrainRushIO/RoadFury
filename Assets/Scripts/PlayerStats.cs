@@ -71,7 +71,10 @@ public class PlayerStats : MonoBehaviour {
 
 	#region Loan
 	public void AddLoan(string loanName, float loanAmount) {
-
+		Loan newLoan = new Loan();
+		newLoan.loanName = loanName;
+		newLoan.SetInitialLoanAmount( loanAmount );
+		playerLoans.Add( newLoan );
 	}
 
 	public void IncreaseLoanPaymentRate (int thisIndex) {
