@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class NumberToString : MonoBehaviour {
+public class NumberToString {
 
 	public static string Convert( float number ) {
 		if( number >= 1000000000f ) {
@@ -14,7 +14,7 @@ public class NumberToString : MonoBehaviour {
 			number /= 1000f;
 			return System.Math.Round( number, 1 ).ToString() + "K";
 		} else {
-			return System.Math.Round( number, 2 ).ToString();
+			return System.Math.Round( number, 0 ).ToString();
 		}
 	}
 }
