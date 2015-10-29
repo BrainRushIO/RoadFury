@@ -4,13 +4,13 @@ using System.Collections;
 public class Business : MonoBehaviour {
 	public static float[] BusinessPrices = new float[3] { 10000f, 100000f, 1000000f };
 	
-	public int growthProbability;		// Between 1 - 100
+	public int growthProbability;
 	public float revenueStream;
 	public float valuation;
 	public string businessName;
 	public float initialInvestment;
 
-	void Awake () {
+	void Start () {
 		growthProbability = Random.Range( 1, 101 );
 	}
 

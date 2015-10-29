@@ -26,7 +26,8 @@ public class PlayerStats : MonoBehaviour {
 
 	public static PlayerStats s_instance { get {return _playerStats;} }
 
-	private const int MAX_INVESTMENTS = 4;		// TODO: Maybe modify this.
+	private const int MAX_INVESTMENTS = 4;
+	private const int MAX_BUSINESSES = 7;
 
 	void Awake() {
 		if( _playerStats == null )
@@ -93,8 +94,10 @@ public class PlayerStats : MonoBehaviour {
 	public void PayOffLoan(int index) {
 		// If player has enough money pay off loan and remove from list
 		if( money >= playerLoans[index].loanAmount ) {
-			playerLoans[index].PayLoanAmount( playerLoans[index].loanAmount );
-			playerLoans.RemoveAt( index );
+			Loan selectedLoan = playerLoans[index];
+			selectedLoan.PayLoanAmount( selectedLoan.loanAmount );
+			playerLoans.Remove( selectedLoan );
+			Destroy( selectedLoan );
 			// TODO Update list on GUI
 		} else {
 			// TODO Add GUI notification
@@ -102,21 +105,6 @@ public class PlayerStats : MonoBehaviour {
 		}
 	}
 	#endregion
-
-	public void AddBusiness (float initInvestment) {
-		money -= initInvestment;
-		if (initInvestment == 10000f) {
-
-		} else if (initInvestment == 100000f) {
-
-		} else if (initInvestment == 1000000f) {
-
-		}
-	}
-
-	public void SellBusiness (int index) {
-
-	}
 
 	#region Family
 	public void GetMarried() {
@@ -129,20 +117,31 @@ public class PlayerStats : MonoBehaviour {
 	#endregion
 
 	#region Business
-	public void WorkOvertime(int businessIndex) {
-
-	}
-
 	public bool CanStartNewBusiness(int businessType) {
 		float businessCost = Business.BusinessPrices[businessType];
-
-		if (businessCost < money && playerBusinesses.Count < 7 && businessCost!=0) {
-			AddBusiness (businessCost);
+		if (businessCost < money && playerBusinesses.Count < MAX_BUSINESSES && businessCost!=0)
 			return true;
-		} else {
+		else
 			Debug.Log("Cannot start business");
-			return false;
-		}
+		return false;
+	}
+
+	public void AddBusiness ( int businessType ) {
+		Business newBusiness = new Business();
+		newBusiness.initialInvestment = Business.BusinessPrices[businessType];
+		money -= Business.BusinessPrices[businessType];
+		playerBusinesses.Add( newBusiness );
+	}
+	
+	public void SellBusiness (int index) {
+		Business selectedBusiness = playerBusinesses[index];
+		money += selectedBusiness.valuation;
+		playerBusinesses.Remove( selectedBusiness );
+		Destroy( selectedBusiness );
+	}
+
+	public void WorkOvertime(int businessIndex) {
+		// TODO Decide conversion rate between Happiness/Money
 	}
 	#endregion
 
