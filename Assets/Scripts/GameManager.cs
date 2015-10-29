@@ -166,6 +166,7 @@ public class GameManager : MonoBehaviour {
 	}
 
 	public void SwitchToCutscene () {
+		inGameGUI.GetComponent<Animator> ().SetTrigger ("hide");
 		inGameGUI.SetActive (false);
 		textIterator = 0;
 		switchToGame = false;
@@ -180,6 +181,7 @@ public class GameManager : MonoBehaviour {
 		if (currentGameState != GameState.Intro) {
 			currentGUIseries.SetActive (false);
 			inGameGUI.SetActive (true);
+			inGameGUI.GetComponent<Animator>().SetTrigger("show");
 		}
 		switchToGame = true;
 
