@@ -38,7 +38,7 @@ public class PlayerStats : MonoBehaviour {
 	}
 
 	void Start() {
-		playerFamily = new Family();
+//		playerFamily = new Family();
 	}
 
 	void Update () {

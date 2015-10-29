@@ -11,6 +11,16 @@ public class PitStopGUIManager : MonoBehaviour {
 	public PitStopState currentPitStopState = PitStopState.Main;
 	public List<Text> allTextObjects;
 
+
+	void Start () {
+		DisplayCurrentMenu ();
+	}
+
+	void Update() {
+		print (currentPitStopState);
+		print (lastIndexClicked);
+	}
+
 	public int lastIndexClicked; //used to refer to index in list of player Loan/Business/etc...
 
 	public void HandlePitStopClick(int index) {
@@ -21,7 +31,7 @@ public class PitStopGUIManager : MonoBehaviour {
 
 		switch (currentPitStopState) {
 		case PitStopState.Main :
-			switch (lastIndexClicked) {
+			switch (index) {
 			case 0 :
 				currentPitStopState = PitStopState.Loans;
 				break;
@@ -44,7 +54,7 @@ public class PitStopGUIManager : MonoBehaviour {
 			if (lastIndexClicked < 7 && PlayerStats.s_instance.playerLoans[lastIndexClicked]!=null) {
 				currentPitStopState = PitStopState.SelectLoan;
 			}
-			else {
+			else if (index == 7){
 				currentPitStopState = PitStopState.Main;
 			}
 			break;
@@ -134,7 +144,9 @@ public class PitStopGUIManager : MonoBehaviour {
 			if (lastIndexClicked < 4 && PlayerStats.s_instance.playerRealEstate[lastIndexClicked]!=null) {
 				currentPitStopState = PitStopState.SelectRealEstate;
 			}
-
+			else if (index == 7) {
+				currentPitStopState = PitStopState.Main;
+			}
 			break;
 		case PitStopState.SelectRealEstate :
 			if (index == 6) {
@@ -160,7 +172,6 @@ public class PitStopGUIManager : MonoBehaviour {
 			allTextObjects[1].text = "Investments";
 			allTextObjects[2].text = "Businesses";
 			allTextObjects[3].text = "Real Estate";
-			allTextObjects[4].text = "Family";
 			allTextObjects[7].text = "Back to the Road";
 			break;
 		case PitStopState.Loans :
@@ -223,7 +234,9 @@ public class PitStopGUIManager : MonoBehaviour {
 			for (int i = 0; i < playerBusinessCount; i++) {
 				allTextObjects[i].text = PlayerStats.s_instance.playerBusinesses[i].businessName;
 			}
-			allTextObjects[6].text = "Start a new Business";
+			allTextObjects[4].text = "Start Business for 10k";
+			allTextObjects[5].text = "Start Business for 100k";
+			allTextObjects[6].text = "Start Business for 1M";
 			allTextObjects[7].text = "Back";
 
 			break;
@@ -259,7 +272,7 @@ public class PitStopGUIManager : MonoBehaviour {
 			allTextObjects[0].text = PlayerStats.s_instance.playerRealEstate[lastIndexClicked].realEstateName;
 			allTextObjects[1].text = "Liquid Value: $" + PlayerStats.s_instance.playerRealEstate[lastIndexClicked].realEstateValue;
 
-			allTextObjects[6].text = "Sell for $" + PlayerStats.s_instance.playerRealEstate[lastIndexClicked].realEstateValue;;
+			allTextObjects[6].text = "Sell for: $" + PlayerStats.s_instance.playerRealEstate[lastIndexClicked].realEstateValue;;
 			allTextObjects[7].text = "Back";
 			
 			break;
