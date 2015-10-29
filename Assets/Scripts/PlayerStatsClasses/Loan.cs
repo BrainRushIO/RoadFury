@@ -23,6 +23,11 @@ public class Loan : MonoBehaviour {
 		loanAmount = initLoanAmount;
 	}
 
+	public void PayLoanAmount( float amount ) {
+		loanAmount -= amount;
+		PlayerStats.s_instance.money -= amount;
+	}
+
 	private void AnnualUpdate() {
 		loanAmount = (loanAmount * interestRate) - annualPaymentPercentage*initLoanAmount;
 		PlayerStats.s_instance.money -= annualPaymentPercentage*initLoanAmount;

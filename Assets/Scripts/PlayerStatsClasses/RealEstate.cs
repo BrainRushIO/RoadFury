@@ -14,4 +14,16 @@ public class RealEstate : MonoBehaviour {
 	void Start() {
 		interestRate = Random.Range( 0.1f, 5.0f );
 	}
+
+	void OnEnable() {
+		PlayerStats.OnYearCompleted += AnnualUpdate;
+	}
+
+	void OnDisable() {
+		PlayerStats.OnYearCompleted -= AnnualUpdate;
+	}
+
+	private void AnnualUpdate() {
+		realEstateValue *= interestRate;
+	}
 }

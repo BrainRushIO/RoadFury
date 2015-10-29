@@ -81,9 +81,25 @@ public class PlayerStats : MonoBehaviour {
 		playerLoans[thisIndex].annualPaymentPercentage *= 2f;
 	}
 
+	public void PayLoanAmount( int index, float amount ) {
+		if( money >= playerLoans[index].loanAmount )
+			playerLoans[index].PayLoanAmount( amount );
+		else {
+			// TODO GUI notification
+			Debug.Log( "Not enough money." );
+		}
+	}
+
 	public void PayOffLoan(int index) {
-		//check if enough money
-		//pay off loan
+		// If player has enough money pay off loan and remove from list
+		if( money >= playerLoans[index].loanAmount ) {
+			playerLoans[index].PayLoanAmount( playerLoans[index].loanAmount );
+			playerLoans.RemoveAt( index );
+			// TODO Update list on GUI
+		} else {
+			// TODO Add GUI notification
+			Debug.Log( "You don't have enough money to pay the loan off." );
+		}
 	}
 	#endregion
 
