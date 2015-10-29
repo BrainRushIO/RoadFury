@@ -138,22 +138,12 @@ public class PlayerStats : MonoBehaviour {
 
 	#region RealEstate
 	public bool CanBuyNewRealEstate( int realEstateTier ) {
-		float realEstateCost = 1000000000;
-		if ( realEstateTier== 0) {
-			realEstateCost = 10000f;
-		}
-		else if (realEstateTier == 1) {
-			realEstateCost = 100000f;
-		}
-		else if (realEstateTier == 2) {
-			realEstateCost = 1000000f;
-		}
+		float realEstateCost = RealEstate.RealEstatePrices[realEstateTier];
 		
 		if (realEstateCost <= money) {
 			money -= realEstateCost;
-			//TODO add new real estate to real estate list
 			RealEstate newRealEstate = new RealEstate();
-
+			newRealEstate.thisRealEstateTier = (RealEstate.RealEstateTier)realEstateTier;
 			playerRealEstate.Add( newRealEstate );
 			return true;
 		} else {
