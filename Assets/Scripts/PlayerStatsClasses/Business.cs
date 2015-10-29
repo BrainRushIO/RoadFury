@@ -2,8 +2,8 @@
 using System.Collections;
 
 public class Business : MonoBehaviour {
-
-	//businesses can be createad at 3 tiers, 10k, 100k, 1 million
+	public static float[] BusinessPrices = new float[3] { 10000f, 100000f, 1000000f };
+	
 	public int growthProbability;		// Between 1 - 100
 	public float revenueStream;
 	public float valuation;

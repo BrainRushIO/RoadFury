@@ -50,6 +50,7 @@ public class PitStopGUIManager : MonoBehaviour {
 				break;
 			}
 			break;
+			#region Loans
 		case PitStopState.Loans :
 			if (lastIndexClicked < 7 && PlayerStats.s_instance.playerLoans[lastIndexClicked]!=null) {
 				currentPitStopState = PitStopState.SelectLoan;
@@ -71,6 +72,8 @@ public class PitStopGUIManager : MonoBehaviour {
 			}
 
 			break;
+			#endregion
+			#region Investment
 		case PitStopState.Investment :
 			if (lastIndexClicked < 4 && PlayerStats.s_instance.playerInvestments[lastIndexClicked]!=null) {
 				currentPitStopState = PitStopState.SelectInvestment;
@@ -103,7 +106,8 @@ public class PitStopGUIManager : MonoBehaviour {
 				
 			}
 			break;
-
+			#endregion
+			#region Business
 		case PitStopState.Business :
 			if (lastIndexClicked < 6 && PlayerStats.s_instance.playerBusinesses[lastIndexClicked]!=null) {
 				currentPitStopState = PitStopState.SelectBusiness;
@@ -140,6 +144,8 @@ public class PitStopGUIManager : MonoBehaviour {
 				currentPitStopState = PitStopState.Main;
 			}
 			break;
+			#endregion
+			#region RealEstate
 		case PitStopState.RealEstate :
 			if (lastIndexClicked < 4 && PlayerStats.s_instance.playerRealEstate[lastIndexClicked]!=null) {
 				currentPitStopState = PitStopState.SelectRealEstate;
@@ -156,7 +162,7 @@ public class PitStopGUIManager : MonoBehaviour {
 				currentPitStopState = PitStopState.RealEstate;
 			}
 			break;
-		
+			#endregion
 		}
 		DisplayCurrentMenu();
 	}
@@ -174,6 +180,7 @@ public class PitStopGUIManager : MonoBehaviour {
 			allTextObjects[3].text = "Real Estate";
 			allTextObjects[7].text = "Back to the Road";
 			break;
+			#region LoanOptions
 		case PitStopState.Loans :
 			int playerLoansCount = PlayerStats.s_instance.playerLoans.Count;
 			for (int i = 0; i < playerLoansCount; i++) {
@@ -188,7 +195,8 @@ public class PitStopGUIManager : MonoBehaviour {
 			allTextObjects[3].text = "Double Annual Payment";
 			allTextObjects[7].text = "Back";
 			break;
-
+			#endregion
+			#region InvestmentOptions
 		case PitStopState.Investment :
 			int playerInvestmentsCount = PlayerStats.s_instance.playerInvestments.Count;
 			for (int i = 0; i < playerInvestmentsCount; i++) {
@@ -228,7 +236,8 @@ public class PitStopGUIManager : MonoBehaviour {
 			allTextObjects[7].text = "Back";
 
 			break;
-
+			#endregion
+			#region BusinessOptions
 		case PitStopState.Business :
 			int playerBusinessCount = PlayerStats.s_instance.playerBusinesses.Count;
 			for (int i = 0; i < playerBusinessCount; i++) {
@@ -257,6 +266,8 @@ public class PitStopGUIManager : MonoBehaviour {
 			allTextObjects[7].text = "Back";
 
 			break;
+			#endregion
+			#region RealEstateOptions
 		case PitStopState.RealEstate :
 			int playerRealEstateCount = PlayerStats.s_instance.playerRealEstate.Count;
 			for (int i = 0; i < playerRealEstateCount; i++) {
@@ -276,7 +287,7 @@ public class PitStopGUIManager : MonoBehaviour {
 			allTextObjects[7].text = "Back";
 			
 			break;
-		
+			#endregion
 		}
 
 	}

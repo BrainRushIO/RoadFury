@@ -20,10 +20,12 @@ public class Loan : MonoBehaviour {
 
 	public void SetInitialLoanAmount( float newAmount ) {
 		initLoanAmount = newAmount;
+		loanAmount = initLoanAmount;
 	}
 
-	public void SetAnnualPaymentPercentage( float newPercentage ) {
-		annualPaymentPercentage = newPercentage;
+	public void PayLoanAmount( float amount ) {
+		loanAmount -= amount;
+		PlayerStats.s_instance.money -= amount;
 	}
 
 	private void AnnualUpdate() {

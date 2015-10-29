@@ -71,16 +71,35 @@ public class PlayerStats : MonoBehaviour {
 
 	#region Loan
 	public void AddLoan(string loanName, float loanAmount) {
-
+		Loan newLoan = new Loan();
+		newLoan.loanName = loanName;
+		newLoan.SetInitialLoanAmount( loanAmount );
+		playerLoans.Add( newLoan );
 	}
 
 	public void IncreaseLoanPaymentRate (int thisIndex) {
 		playerLoans[thisIndex].annualPaymentPercentage *= 2f;
 	}
 
+	public void PayLoanAmount( int index, float amount ) {
+		if( money >= playerLoans[index].loanAmount )
+			playerLoans[index].PayLoanAmount( amount );
+		else {
+			// TODO GUI notification
+			Debug.Log( "Not enough money." );
+		}
+	}
+
 	public void PayOffLoan(int index) {
-		//check if enough money
-		//pay off loan
+		// If player has enough money pay off loan and remove from list
+		if( money >= playerLoans[index].loanAmount ) {
+			playerLoans[index].PayLoanAmount( playerLoans[index].loanAmount );
+			playerLoans.RemoveAt( index );
+			// TODO Update list on GUI
+		} else {
+			// TODO Add GUI notification
+			Debug.Log( "You don't have enough money to pay the loan off." );
+		}
 	}
 	#endregion
 
@@ -115,16 +134,7 @@ public class PlayerStats : MonoBehaviour {
 	}
 
 	public bool CanStartNewBusiness(int businessType) {
-		float businessCost = 0;
-		if (businessType == 0) {
-			businessCost = 10000f;
-		}
-		else if (businessType == 1) {
-			businessCost = 100000f;
-		}
-		else if (businessType == 2) {
-			businessCost = 1000000f;
-		}
+		float businessCost = Business.BusinessPrices[businessType];
 
 		if (businessCost < money && playerBusinesses.Count < 7 && businessCost!=0) {
 			AddBusiness (businessCost);
@@ -138,20 +148,13 @@ public class PlayerStats : MonoBehaviour {
 
 	#region RealEstate
 	public bool CanBuyNewRealEstate( int realEstateTier ) {
-		float realEstateCost = 1000000000;
-		if ( realEstateTier== 0) {
-			realEstateCost = 10000f;
-		}
-		else if (realEstateTier == 1) {
-			realEstateCost = 100000f;
-		}
-		else if (realEstateTier == 2) {
-			realEstateCost = 1000000f;
-		}
+		float realEstateCost = RealEstate.RealEstatePrices[realEstateTier];
 		
 		if (realEstateCost <= money) {
 			money -= realEstateCost;
-			//TODO add new real estate to real estate list
+			RealEstate newRealEstate = new RealEstate();
+			newRealEstate.thisRealEstateTier = (RealEstate.RealEstateTier)realEstateTier;
+			playerRealEstate.Add( newRealEstate );
 			return true;
 		} else {
 			Debug.LogWarning ("Not enough money to buy real estate.");
@@ -174,13 +177,17 @@ public class PlayerStats : MonoBehaviour {
 	public bool AddMoneyToInvestment( int index, float amount ) {
 		if ( money >= amount ) {
 			// If this is an IRA and we have invested too much money this year
-			if( playerInvestments[index].thisInvestmentType == Investment.InvestmentType.IRA && playerInvestments[index].moneyAddedThisYear+amount <= Investment.MAX_MONEY_ADDED_PER_YEAR_TO_IRA )
+			if( playerInvestments[index].thisInvestmentType == Investment.InvestmentType.IRA && playerInvestments[index].moneyAddedThisYear+amount <= Investment.MAX_MONEY_ADDED_PER_YEAR_TO_IRA ) {
+				//TODO Add GUI notification
+				Debug.LogWarning( "You're exceeding the amount of money you can add to this investment per year. ($" + Investment.MAX_MONEY_ADDED_PER_YEAR_TO_IRA +")" );
 				return false;
+			}
 
 			playerInvestments[index].AddMoreMoney( amount );
 			return true;
 		} else {
-			Debug.LogWarning( "You're exceeding the amount of money you can add to this investment per year. ($" + Investment.MAX_MONEY_ADDED_PER_YEAR_TO_IRA +") or you lack the money to do this.");
+			// TODO Add GUI notification.
+			Debug.LogWarning("You lack the money to do this.");
 			return false;
 		}
 	}

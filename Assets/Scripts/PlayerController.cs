@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour {
 
-	float strafeSpeed = .1f, moveSpeed = .2f;
+	float strafeSpeed = .1f, moveSpeed = 9f;
 	float playerBounds = 4f;
 	public GameObject currentRoadSection;
 	bool isOnHorizontalRoad = false;
@@ -39,7 +39,7 @@ public class PlayerController : MonoBehaviour {
 			}
 		}
 		if (GameManager.s_instance.currentGameState == GameState.Cutscene) {
-			transform.Translate (Vector3.forward*moveSpeed);
+			transform.Translate (Vector3.forward*moveSpeed*Time.deltaTime);
 		}
 		if (GameManager.s_instance.currentGameState == GameState.Playing) {
 			float horizontal = Input.GetAxis ("Horizontal");
@@ -58,7 +58,7 @@ public class PlayerController : MonoBehaviour {
 			}
 
 			anim.SetFloat ("Turn", horizontal * .7f);
-			transform.Translate (Vector3.forward*moveSpeed);
+			transform.Translate (Vector3.forward*moveSpeed*Time.deltaTime);
 
 
 			//bound player

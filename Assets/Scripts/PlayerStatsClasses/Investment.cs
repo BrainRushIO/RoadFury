@@ -4,7 +4,7 @@ using System.Collections;
 public class Investment : MonoBehaviour {
 
 	public static float MAX_MONEY_ADDED_PER_YEAR_TO_IRA = 5000f;
-	private const float YEARS_BEFORE_IRA_LIQUIDATION = 5F;
+	private const float YEARS_BEFORE_IRA_LIQUIDATION = 5f;
 
 	public float annualGrowthRate;	// TODO set these values
 	public float monetaryValue;
@@ -28,6 +28,14 @@ public class Investment : MonoBehaviour {
 	}
 
 	void AnnualUpdate() {
+		switch( thisInvestmentType ) {
+		case InvestmentType.Stock:
+			break;
+		case InvestmentType.Mutual:
+			break;
+		case InvestmentType.IRA:
+			break;
+		}
 		monetaryValue *= annualGrowthRate;
 		moneyAddedThisYear = 0f;
 	}
@@ -43,7 +51,7 @@ public class Investment : MonoBehaviour {
 	public void Liquidate( float percentage ) {
 
 		if( thisInvestmentType == InvestmentType.IRA && initializationYear < initializationYear + YEARS_BEFORE_IRA_LIQUIDATION ) {
-			// TODO Add GUI saying this
+			// TODO Add GUI notification
 			Debug.LogWarning( "You have to wait 5 years before you can liquidate an IRA" );
 			return;
 		}
@@ -54,6 +62,7 @@ public class Investment : MonoBehaviour {
 		monetaryValue -= modifyAmount;
 
 		if( percentage == 1f ) {
+			// TODO Update GUI with shorter list
 			Debug.Log( "Removing "+investmentName+" from investments." );
 			PlayerStats.s_instance.playerInvestments.Remove( this );
 			Destroy( this );
