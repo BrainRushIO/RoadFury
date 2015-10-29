@@ -10,7 +10,7 @@ public class Business : MonoBehaviour {
 	public string businessName;
 	public float initialInvestment;
 
-	void Awake () {
+	void Start () {
 		growthProbability = Random.Range( 1, 101 );
 	}
 

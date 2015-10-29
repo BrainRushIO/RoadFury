@@ -93,8 +93,10 @@ public class PlayerStats : MonoBehaviour {
 	public void PayOffLoan(int index) {
 		// If player has enough money pay off loan and remove from list
 		if( money >= playerLoans[index].loanAmount ) {
-			playerLoans[index].PayLoanAmount( playerLoans[index].loanAmount );
-			playerLoans.RemoveAt( index );
+			Loan selectedLoan = playerLoans[index];
+			selectedLoan.PayLoanAmount( selectedLoan.loanAmount );
+			playerLoans.Remove( selectedLoan );
+			Destroy( selectedLoan );
 			// TODO Update list on GUI
 		} else {
 			// TODO Add GUI notification
@@ -102,21 +104,6 @@ public class PlayerStats : MonoBehaviour {
 		}
 	}
 	#endregion
-
-	public void AddBusiness (float initInvestment) {
-		money -= initInvestment;
-		if (initInvestment == 10000f) {
-
-		} else if (initInvestment == 100000f) {
-
-		} else if (initInvestment == 1000000f) {
-
-		}
-	}
-
-	public void SellBusiness (int index) {
-
-	}
 
 	#region Family
 	public void GetMarried() {
@@ -129,6 +116,21 @@ public class PlayerStats : MonoBehaviour {
 	#endregion
 
 	#region Business
+	public void AddBusiness (float initInvestment) {
+		money -= initInvestment;
+		if (initInvestment == 10000f) {
+			
+		} else if (initInvestment == 100000f) {
+			
+		} else if (initInvestment == 1000000f) {
+			
+		}
+	}
+	
+	public void SellBusiness (int index) {
+		
+	}
+
 	public void WorkOvertime(int businessIndex) {
 
 	}
