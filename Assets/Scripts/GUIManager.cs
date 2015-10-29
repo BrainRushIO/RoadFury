@@ -30,9 +30,9 @@ public class GUIManager : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-		moneyText.text = "$" + GameManager.s_instance.money.ToString ();
-		burnRate.text = "$" + Mathf.CeilToInt (GameManager.s_instance.costOfLiving).ToString () + "/year";
-		happinessBar.value -= GameManager.s_instance.attrition;
+		moneyText.text = "$" + PlayerStats.s_instance.money.ToString ();
+		burnRate.text = "$" + Mathf.CeilToInt (PlayerStats.s_instance.cashFlow).ToString () + "/year";
+		happinessBar.value = PlayerStats.s_instance.happiness;
 
 	}
 

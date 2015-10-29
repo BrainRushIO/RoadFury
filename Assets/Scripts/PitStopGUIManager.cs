@@ -109,11 +109,11 @@ public class PitStopGUIManager : MonoBehaviour {
 			#endregion
 			#region Business
 		case PitStopState.Business :
-			if (lastIndexClicked < 6 && PlayerStats.s_instance.playerBusinesses[lastIndexClicked]!=null) {
+			if (lastIndexClicked < 4 && PlayerStats.s_instance.playerBusinesses.Count > lastIndexClicked ) {
 				currentPitStopState = PitStopState.SelectBusiness;
 			}
-			else if (lastIndexClicked == 6) {
-				currentPitStopState = PitStopState.StartNewBusiness;
+			else if (lastIndexClicked > 3 || lastIndexClicked < 7) {
+				PlayerStats.s_instance.CanStartNewBusiness(lastIndexClicked - 4);
 			}
 			else if (lastIndexClicked == 7) {
 				currentPitStopState = PitStopState.Main;
@@ -132,16 +132,6 @@ public class PitStopGUIManager : MonoBehaviour {
 			}
 			else if (index == 7) {
 				currentPitStopState = PitStopState.Business;
-			}
-			break;
-		case PitStopState.StartNewBusiness :
-			if (index < 3) {
-				if (PlayerStats.s_instance.CanStartNewBusiness(index)){
-					currentPitStopState = PitStopState.Business;
-				}
-			}
-			else if (index == 7) {
-				currentPitStopState = PitStopState.Main;
 			}
 			break;
 			#endregion
@@ -241,6 +231,7 @@ public class PitStopGUIManager : MonoBehaviour {
 		case PitStopState.Business :
 			int playerBusinessCount = PlayerStats.s_instance.playerBusinesses.Count;
 			for (int i = 0; i < playerBusinessCount; i++) {
+				print (playerBusinessCount + "player business count");
 				allTextObjects[i].text = PlayerStats.s_instance.playerBusinesses[i].businessName;
 			}
 			allTextObjects[4].text = "Start Business for 10k";
@@ -259,13 +250,6 @@ public class PitStopGUIManager : MonoBehaviour {
 
 			break;
 
-		case PitStopState.StartNewBusiness :
-			allTextObjects[0].text = "Invest 10K";
-			allTextObjects[1].text = "Invest 100K";
-			allTextObjects[2].text = "Invest 1M";
-			allTextObjects[7].text = "Back";
-
-			break;
 			#endregion
 			#region RealEstateOptions
 		case PitStopState.RealEstate :

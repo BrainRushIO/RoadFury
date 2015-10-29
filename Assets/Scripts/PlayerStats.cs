@@ -16,7 +16,7 @@ public class PlayerStats : MonoBehaviour {
 	public float money = 1000f;
 	public float cashFlow = -200f;
 	public float happiness = 0.5f;
-	public float happinessDecreateRate = 0.1f;
+	public float happinessDecreaseRate = 0.001f;
 
 	public List<Business> playerBusinesses;
 	public List<Loan> playerLoans;
@@ -47,7 +47,7 @@ public class PlayerStats : MonoBehaviour {
 		money += cashFlow * (1/secondsPerYear) * Time.deltaTime;
 
 		// Happiness calculation / check
-		happiness -= happinessDecreateRate*Time.deltaTime;
+		happiness -= happinessDecreaseRate*Time.deltaTime;
 		if( happiness <= 0f ) {
 			// TODO: GameOver
 			Debug.Log( "Happiness fell bellow 0, you are dead." );
