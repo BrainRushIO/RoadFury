@@ -277,7 +277,8 @@ public class PitStopGUIManager : MonoBehaviour {
 				allTextObjects[6].text = "Liquidate 10% of Mutual Fund";
 			}
 			allTextObjects[0].text = PlayerStats.s_instance.playerInvestments[lastIndexClicked].investmentName;
-			allTextObjects[1].text = "Annual Growth Rate: " + PlayerStats.s_instance.playerInvestments[lastIndexClicked].annualGrowthRate*100 + "%";
+			allTextObjects[1].text = "$"+ NumberToString.Convert (PlayerStats.s_instance.playerInvestments[lastIndexClicked].monetaryValue) + 
+				" Growing " + PlayerStats.s_instance.playerInvestments[lastIndexClicked].annualGrowthRate*100 + "% per Year";
 			allTextObjects[7].text = "Back";
 
 			break;

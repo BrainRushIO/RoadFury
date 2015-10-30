@@ -31,8 +31,8 @@ public class PlayerStats : MonoBehaviour {
 	private const int MAX_REALESTATE = 4;
 	private const float IRA_INIT_COST = 100f;
 
-	private const float STOCK_INIT_COST = 5000f;
-	private const float MUTUAL_INIT_COST = 50000f;
+	private const float STOCK_INIT_COST = 50000f;
+	private const float MUTUAL_INIT_COST = 5000f;
 
 
 
