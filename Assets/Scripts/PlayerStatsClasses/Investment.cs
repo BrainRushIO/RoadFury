@@ -34,10 +34,11 @@ public class Investment {
 		case InvestmentType.Mutual:
 			break;
 		case InvestmentType.IRA:
+			moneyAddedThisYear = 0f;
 			break;
 		}
 		monetaryValue *= annualGrowthRate;
-		moneyAddedThisYear = 0f;
+
 	}
 
 	public void AddMoreMoney( float amount ) {

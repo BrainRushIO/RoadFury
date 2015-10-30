@@ -12,7 +12,7 @@ public class Business {
 
 	public Business () {
 		growthProbability = Random.Range( 1, 101 );
-		businessName = "Your Business " + businessNum.ToString();
+		businessName = "Your Business #" + businessNum.ToString();
 		businessNum++;
 
 		PlayerStats.OnYearCompleted += CalculateGrowthRatio;
