@@ -17,7 +17,7 @@ public class PitStopGUIManager : MonoBehaviour {
 	}
 
 	void Update() {
-
+		print (currentPitStopState);
 	}
 
 	public int lastIndexClicked; //used to refer to index in list of player Loan/Business/etc...
@@ -60,13 +60,14 @@ public class PitStopGUIManager : MonoBehaviour {
 			break;
 
 		case PitStopState.SelectLoan :
-			if (lastIndexClicked == 2) {
+			if (index == 2) {
 				PlayerStats.s_instance.PayOffLoan(lastIndexClicked);
 			}
-			else if (lastIndexClicked == 3) {
+			else if (index == 3) {
 				PlayerStats.s_instance.IncreaseLoanPaymentRate(lastIndexClicked);
 			}
-			else if (lastIndexClicked == 7) {
+			else if (index == 7) {
+				print ("BACK TO LOAN");
 				currentPitStopState = PitStopState.Loans;
 			}
 
