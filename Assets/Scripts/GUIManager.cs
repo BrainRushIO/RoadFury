@@ -32,7 +32,7 @@ public class GUIManager : MonoBehaviour {
 	void Update () {
 		moneyText.text = "$" + NumberToString.Convert( PlayerStats.s_instance.money );
 		burnRate.text = "$" + Mathf.CeilToInt (PlayerStats.s_instance.cashFlow).ToString () + "/year";
-		happinessBar.value = PlayerStats.s_instance.happiness;
+		happinessBar.value = PlayerStats.s_instance.happiness*100f;
 
 	}
 

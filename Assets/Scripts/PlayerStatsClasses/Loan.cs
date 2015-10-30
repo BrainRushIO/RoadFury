@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Loan : MonoBehaviour {
+public class Loan {
 	
 	public float loanAmount;
 	public float initLoanAmount;

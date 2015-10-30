@@ -1,14 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Business : MonoBehaviour {
+public class Business {
 	public static float[] BusinessPrices = new float[3] { 10000f, 100000f, 1000000f };
 	
 	public int growthProbability;
 	public float revenueStream;
 	public float valuation;
 	public string businessName;
-	public float initialInvestment;
 
 	void Start () {
 		growthProbability = Random.Range( 1, 101 );
@@ -20,6 +19,11 @@ public class Business : MonoBehaviour {
 
 	void OnDisable() {
 		PlayerStats.OnYearCompleted -= CalculateGrowthRatio;
+	}
+
+	public void SetBusinessType( int type ) {
+		valuation = BusinessPrices[type];
+		revenueStream = valuation * 0.2f;
 	}
 
 	private void CalculateGrowthRatio() {
@@ -49,6 +53,6 @@ public class Business : MonoBehaviour {
 			valuation *= 1.2f;
 		// else val--
 		else
-			growth *= 0.8f; //TODO:Eric update this number to something better
+			valuation *= 0.8f; //TODO:Eric update this number to something better
 	}
 }

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Investment : MonoBehaviour {
+public class Investment {
 
 	public static float MAX_MONEY_ADDED_PER_YEAR_TO_IRA = 5000f;
 	private const float YEARS_BEFORE_IRA_LIQUIDATION = 5f;
@@ -65,7 +65,6 @@ public class Investment : MonoBehaviour {
 			// TODO Update GUI with shorter list
 			Debug.Log( "Removing "+investmentName+" from investments." );
 			PlayerStats.s_instance.playerInvestments.Remove( this );
-			Destroy( this );
 		}
 	}
 }
