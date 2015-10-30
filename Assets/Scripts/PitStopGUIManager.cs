@@ -17,8 +17,7 @@ public class PitStopGUIManager : MonoBehaviour {
 	}
 
 	void Update() {
-		print (currentPitStopState);
-		print (lastIndexClicked);
+
 	}
 
 	public int lastIndexClicked; //used to refer to index in list of player Loan/Business/etc...

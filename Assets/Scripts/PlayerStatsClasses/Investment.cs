@@ -8,7 +8,7 @@ public class Investment {
 
 	private static int investmentNumber = 0;
 
-	public float annualGrowthRate;	// TODO set these values
+	public float annualGrowthRate = .1f;	// TODO set these values randomly
 	public float monetaryValue;
 	public int initializationYear;
 	public string investmentName;
@@ -48,6 +48,7 @@ public class Investment {
 	public void AddMoreMoney( float amount ) {
 		monetaryValue += amount;
 		PlayerStats.s_instance.money -= amount;
+		Debug.Log ("TOTAL MONEY OF " + investmentName + " is " + monetaryValue);
 	}
 	/// <summary>
 	/// Liquidate by the specified percentage.
@@ -68,7 +69,6 @@ public class Investment {
 		monetaryValue -= modifyAmount;
 
 		if( percentage == 1f ) {
-			// TODO Update GUI with shorter list DONE BITCH! DONE!
 			Debug.Log( "Removing "+investmentName+" from investments." );
 			PlayerStats.s_instance.playerInvestments.Remove( this );
 		}
