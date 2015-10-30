@@ -225,8 +225,8 @@ public class PlayerStats : MonoBehaviour {
 	}
 
 	public void LiquidateInvestment( int index, float percentage ) {
-		playerInvestments[index].Liquidate( percentage );
 		print ("liquidating " + index + " " + percentage);
+		playerInvestments[index].Liquidate( percentage );
 	}
 
 	public void HandleInvestmentModification (int index, int lastIndex) {
