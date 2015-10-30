@@ -153,7 +153,7 @@ public class PlayerStats : MonoBehaviour {
 		if (realEstateCost <= money) {
 			money -= realEstateCost;
 			RealEstate newRealEstate = new RealEstate();
-			newRealEstate.thisRealEstateTier = (RealEstate.RealEstateTier)realEstateTier;
+			newRealEstate.SetTier( (RealEstate.RealEstateTier)realEstateTier );
 			playerRealEstate.Add( newRealEstate );
 			return true;
 		} else {
