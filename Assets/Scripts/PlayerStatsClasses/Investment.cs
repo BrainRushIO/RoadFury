@@ -60,8 +60,7 @@ public class Investment {
 		if( liquidationsThisYear < MAX_LIQUIDATIONS_PER_YEAR ) {
 			Debug.Log  ("Monetary value " + monetaryValue);
 			if( thisInvestmentType == InvestmentType.IRA && initializationYear < initializationYear + YEARS_BEFORE_IRA_LIQUIDATION ) {
-				// TODO Add GUI notification
-				Debug.LogWarning( "You have to wait 5 years before you can liquidate an IRA" );
+				GUIManager.s_instance.DisplayNotification( "Notice!", "You have to wait 5 years before you can liquidate an IRA" );
 				return;
 			}
 
@@ -77,8 +76,7 @@ public class Investment {
 			}
 			liquidationsThisYear++;
 		} else {
-			// TODO GUI notification
-			Debug.LogWarning( "You can't liquidate more than"+MAX_LIQUIDATIONS_PER_YEAR+" times in one year." );
+			GUIManager.s_instance.DisplayNotification( "Notice!", "You can't liquidate more than"+MAX_LIQUIDATIONS_PER_YEAR+" times in one year." );
 		}
 	}
 }

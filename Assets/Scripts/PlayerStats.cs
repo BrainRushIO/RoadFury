@@ -58,31 +58,29 @@ public class PlayerStats : MonoBehaviour {
 	}
 
 	void Update () {
-		// Add cashFlow to money
-		money += cashFlow * (1/secondsPerYear) * Time.deltaTime;
+		if( GameManager.s_instance.currentGameState == GameState.Playing ) {
+			// Add cashFlow to money
+			money += cashFlow * (1/secondsPerYear) * Time.deltaTime;
 
-		// Happiness calculation / check
-		happiness -= happinessDecreaseRate*Time.deltaTime;
-		if( happiness <= 0f ) {
-			// TODO: GameOver
-			Debug.Log( "Happiness fell bellow 0, you are dead." );
+			// Happiness calculation / check
+			happiness -= happinessDecreaseRate*Time.deltaTime;
+			if( happiness <= 0f ) {
+				// TODO: GameOver
+				Debug.Log( "Happiness fell bellow 0, you are dead." );
+			}
+
+			// Year calculation
+			yearTimer += Time.deltaTime;
+			if( yearTimer >= secondsPerYear ) {
+				age++;
+				yearTimer = 0f;
+
+				if( OnYearCompleted != null )
+					OnYearCompleted();
+				else
+					Debug.LogWarning( "OnYearCompleted() is null. (No script subscribed to event)" );
+			}
 		}
-
-		// Year calculation
-		yearTimer += Time.deltaTime;
-		if( yearTimer >= secondsPerYear ) {
-			age++;
-			yearTimer = 0f;
-
-			if( OnYearCompleted != null )
-				OnYearCompleted();
-			else
-				Debug.LogWarning( "OnYearCompleted() is null. (No script subscribed to event)" );
-		}
-	}
-
-	public void SetCashFlow() {
-		// TODO:Look at all things that could affect this and do it
 	}
 
 	#region Loan
@@ -104,8 +102,7 @@ public class PlayerStats : MonoBehaviour {
 		if( money >= playerLoans[index].loanAmount )
 			playerLoans[index].PayLoanAmount( amount );
 		else {
-			// TODO GUI notification
-			Debug.Log( "Not enough money." );
+			GUIManager.s_instance.DisplayNotification( "Whoops!", "You don't have enough money to do that" );
 		}
 	}
 
@@ -117,8 +114,7 @@ public class PlayerStats : MonoBehaviour {
 			playerLoans.Remove( selectedLoan );
 			// TODO Update list on GUI
 		} else {
-			// TODO Add GUI notification
-			Debug.Log( "You don't have enough money to pay the loan off." );
+			GUIManager.s_instance.DisplayNotification( "Whoops!", "You don't have enough money to pay the loan off." );
 		}
 	}
 	#endregion
@@ -174,8 +170,7 @@ public class PlayerStats : MonoBehaviour {
 			playerRealEstate.Add( newRealEstate );
 			return true;
 		} else {
-			// TODO GUI notification
-			Debug.LogWarning ("Not enough money to buy real estate.");
+			GUIManager.s_instance.DisplayNotification( "Notice", "Not enough money to buy real estate." );
 			return false;
 		}
 	}
@@ -212,16 +207,14 @@ public class PlayerStats : MonoBehaviour {
 		if ( money >= amount ) {
 			// If this is an IRA and we have invested too much money this year
 			if( playerInvestments[index].thisInvestmentType == Investment.InvestmentType.IRA && playerInvestments[index].moneyAddedThisYear+amount <= Investment.MAX_MONEY_ADDED_PER_YEAR_TO_IRA ) {
-				//TODO Add GUI notification
-				Debug.LogWarning( "You're exceeding the amount of money you can add to this investment per year. ($" + Investment.MAX_MONEY_ADDED_PER_YEAR_TO_IRA +")" );
+				GUIManager.s_instance.DisplayNotification( "Notice!", "You can only add money to IRAs "+Investment.MAX_MONEY_ADDED_PER_YEAR_TO_IRA+" a year." );
 				return false;
 			}
 
 			playerInvestments[index].AddMoreMoney( amount );
 			return true;
 		} else {
-			// TODO Add GUI notification.
-			Debug.LogWarning("You lack the money to do this.");
+			GUIManager.s_instance.DisplayNotification( "Notice!", "You don't have enough money to do this." );
 			return false;
 		}
 	}

@@ -3,8 +3,7 @@ using System.Collections;
 using UnityEngine.UI;
 
 public class GUIManager : MonoBehaviour {
-
-
+	
 	public Color positive, negative, neutral;
 	public GameObject OnRoadGUI, InventoryGUI;
 	public GameObject message;
@@ -12,7 +11,7 @@ public class GUIManager : MonoBehaviour {
 	public Slider happinessBar; 
 	public Text burnRate, moneyText;
 
-	
+
 	public static GUIManager s_instance;
 	
 	
@@ -76,6 +75,16 @@ public class GUIManager : MonoBehaviour {
 
 	public void DisplayAreYouSure () {
 
+	}
+
+	public void DisplayNotification( string title, string details ) {
+		// Set title
+		// Set description
+		// TODO Set trigger on animation for notification
+	}
+
+	public void CloseNotification() {
+		// Call notification close call
 	}
 
 	public void SpawnHappiness(float happy){

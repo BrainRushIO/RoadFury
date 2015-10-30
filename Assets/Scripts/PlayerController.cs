@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour {
 
-	float strafeSpeed = .1f, moveSpeed = 9f;
+	float strafeSpeed = .1f, moveSpeed = 8f;
 	float playerBounds = 4f;
 	public GameObject currentRoadSection;
 	bool isOnHorizontalRoad = false;
