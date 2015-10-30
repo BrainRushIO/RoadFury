@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Business : MonoBehaviour {
+public class Business {
 	public static float[] BusinessPrices = new float[3] { 10000f, 100000f, 1000000f };
 	
 	public int growthProbability;

@@ -97,7 +97,6 @@ public class PlayerStats : MonoBehaviour {
 			Loan selectedLoan = playerLoans[index];
 			selectedLoan.PayLoanAmount( selectedLoan.loanAmount );
 			playerLoans.Remove( selectedLoan );
-			Destroy( selectedLoan );
 			// TODO Update list on GUI
 		} else {
 			// TODO Add GUI notification
@@ -137,7 +136,6 @@ public class PlayerStats : MonoBehaviour {
 		Business selectedBusiness = playerBusinesses[index];
 		money += selectedBusiness.valuation;
 		playerBusinesses.Remove( selectedBusiness );
-		Destroy( selectedBusiness );
 	}
 
 	public void WorkOvertime(int businessIndex) {
@@ -149,7 +147,7 @@ public class PlayerStats : MonoBehaviour {
 	#endregion
 
 	#region RealEstate
-	public bool CanBuyNewRealEstate( int realEstateTier ) {
+	public bool AddRealEstate( int realEstateTier ) {
 		float realEstateCost = RealEstate.RealEstatePrices[realEstateTier];
 		
 		if (realEstateCost <= money) {
@@ -159,6 +157,7 @@ public class PlayerStats : MonoBehaviour {
 			playerRealEstate.Add( newRealEstate );
 			return true;
 		} else {
+			// TODO GUI notification
 			Debug.LogWarning ("Not enough money to buy real estate.");
 			return false;
 		}
