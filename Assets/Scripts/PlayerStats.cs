@@ -163,6 +163,8 @@ public class PlayerStats : MonoBehaviour {
 		}
 	}
 	public void SellRealEstate(int realEstateIndex) {
+		money += playerRealEstate[realEstateIndex].realEstateValue;
+		playerRealEstate.RemoveAt( realEstateIndex );
 	}
 	#endregion
 
