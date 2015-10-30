@@ -49,9 +49,9 @@ public class PlayerStats : MonoBehaviour {
 		Loan temp1 = new Loan ();
 		temp1.InitializeLoan (0, Loan.LoanType.Business);
 		Loan temp2 = new Loan ();
-		temp1.InitializeLoan (0, Loan.LoanType.RealEstate);
+		temp2.InitializeLoan (0, Loan.LoanType.RealEstate);
 		Loan temp3 = new Loan ();
-		temp1.InitializeLoan (0, Loan.LoanType.School);
+		temp3.InitializeLoan (0, Loan.LoanType.School);
 		playerLoans.Add (temp1);
 		playerLoans.Add (temp2);
 		playerLoans.Add (temp3);
