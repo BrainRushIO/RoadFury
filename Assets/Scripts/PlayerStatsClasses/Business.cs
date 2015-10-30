@@ -3,21 +3,22 @@ using System.Collections;
 
 public class Business {
 	public static float[] BusinessPrices = new float[3] { 10000f, 100000f, 1000000f };
+	private static int businessNum = 0;
 	
 	public int growthProbability;
 	public float revenueStream;
 	public float valuation;
 	public string businessName;
 
-	void Start () {
+	public Business () {
 		growthProbability = Random.Range( 1, 101 );
-	}
+		businessName = "Your Business " + businessNum.ToString();
+		businessNum++;
 
-	void OnEnable() {
 		PlayerStats.OnYearCompleted += CalculateGrowthRatio;
 	}
 
-	void OnDisable() {
+	~Business() {
 		PlayerStats.OnYearCompleted -= CalculateGrowthRatio;
 	}
 

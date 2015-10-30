@@ -11,11 +11,11 @@ public class RealEstate {
 	public enum RealEstateTier { Economy, Standard, Luxury };
 	public RealEstateTier thisRealEstateTier;
 	
-	void Start() {
+	public RealEstate() {
 		interestRate = Random.Range( 0.1f, 5.0f );
 	}
 
-	void OnEnable() {
+	~RealEstate() {
 		PlayerStats.OnYearCompleted += AnnualUpdate;
 	}
 
