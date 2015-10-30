@@ -36,6 +36,7 @@ public class GameManager : MonoBehaviour {
 
 	//switches
 	bool switchToInventory;
+	bool switchToPitstop;
 	bool switchToGame;
 	bool userPressedStart = false;
 	bool tutorialIsOver = false;
@@ -109,11 +110,20 @@ public class GameManager : MonoBehaviour {
 				slideTimer = 0;
 				currentGameState = GameState.Cutscene;
 			}
+			if (switchToPitstop) {
+				switchToPitstop = false;
+				currentGameState = GameState.PitStop;
+			}
 
 			break;
 
 		case GameState.Cutscene : 
 			RunCutSceneText();
+			if (switchToGame) {
+				currentGameState = GameState.Playing;
+			}
+			break;
+		case GameState.PitStop : 
 			if (switchToGame) {
 				currentGameState = GameState.Playing;
 			}
@@ -176,16 +186,28 @@ public class GameManager : MonoBehaviour {
 
 	}
 
-	public void SwitchToGame () {
-		Camera.main.GetComponent<HoverFollowCam>().enabled = true;
-		if (currentGameState != GameState.Intro) {
-			currentGUIseries.SetActive (false);
-			//inGameGUI.SetActive (true);
-			inGameGUI.GetComponent<Animator>().SetTrigger("show");
-		}
-		switchToGame = true;
+	public void SwitchToPitStop () {
+		switchToPitstop = true;
+		inGameGUI.GetComponent<Animator> ().SetTrigger("pitstop");
 
-		switchToCutScene = false;
+
+	}
+
+	public void SwitchToGame () {
+		if (currentGameState == GameState.Cutscene) {
+			Camera.main.GetComponent<HoverFollowCam> ().enabled = true;
+			if (currentGameState != GameState.Intro) {
+				currentGUIseries.SetActive (false);
+				//inGameGUI.SetActive (true);
+				inGameGUI.GetComponent<Animator> ().SetTrigger ("show");
+			}
+			switchToGame = true;
+
+			switchToCutScene = false;
+		} else if (currentGameState == GameState.PitStop) {
+			switchToGame = true;
+			inGameGUI.GetComponent<Animator> ().SetTrigger("pitstop");
+		}
 	}
 
 }
