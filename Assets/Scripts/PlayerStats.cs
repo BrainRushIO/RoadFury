@@ -116,20 +116,15 @@ public class PlayerStats : MonoBehaviour {
 	#endregion
 
 	#region Business
-	public bool CanStartNewBusiness(int businessType) {
-		float businessCost = Business.BusinessPrices[businessType];
-		if (businessCost < money && playerBusinesses.Count < MAX_BUSINESSES && businessCost!=0)
-			return true;
-		else
-			Debug.Log("Cannot start business");
-		return false;
-	}
-
 	public void AddBusiness ( int businessType ) {
-		Business newBusiness = new Business();
-		newBusiness.SetBusinessType( businessType );
-		money -= Business.BusinessPrices[businessType];
-		playerBusinesses.Add( newBusiness );
+		float businessCost = Business.BusinessPrices[businessType];
+
+		if (businessCost < money && playerBusinesses.Count < MAX_BUSINESSES && businessCost!=0) {
+			Business newBusiness = new Business();
+			newBusiness.SetBusinessType( businessType );
+			money -= Business.BusinessPrices[businessType];
+			playerBusinesses.Add( newBusiness );
+		}
 	}
 	
 	public void SellBusiness (int index) {
