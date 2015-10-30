@@ -3,7 +3,7 @@ using System.Collections;
 
 public class NotificationAnimEvent : MonoBehaviour {
 
-	public void TriggerAnimation( bool triggerOn ) {
+	public void TriggerNotificationState( bool triggerOn ) {
 		GameManager.s_instance.TriggerNotificationState( triggerOn );
 	}
 }
