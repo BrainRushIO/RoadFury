@@ -54,20 +54,21 @@ public class Investment {
 	/// </summary>
 	/// <param name="percentage">Percentage to liquidate From 0.01 to 1.0</param>
 	public void Liquidate( float percentage ) {
-
+		Debug.Log  ("Monetary value " + monetaryValue);
 		if( thisInvestmentType == InvestmentType.IRA && initializationYear < initializationYear + YEARS_BEFORE_IRA_LIQUIDATION ) {
 			// TODO Add GUI notification
 			Debug.LogWarning( "You have to wait 5 years before you can liquidate an IRA" );
 			return;
 		}
 
-		Mathf.Clamp01( percentage );
+//		Mathf.Clamp01( percentage );
 		float modifyAmount = monetaryValue*percentage;
+		Debug.Log ("modify amount " + modifyAmount);
 		PlayerStats.s_instance.money += modifyAmount;
 		monetaryValue -= modifyAmount;
 
 		if( percentage == 1f ) {
-			// TODO Update GUI with shorter list
+			// TODO Update GUI with shorter list DONE BITCH! DONE!
 			Debug.Log( "Removing "+investmentName+" from investments." );
 			PlayerStats.s_instance.playerInvestments.Remove( this );
 		}

@@ -29,6 +29,12 @@ public class PlayerStats : MonoBehaviour {
 	private const int MAX_INVESTMENTS = 4;
 	private const int MAX_BUSINESSES = 4;
 	private const int MAX_REALESTATE = 4;
+	private const float IRA_INIT_COST = 100f;
+
+	private const float STOCK_INIT_COST = 5000f;
+	private const float MUTUAL_INIT_COST = 50000f;
+
+
 
 
 	void Awake() {
@@ -173,7 +179,19 @@ public class PlayerStats : MonoBehaviour {
 		if( playerInvestments.Count < MAX_INVESTMENTS ) {
 			Investment newInvestment = new Investment();
 			newInvestment.thisInvestmentType = thisType;
+			if (thisType == Investment.InvestmentType.IRA) {
+				newInvestment.SetMonetaryValue(IRA_INIT_COST);
+			}
+			else if (thisType == Investment.InvestmentType.Mutual){
+				newInvestment.SetMonetaryValue(MUTUAL_INIT_COST);
+
+			}
+			else if (thisType == Investment.InvestmentType.Stock) {
+				newInvestment.SetMonetaryValue(STOCK_INIT_COST);
+
+			}
 			playerInvestments.Add( newInvestment );
+
 		} else {
 			Debug.LogWarning( "You've maxed out the amount of investments you can have." );
 		}
@@ -199,6 +217,7 @@ public class PlayerStats : MonoBehaviour {
 
 	public void LiquidateInvestment( int index, float percentage ) {
 		playerInvestments[index].Liquidate( percentage );
+		print ("liquidating " + index + " " + percentage);
 	}
 
 	public void HandleInvestmentModification (int index, int lastIndex) {

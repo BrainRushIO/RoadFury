@@ -106,10 +106,10 @@ public class PitStopGUIManager : MonoBehaviour {
 					currentPitStopState = PitStopState.Investment;
 				}
 				else if (index == 5) {
-					PlayerStats.s_instance.AddMoneyToInvestment(lastIndexClicked, .5f);
+					PlayerStats.s_instance.LiquidateInvestment(lastIndexClicked, .5f);
 				}
 				else if (index == 6) {
-					PlayerStats.s_instance.AddMoneyToInvestment(lastIndexClicked, .1f);
+					PlayerStats.s_instance.LiquidateInvestment(lastIndexClicked, .1f);
 
 				} else if (index == 7) { 
 					currentPitStopState = PitStopState.Main;
