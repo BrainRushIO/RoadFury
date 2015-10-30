@@ -52,7 +52,7 @@ public class PitStopGUIManager : MonoBehaviour {
 			break;
 			#region Loans
 		case PitStopState.Loans :
-			if (lastIndexClicked < 7 && PlayerStats.s_instance.playerLoans.Count > lastIndexClicked {
+			if (lastIndexClicked < 7 && PlayerStats.s_instance.playerLoans.Count > lastIndexClicked) {
 				currentPitStopState = PitStopState.SelectLoan;
 			}
 			else if (index == 7){
@@ -75,7 +75,7 @@ public class PitStopGUIManager : MonoBehaviour {
 			#endregion
 			#region Investment
 		case PitStopState.Investment :
-			if (lastIndexClicked < 4 && PlayerStats.s_instance.playerInvestments.Count > lastIndexClicked {
+			if (lastIndexClicked < 4 && PlayerStats.s_instance.playerInvestments.Count > lastIndexClicked) {
 				currentPitStopState = PitStopState.SelectInvestment;
 			}
 			else if (lastIndexClicked == 4) {
@@ -173,13 +173,13 @@ public class PitStopGUIManager : MonoBehaviour {
 				currentPitStopState = PitStopState.SelectRealEstate;
 			}
 			else if (index == 4) {
-				PlayerStats.s_instance.LiquidateInvestment(lastIndexClicked, .5f);
+				PlayerStats.s_instance.AddRealEstate(0);
 			}
 			else if (index == 5) {
-				PlayerStats.s_instance.LiquidateInvestment(lastIndexClicked, .5f);
+				PlayerStats.s_instance.AddRealEstate(1);
 			}
 			else if (index == 6) {
-				PlayerStats.s_instance.LiquidateInvestment(lastIndexClicked, .1f);
+				PlayerStats.s_instance.AddRealEstate(2);
 			}
 			else if (index == 7) {
 				currentPitStopState = PitStopState.Main;
