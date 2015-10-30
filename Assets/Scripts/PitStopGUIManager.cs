@@ -102,12 +102,17 @@ public class PitStopGUIManager : MonoBehaviour {
 					PlayerStats.s_instance.AddMoneyToInvestment(lastIndexClicked, 500000);
 				}
 				else if (index == 4) {
-					PlayerStats.s_instance.LiquidateInvestment(lastIndexClicked, 1f);				}
+					PlayerStats.s_instance.LiquidateInvestment(lastIndexClicked, 1f);
+					currentPitStopState = PitStopState.Investment;
+				}
 				else if (index == 5) {
 					PlayerStats.s_instance.AddMoneyToInvestment(lastIndexClicked, .5f);
 				}
 				else if (index == 6) {
 					PlayerStats.s_instance.AddMoneyToInvestment(lastIndexClicked, .1f);
+
+				} else if (index == 7) { 
+					currentPitStopState = PitStopState.Main;
 				}
 			}
 			else if (PlayerStats.s_instance.playerInvestments[lastIndexClicked].thisInvestmentType == Investment.InvestmentType.Mutual) {
@@ -118,12 +123,18 @@ public class PitStopGUIManager : MonoBehaviour {
 					PlayerStats.s_instance.AddMoneyToInvestment(lastIndexClicked, 50000);
 				}
 				else if (index == 4) {
-					PlayerStats.s_instance.LiquidateInvestment(lastIndexClicked, 1f);				}
+					PlayerStats.s_instance.LiquidateInvestment(lastIndexClicked, 1f);
+					currentPitStopState = PitStopState.Investment;
+				}
 				else if (index == 5) {
 					PlayerStats.s_instance.LiquidateInvestment(lastIndexClicked, .5f);
+					//TODO make sure ppl cant spam this shit
 				}
 				else if (index == 6) {
 					PlayerStats.s_instance.LiquidateInvestment(lastIndexClicked, .1f);
+
+				} else if (index == 7) { 
+					currentPitStopState = PitStopState.Main;
 				}
 			}
 
@@ -136,6 +147,9 @@ public class PitStopGUIManager : MonoBehaviour {
 				}
 				else if (index == 6) {
 					PlayerStats.s_instance.LiquidateInvestment(lastIndexClicked, 1f);
+					currentPitStopState = PitStopState.Investment;
+				} else if (index == 7) { 
+					currentPitStopState = PitStopState.Main;
 				}
 			}
 			break;
@@ -243,7 +257,6 @@ public class PitStopGUIManager : MonoBehaviour {
 
 		case PitStopState.SelectInvestment :
 			if (PlayerStats.s_instance.playerInvestments[lastIndexClicked].thisInvestmentType == Investment.InvestmentType.IRA) {
-
 				allTextObjects[2].text = "Add $100";
 				allTextObjects[3].text = "Add $1000";
 				allTextObjects[6].text = "Liquidate IRA";
@@ -251,9 +264,9 @@ public class PitStopGUIManager : MonoBehaviour {
 			else if (PlayerStats.s_instance.playerInvestments[lastIndexClicked].thisInvestmentType == Investment.InvestmentType.Stock) {
 				allTextObjects[2].text = "Add $10,000";
 				allTextObjects[3].text = "Add $500,000";
-				allTextObjects[4].text = "Liquidate All Stocks";
-				allTextObjects[5].text = "Liquidate 50% Stocks";
-				allTextObjects[6].text = "Liquidate 10% Stocks";
+				allTextObjects[4].text = "Liquidate All Stock";
+				allTextObjects[5].text = "Liquidate 50% Stock";
+				allTextObjects[6].text = "Liquidate 10% Stock";
 
 			}
 			else if (PlayerStats.s_instance.playerInvestments[lastIndexClicked].thisInvestmentType == Investment.InvestmentType.Mutual) {

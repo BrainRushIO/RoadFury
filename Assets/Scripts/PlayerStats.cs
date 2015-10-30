@@ -27,7 +27,9 @@ public class PlayerStats : MonoBehaviour {
 	public static PlayerStats s_instance { get {return _playerStats;} }
 
 	private const int MAX_INVESTMENTS = 4;
-	private const int MAX_BUSINESSES = 7;
+	private const int MAX_BUSINESSES = 4;
+	private const int MAX_REALESTATE = 4;
+
 
 	void Awake() {
 		if( _playerStats == null )
@@ -116,22 +118,15 @@ public class PlayerStats : MonoBehaviour {
 	#endregion
 
 	#region Business
-	public bool CanStartNewBusiness(int businessType) {
-		float businessCost = Business.BusinessPrices[businessType];
-		if (businessCost < money && playerBusinesses.Count < MAX_BUSINESSES && businessCost!=0)
-			return true;
-		else
-			Debug.Log("Cannot start business");
-		return false;
-	}
-
 	public void AddBusiness ( int businessType ) {
-		Business newBusiness = new Business();
-		newBusiness.SetBusinessType( businessType );
-		newBusiness.businessName = "Business" + businessType; 
-		money -= Business.BusinessPrices[businessType];
-		playerBusinesses.Add( newBusiness );
-		print ("ADD BUSINES");
+		float businessCost = Business.BusinessPrices[businessType];
+
+		if (businessCost < money && playerBusinesses.Count < MAX_BUSINESSES && businessCost!=0) {
+			Business newBusiness = new Business();
+			newBusiness.SetBusinessType( businessType );
+			money -= Business.BusinessPrices[businessType];
+			playerBusinesses.Add( newBusiness );
+		}
 	}
 	
 	public void SellBusiness (int index) {
@@ -151,7 +146,10 @@ public class PlayerStats : MonoBehaviour {
 	#region RealEstate
 	public bool AddRealEstate( int realEstateTier ) {
 		float realEstateCost = RealEstate.RealEstatePrices[realEstateTier];
-		
+		if (playerRealEstate.Count >= MAX_REALESTATE) {
+			Debug.LogWarning("MAX REALESTATE REACHED");
+			return false;
+		}
 		if (realEstateCost <= money) {
 			money -= realEstateCost;
 			RealEstate newRealEstate = new RealEstate();
