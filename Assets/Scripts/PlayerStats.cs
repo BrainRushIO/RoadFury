@@ -29,10 +29,9 @@ public class PlayerStats : MonoBehaviour {
 	private const int MAX_INVESTMENTS = 4;
 	private const int MAX_BUSINESSES = 4;
 	private const int MAX_REALESTATE = 4;
-	private const float IRA_INIT_COST = 100f;
-
-	private const float STOCK_INIT_COST = 50000f;
-	private const float MUTUAL_INIT_COST = 5000f;
+	public const float IRA_INIT_COST = 100f;
+	public const float STOCK_INIT_COST = 50000f;
+	public const float MUTUAL_INIT_COST = 5000f;
 
 
 
@@ -47,7 +46,15 @@ public class PlayerStats : MonoBehaviour {
 	}
 
 	void Start() {
-//		playerFamily = new Family();
+		Loan temp1 = new Loan ();
+		temp1.InitializeLoan (0, Loan.LoanType.Business);
+		Loan temp2 = new Loan ();
+		temp1.InitializeLoan (0, Loan.LoanType.RealEstate);
+		Loan temp3 = new Loan ();
+		temp1.InitializeLoan (0, Loan.LoanType.School);
+		playerLoans.Add (temp1);
+		playerLoans.Add (temp2);
+		playerLoans.Add (temp3);
 	}
 
 	void Update () {
@@ -79,11 +86,13 @@ public class PlayerStats : MonoBehaviour {
 	}
 
 	#region Loan
-	public void AddLoan(string loanName, float loanAmount) {
-		Loan newLoan = new Loan();
-		newLoan.loanName = loanName;
-		newLoan.SetInitialLoanAmount( loanAmount );
-		playerLoans.Add( newLoan );
+	//adds to preexisting Loan values
+	public void AddLoanCost(float thisLoanAmount, Loan.LoanType type) {
+		foreach (Loan x in playerLoans) {
+			if (x.thisLoanType == type) {
+				x.loanAmount+=thisLoanAmount;
+			}
+		}
 	}
 
 	public void IncreaseLoanPaymentRate (int thisIndex) {
@@ -130,7 +139,7 @@ public class PlayerStats : MonoBehaviour {
 		if (businessCost < money && playerBusinesses.Count < MAX_BUSINESSES && businessCost!=0) {
 			Business newBusiness = new Business();
 			newBusiness.SetBusinessType( businessType );
-			money -= Business.BusinessPrices[businessType];
+			AddLoanCost(Business.BusinessPrices[businessType], Loan.LoanType.Business);
 			playerBusinesses.Add( newBusiness );
 		}
 	}
@@ -157,7 +166,7 @@ public class PlayerStats : MonoBehaviour {
 			return false;
 		}
 		if (realEstateCost <= money) {
-			money -= realEstateCost;
+			AddLoanCost(realEstateCost, Loan.LoanType.RealEstate);
 			RealEstate newRealEstate = new RealEstate();
 			newRealEstate.SetTier( (RealEstate.RealEstateTier)realEstateTier );
 			playerRealEstate.Add( newRealEstate );
