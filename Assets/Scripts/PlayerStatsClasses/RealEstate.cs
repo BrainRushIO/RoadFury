@@ -5,21 +5,22 @@ public class RealEstate {
 	public static int MAX_REAL_ESTATE_YOU_CAN_OWN = 4;
 	public static float[] RealEstatePrices = new float[3] { 50000f, 500000f, 5000000f };
 
+	private static int realEstateNumber = 0;
+
 	public string realEstateName;
 	public float realEstateValue;
 	public float interestRate = 0f;
 	public enum RealEstateTier { Economy, Standard, Luxury };
 	public RealEstateTier thisRealEstateTier;
 	
-	void Start() {
+	public RealEstate() {
 		interestRate = Random.Range( 0.1f, 5.0f );
-	}
-
-	void OnEnable() {
+		realEstateName = "Your Real Estate #" + realEstateNumber.ToString();
+		realEstateNumber++;
 		PlayerStats.OnYearCompleted += AnnualUpdate;
 	}
 
-	void OnDisable() {
+	~RealEstate() {
 		PlayerStats.OnYearCompleted -= AnnualUpdate;
 	}
 

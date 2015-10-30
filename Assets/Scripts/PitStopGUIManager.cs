@@ -18,7 +18,6 @@ public class PitStopGUIManager : MonoBehaviour {
 
 	void Update() {
 		print (currentPitStopState);
-		print (lastIndexClicked);
 	}
 
 	public int lastIndexClicked; //used to refer to index in list of player Loan/Business/etc...
@@ -61,13 +60,14 @@ public class PitStopGUIManager : MonoBehaviour {
 			break;
 
 		case PitStopState.SelectLoan :
-			if (lastIndexClicked == 2) {
+			if (index == 2) {
 				PlayerStats.s_instance.PayOffLoan(lastIndexClicked);
 			}
-			else if (lastIndexClicked == 3) {
+			else if (index == 3) {
 				PlayerStats.s_instance.IncreaseLoanPaymentRate(lastIndexClicked);
 			}
-			else if (lastIndexClicked == 7) {
+			else if (index == 7) {
+				print ("BACK TO LOAN");
 				currentPitStopState = PitStopState.Loans;
 			}
 
@@ -101,12 +101,17 @@ public class PitStopGUIManager : MonoBehaviour {
 					PlayerStats.s_instance.AddMoneyToInvestment(lastIndexClicked, 500000);
 				}
 				else if (index == 4) {
-					PlayerStats.s_instance.LiquidateInvestment(lastIndexClicked, 1f);				}
+					PlayerStats.s_instance.LiquidateInvestment(lastIndexClicked, 1f);
+					currentPitStopState = PitStopState.Investment;
+				}
 				else if (index == 5) {
-					PlayerStats.s_instance.AddMoneyToInvestment(lastIndexClicked, .5f);
+					PlayerStats.s_instance.LiquidateInvestment(lastIndexClicked, .5f);
 				}
 				else if (index == 6) {
-					PlayerStats.s_instance.AddMoneyToInvestment(lastIndexClicked, .1f);
+					PlayerStats.s_instance.LiquidateInvestment(lastIndexClicked, .1f);
+
+				} else if (index == 7) { 
+					currentPitStopState = PitStopState.Investment;
 				}
 			}
 			else if (PlayerStats.s_instance.playerInvestments[lastIndexClicked].thisInvestmentType == Investment.InvestmentType.Mutual) {
@@ -117,12 +122,18 @@ public class PitStopGUIManager : MonoBehaviour {
 					PlayerStats.s_instance.AddMoneyToInvestment(lastIndexClicked, 50000);
 				}
 				else if (index == 4) {
-					PlayerStats.s_instance.LiquidateInvestment(lastIndexClicked, 1f);				}
+					PlayerStats.s_instance.LiquidateInvestment(lastIndexClicked, 1f);
+					currentPitStopState = PitStopState.Investment;
+				}
 				else if (index == 5) {
 					PlayerStats.s_instance.LiquidateInvestment(lastIndexClicked, .5f);
+					//TODO make sure ppl cant spam this shit
 				}
 				else if (index == 6) {
 					PlayerStats.s_instance.LiquidateInvestment(lastIndexClicked, .1f);
+
+				} else if (index == 7) { 
+					currentPitStopState = PitStopState.Main;
 				}
 			}
 
@@ -135,17 +146,21 @@ public class PitStopGUIManager : MonoBehaviour {
 				}
 				else if (index == 6) {
 					PlayerStats.s_instance.LiquidateInvestment(lastIndexClicked, 1f);
+					currentPitStopState = PitStopState.Investment;
+				} else if (index == 7) { 
+					currentPitStopState = PitStopState.Main;
 				}
 			}
 			break;
 			#endregion
 			#region Business
 		case PitStopState.Business :
-			if (lastIndexClicked < 4 && PlayerStats.s_instance.playerBusinesses.Count > lastIndexClicked ) {
+			print (lastIndexClicked + " LIC");
+			if (lastIndexClicked < 4 && PlayerStats.s_instance.playerBusinesses[lastIndexClicked]!=null ) {
 				currentPitStopState = PitStopState.SelectBusiness;
 			}
-			else if (lastIndexClicked > 3 || lastIndexClicked < 7) {
-				PlayerStats.s_instance.CanStartNewBusiness(lastIndexClicked - 4);
+			else if (lastIndexClicked > 3 && lastIndexClicked < 7) {
+				PlayerStats.s_instance.AddBusiness(lastIndexClicked - 4);
 			}
 			else if (lastIndexClicked == 7) {
 				currentPitStopState = PitStopState.Main;
@@ -187,7 +202,8 @@ public class PitStopGUIManager : MonoBehaviour {
 			break;
 		case PitStopState.SelectRealEstate :
 			if (index == 6) {
-//				PlayerStats.s_instance. sell real estate
+				PlayerStats.s_instance.SellRealEstate(lastIndexClicked);
+				currentPitStopState = PitStopState.RealEstate;
 			}
 			else if (index == 7) {
 				currentPitStopState = PitStopState.RealEstate;
@@ -214,6 +230,7 @@ public class PitStopGUIManager : MonoBehaviour {
 			#region LoanOptions
 		case PitStopState.Loans :
 			int playerLoansCount = PlayerStats.s_instance.playerLoans.Count;
+			print (playerLoansCount + " Player Loan Count");
 			for (int i = 0; i < playerLoansCount; i++) {
 				allTextObjects[i].text = PlayerStats.s_instance.playerLoans[i].loanName;
 			}
@@ -221,9 +238,10 @@ public class PitStopGUIManager : MonoBehaviour {
 			break;
 		case PitStopState.SelectLoan :
 			allTextObjects[0].text = PlayerStats.s_instance.playerLoans[lastIndexClicked].loanName;
-			allTextObjects[1].text = "Annual Payment: " + PlayerStats.s_instance.playerLoans[lastIndexClicked].annualPaymentPercentage*100+"%";
-			allTextObjects[2].text = "Pay Off Loan";
-			allTextObjects[3].text = "Double Annual Payment";
+			allTextObjects[1].text = "Interest Rate: " + PlayerStats.s_instance.playerLoans[lastIndexClicked].interestRate;
+			allTextObjects[2].text = "Amount Left: " + PlayerStats.s_instance.playerLoans[lastIndexClicked].loanAmount;
+			allTextObjects[5].text = "Annual Payment: " + PlayerStats.s_instance.playerLoans[lastIndexClicked].annualPaymentPercentage*100+"%";
+			allTextObjects[6].text = "Pay Off Loans";
 			allTextObjects[7].text = "Back";
 			break;
 			#endregion
@@ -233,36 +251,36 @@ public class PitStopGUIManager : MonoBehaviour {
 			for (int i = 0; i < playerInvestmentsCount; i++) {
 				allTextObjects[i].text = PlayerStats.s_instance.playerInvestments[i].investmentName;
 			}		
-			allTextObjects[4].text = "Purchase Stocks $50,000";
-			allTextObjects[5].text = "Purchase Mutual Fund $5,000";
+			allTextObjects[4].text = "Purchase Stocks $50K";
+			allTextObjects[5].text = "Purchase Mutual Fund $5K";
 			allTextObjects[6].text = "Setup IRA $100";
 			allTextObjects[7].text = "Back";
 			break;
 
 		case PitStopState.SelectInvestment :
 			if (PlayerStats.s_instance.playerInvestments[lastIndexClicked].thisInvestmentType == Investment.InvestmentType.IRA) {
-
 				allTextObjects[2].text = "Add $100";
-				allTextObjects[3].text = "Add $1000";
+				allTextObjects[3].text = "Add $1K";
 				allTextObjects[6].text = "Liquidate IRA";
 			}
 			else if (PlayerStats.s_instance.playerInvestments[lastIndexClicked].thisInvestmentType == Investment.InvestmentType.Stock) {
-				allTextObjects[2].text = "Add $10,000";
-				allTextObjects[3].text = "Add $500,000";
-				allTextObjects[4].text = "Liquidate All Stocks";
-				allTextObjects[5].text = "Liquidate 50% Stocks";
-				allTextObjects[6].text = "Liquidate 10% Stocks";
+				allTextObjects[2].text = "Add $10K";
+				allTextObjects[3].text = "Add $500K";
+				allTextObjects[4].text = "Liquidate All Stock";
+				allTextObjects[5].text = "Liquidate 50% Stock";
+				allTextObjects[6].text = "Liquidate 10% Stock";
 
 			}
 			else if (PlayerStats.s_instance.playerInvestments[lastIndexClicked].thisInvestmentType == Investment.InvestmentType.Mutual) {
-				allTextObjects[2].text = "Add $1,000";
-				allTextObjects[3].text = "Add $50,000";
+				allTextObjects[2].text = "Add $1K";
+				allTextObjects[3].text = "Add $50K";
 				allTextObjects[4].text = "Liquidate Mutual Fund";
 				allTextObjects[5].text = "Liquidate 50% of Mutual Fund";
 				allTextObjects[6].text = "Liquidate 10% of Mutual Fund";
 			}
 			allTextObjects[0].text = PlayerStats.s_instance.playerInvestments[lastIndexClicked].investmentName;
-			allTextObjects[1].text = "Annual Growth Rate: " + PlayerStats.s_instance.playerInvestments[lastIndexClicked].annualGrowthRate*100 + "%";
+			allTextObjects[1].text = "$"+ NumberToString.Convert (PlayerStats.s_instance.playerInvestments[lastIndexClicked].monetaryValue) + 
+				" Growing " + PlayerStats.s_instance.playerInvestments[lastIndexClicked].annualGrowthRate*100 + "% per Year";
 			allTextObjects[7].text = "Back";
 
 			break;

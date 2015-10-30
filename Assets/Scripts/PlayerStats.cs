@@ -18,16 +18,23 @@ public class PlayerStats : MonoBehaviour {
 	public float happiness = 0.5f;
 	public float happinessDecreaseRate = 0.01f;
 
-	public List<Business> playerBusinesses;
-	public List<Loan> playerLoans;
-	public List<Investment> playerInvestments;
-	public List<RealEstate> playerRealEstate;
+	public List<Business> playerBusinesses = new List<Business>();
+	public List<Loan> playerLoans = new List<Loan> ();
+	public List<Investment> playerInvestments = new List<Investment>();
+	public List<RealEstate> playerRealEstate = new List<RealEstate>();
 	public Family playerFamily;
 
 	public static PlayerStats s_instance { get {return _playerStats;} }
 
 	private const int MAX_INVESTMENTS = 4;
-	private const int MAX_BUSINESSES = 7;
+	private const int MAX_BUSINESSES = 4;
+	private const int MAX_REALESTATE = 4;
+	public const float IRA_INIT_COST = 100f;
+	public const float STOCK_INIT_COST = 50000f;
+	public const float MUTUAL_INIT_COST = 5000f;
+
+
+
 
 	void Awake() {
 		if( _playerStats == null )
@@ -39,7 +46,15 @@ public class PlayerStats : MonoBehaviour {
 	}
 
 	void Start() {
-//		playerFamily = new Family();
+		Loan temp1 = new Loan ();
+		temp1.InitializeLoan (0, Loan.LoanType.Business);
+		Loan temp2 = new Loan ();
+		temp2.InitializeLoan (0, Loan.LoanType.RealEstate);
+		Loan temp3 = new Loan ();
+		temp3.InitializeLoan (0, Loan.LoanType.School);
+		playerLoans.Add (temp1);
+		playerLoans.Add (temp2);
+		playerLoans.Add (temp3);
 	}
 
 	void Update () {
@@ -71,11 +86,14 @@ public class PlayerStats : MonoBehaviour {
 	}
 
 	#region Loan
-	public void AddLoan(string loanName, float loanAmount) {
-		Loan newLoan = new Loan();
-		newLoan.loanName = loanName;
-		newLoan.SetInitialLoanAmount( loanAmount );
-		playerLoans.Add( newLoan );
+	//adds to preexisting Loan values
+	public void AddLoanCost(float thisLoanAmount, Loan.LoanType type) {
+		foreach (Loan x in playerLoans) {
+			if (x.thisLoanType == type) {
+				x.loanAmount+=thisLoanAmount;
+				print (x.loanAmount);
+			}
+		}
 	}
 
 	public void IncreaseLoanPaymentRate (int thisIndex) {
@@ -116,20 +134,15 @@ public class PlayerStats : MonoBehaviour {
 	#endregion
 
 	#region Business
-	public bool CanStartNewBusiness(int businessType) {
-		float businessCost = Business.BusinessPrices[businessType];
-		if (businessCost < money && playerBusinesses.Count < MAX_BUSINESSES && businessCost!=0)
-			return true;
-		else
-			Debug.Log("Cannot start business");
-		return false;
-	}
-
 	public void AddBusiness ( int businessType ) {
-		Business newBusiness = new Business();
-		newBusiness.SetBusinessType( businessType );
-		money -= Business.BusinessPrices[businessType];
-		playerBusinesses.Add( newBusiness );
+		float businessCost = Business.BusinessPrices[businessType];
+
+		if (businessCost < money && playerBusinesses.Count < MAX_BUSINESSES && businessCost!=0) {
+			Business newBusiness = new Business();
+			newBusiness.SetBusinessType( businessType );
+			AddLoanCost(Business.BusinessPrices[businessType], Loan.LoanType.Business);
+			playerBusinesses.Add( newBusiness );
+		}
 	}
 	
 	public void SellBusiness (int index) {
@@ -149,9 +162,13 @@ public class PlayerStats : MonoBehaviour {
 	#region RealEstate
 	public bool AddRealEstate( int realEstateTier ) {
 		float realEstateCost = RealEstate.RealEstatePrices[realEstateTier];
-		
+		if (playerRealEstate.Count >= MAX_REALESTATE) {
+			Debug.LogWarning("MAX REALESTATE REACHED");
+			return false;
+		}
 		if (realEstateCost <= money) {
-			money -= realEstateCost;
+			Debug.Log ("REAL ESTATE COST " + realEstateCost);
+			AddLoanCost(realEstateCost, Loan.LoanType.RealEstate);
 			RealEstate newRealEstate = new RealEstate();
 			newRealEstate.SetTier( (RealEstate.RealEstateTier)realEstateTier );
 			playerRealEstate.Add( newRealEstate );
@@ -162,6 +179,10 @@ public class PlayerStats : MonoBehaviour {
 			return false;
 		}
 	}
+	public void SellRealEstate(int realEstateIndex) {
+		money += playerRealEstate[realEstateIndex].realEstateValue;
+		playerRealEstate.RemoveAt( realEstateIndex );
+	}
 	#endregion
 
 	#region Investment
@@ -169,7 +190,19 @@ public class PlayerStats : MonoBehaviour {
 		if( playerInvestments.Count < MAX_INVESTMENTS ) {
 			Investment newInvestment = new Investment();
 			newInvestment.thisInvestmentType = thisType;
+			if (thisType == Investment.InvestmentType.IRA) {
+				newInvestment.SetMonetaryValue(IRA_INIT_COST);
+			}
+			else if (thisType == Investment.InvestmentType.Mutual){
+				newInvestment.SetMonetaryValue(MUTUAL_INIT_COST);
+
+			}
+			else if (thisType == Investment.InvestmentType.Stock) {
+				newInvestment.SetMonetaryValue(STOCK_INIT_COST);
+
+			}
 			playerInvestments.Add( newInvestment );
+
 		} else {
 			Debug.LogWarning( "You've maxed out the amount of investments you can have." );
 		}
@@ -194,6 +227,7 @@ public class PlayerStats : MonoBehaviour {
 	}
 
 	public void LiquidateInvestment( int index, float percentage ) {
+		print ("liquidating " + index + " " + percentage);
 		playerInvestments[index].Liquidate( percentage );
 	}
 
