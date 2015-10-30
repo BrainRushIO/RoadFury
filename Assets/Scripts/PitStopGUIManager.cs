@@ -145,7 +145,8 @@ public class PitStopGUIManager : MonoBehaviour {
 				currentPitStopState = PitStopState.SelectBusiness;
 			}
 			else if (lastIndexClicked > 3 || lastIndexClicked < 7) {
-				PlayerStats.s_instance.CanStartNewBusiness(lastIndexClicked - 4);
+				print ("MADE A NEW BUSINESS");
+				PlayerStats.s_instance.AddBusiness(lastIndexClicked - 4);
 			}
 			else if (lastIndexClicked == 7) {
 				currentPitStopState = PitStopState.Main;
