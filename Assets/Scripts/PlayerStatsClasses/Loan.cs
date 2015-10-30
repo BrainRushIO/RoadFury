@@ -28,6 +28,7 @@ public class Loan {
 	public void InitializeLoan( float newAmount, LoanType type ) {
 		initLoanAmount = newAmount;
 		loanAmount = initLoanAmount;
+		thisLoanType = type;
 		if (type == LoanType.Business) {
 			loanName = "Business Loans";
 		}
