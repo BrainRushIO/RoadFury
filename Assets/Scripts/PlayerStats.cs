@@ -162,6 +162,8 @@ public class PlayerStats : MonoBehaviour {
 			return false;
 		}
 	}
+	public void SellRealEstate(int realEstateIndex) {
+	}
 	#endregion
 
 	#region Investment

@@ -187,7 +187,7 @@ public class PitStopGUIManager : MonoBehaviour {
 			break;
 		case PitStopState.SelectRealEstate :
 			if (index == 6) {
-//				PlayerStats.s_instance. sell real estate
+				PlayerStats.s_instance.SellRealEstate(lastIndexClicked);
 			}
 			else if (index == 7) {
 				currentPitStopState = PitStopState.RealEstate;
