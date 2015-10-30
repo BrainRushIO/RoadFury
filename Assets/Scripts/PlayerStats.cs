@@ -141,7 +141,10 @@ public class PlayerStats : MonoBehaviour {
 	}
 
 	public void WorkOvertime(int businessIndex) {
-		// TODO Decide conversion rate between Happiness/Money
+		// TODO GUI notification
+		Debug.LogWarning( "You lost happiness" );
+		happiness *= 0.9f;
+		playerBusinesses[businessIndex].revenueStream *= 1.1f;
 	}
 	#endregion
 
