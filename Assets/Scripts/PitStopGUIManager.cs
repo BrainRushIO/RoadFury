@@ -52,7 +52,7 @@ public class PitStopGUIManager : MonoBehaviour {
 			break;
 			#region Loans
 		case PitStopState.Loans :
-			if (lastIndexClicked < 7 && PlayerStats.s_instance.playerLoans[lastIndexClicked]!=null) {
+			if (lastIndexClicked < 7 && PlayerStats.s_instance.playerLoans.Count > lastIndexClicked {
 				currentPitStopState = PitStopState.SelectLoan;
 			}
 			else if (index == 7){
@@ -75,7 +75,7 @@ public class PitStopGUIManager : MonoBehaviour {
 			#endregion
 			#region Investment
 		case PitStopState.Investment :
-			if (lastIndexClicked < 4 && PlayerStats.s_instance.playerInvestments[lastIndexClicked]!=null) {
+			if (lastIndexClicked < 4 && PlayerStats.s_instance.playerInvestments.Count > lastIndexClicked {
 				currentPitStopState = PitStopState.SelectInvestment;
 			}
 			else if (lastIndexClicked == 4) {
@@ -88,22 +88,54 @@ public class PitStopGUIManager : MonoBehaviour {
 
 			else if (lastIndexClicked == 6) {
 				PlayerStats.s_instance.AddInvestment(Investment.InvestmentType.IRA);
-			} else {
+			} else if (lastIndexClicked == 7) { 
 				currentPitStopState = PitStopState.Main;
 			}
 			break;
 		case PitStopState.SelectInvestment :
 			if (PlayerStats.s_instance.playerInvestments[lastIndexClicked].thisInvestmentType == Investment.InvestmentType.Stock) {
 				if (index == 2) {
-					
+					PlayerStats.s_instance.AddMoneyToInvestment(lastIndexClicked, 10000);
+				}
+				else if (index == 3) {
+					PlayerStats.s_instance.AddMoneyToInvestment(lastIndexClicked, 500000);
+				}
+				else if (index == 4) {
+					PlayerStats.s_instance.LiquidateInvestment(lastIndexClicked, 1f);				}
+				else if (index == 5) {
+					PlayerStats.s_instance.AddMoneyToInvestment(lastIndexClicked, .5f);
+				}
+				else if (index == 6) {
+					PlayerStats.s_instance.AddMoneyToInvestment(lastIndexClicked, .1f);
 				}
 			}
 			else if (PlayerStats.s_instance.playerInvestments[lastIndexClicked].thisInvestmentType == Investment.InvestmentType.Mutual) {
-				
+				if (index == 2) {
+					PlayerStats.s_instance.AddMoneyToInvestment(lastIndexClicked, 1000);
+				}
+				else if (index == 3) {
+					PlayerStats.s_instance.AddMoneyToInvestment(lastIndexClicked, 50000);
+				}
+				else if (index == 4) {
+					PlayerStats.s_instance.LiquidateInvestment(lastIndexClicked, 1f);				}
+				else if (index == 5) {
+					PlayerStats.s_instance.LiquidateInvestment(lastIndexClicked, .5f);
+				}
+				else if (index == 6) {
+					PlayerStats.s_instance.LiquidateInvestment(lastIndexClicked, .1f);
+				}
 			}
 
 			else if (PlayerStats.s_instance.playerInvestments[lastIndexClicked].thisInvestmentType == Investment.InvestmentType.IRA) {
-				
+				if (index == 2) {
+					PlayerStats.s_instance.AddMoneyToInvestment(lastIndexClicked, 100f);
+				}
+				else if (index == 3) {
+					PlayerStats.s_instance.AddMoneyToInvestment(lastIndexClicked, 1000f);
+				}
+				else if (index == 6) {
+					PlayerStats.s_instance.LiquidateInvestment(lastIndexClicked, 1f);
+				}
 			}
 			break;
 			#endregion
@@ -139,6 +171,15 @@ public class PitStopGUIManager : MonoBehaviour {
 		case PitStopState.RealEstate :
 			if (lastIndexClicked < 4 && PlayerStats.s_instance.playerRealEstate[lastIndexClicked]!=null) {
 				currentPitStopState = PitStopState.SelectRealEstate;
+			}
+			else if (index == 4) {
+				PlayerStats.s_instance.LiquidateInvestment(lastIndexClicked, .5f);
+			}
+			else if (index == 5) {
+				PlayerStats.s_instance.LiquidateInvestment(lastIndexClicked, .5f);
+			}
+			else if (index == 6) {
+				PlayerStats.s_instance.LiquidateInvestment(lastIndexClicked, .1f);
 			}
 			else if (index == 7) {
 				currentPitStopState = PitStopState.Main;
@@ -203,8 +244,7 @@ public class PitStopGUIManager : MonoBehaviour {
 
 				allTextObjects[2].text = "Add $100";
 				allTextObjects[3].text = "Add $1000";
-				allTextObjects[4].text = "Max Out ($5000 limit per Year)";
-				allTextObjects[5].text = "Close IRA";
+				allTextObjects[6].text = "Liquidate IRA";
 			}
 			else if (PlayerStats.s_instance.playerInvestments[lastIndexClicked].thisInvestmentType == Investment.InvestmentType.Stock) {
 				allTextObjects[2].text = "Add $10,000";
