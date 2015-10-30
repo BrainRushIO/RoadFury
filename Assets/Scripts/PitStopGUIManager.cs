@@ -250,8 +250,8 @@ public class PitStopGUIManager : MonoBehaviour {
 			for (int i = 0; i < playerInvestmentsCount; i++) {
 				allTextObjects[i].text = PlayerStats.s_instance.playerInvestments[i].investmentName;
 			}		
-			allTextObjects[4].text = "Purchase Stocks $50,000";
-			allTextObjects[5].text = "Purchase Mutual Fund $5,000";
+			allTextObjects[4].text = "Purchase Stocks $50K";
+			allTextObjects[5].text = "Purchase Mutual Fund $5K";
 			allTextObjects[6].text = "Setup IRA $100";
 			allTextObjects[7].text = "Back";
 			break;
@@ -259,20 +259,20 @@ public class PitStopGUIManager : MonoBehaviour {
 		case PitStopState.SelectInvestment :
 			if (PlayerStats.s_instance.playerInvestments[lastIndexClicked].thisInvestmentType == Investment.InvestmentType.IRA) {
 				allTextObjects[2].text = "Add $100";
-				allTextObjects[3].text = "Add $1000";
+				allTextObjects[3].text = "Add $1K";
 				allTextObjects[6].text = "Liquidate IRA";
 			}
 			else if (PlayerStats.s_instance.playerInvestments[lastIndexClicked].thisInvestmentType == Investment.InvestmentType.Stock) {
-				allTextObjects[2].text = "Add $10,000";
-				allTextObjects[3].text = "Add $500,000";
+				allTextObjects[2].text = "Add $10K";
+				allTextObjects[3].text = "Add $500K";
 				allTextObjects[4].text = "Liquidate All Stock";
 				allTextObjects[5].text = "Liquidate 50% Stock";
 				allTextObjects[6].text = "Liquidate 10% Stock";
 
 			}
 			else if (PlayerStats.s_instance.playerInvestments[lastIndexClicked].thisInvestmentType == Investment.InvestmentType.Mutual) {
-				allTextObjects[2].text = "Add $1,000";
-				allTextObjects[3].text = "Add $50,000";
+				allTextObjects[2].text = "Add $1K";
+				allTextObjects[3].text = "Add $50K";
 				allTextObjects[4].text = "Liquidate Mutual Fund";
 				allTextObjects[5].text = "Liquidate 50% of Mutual Fund";
 				allTextObjects[6].text = "Liquidate 10% of Mutual Fund";
