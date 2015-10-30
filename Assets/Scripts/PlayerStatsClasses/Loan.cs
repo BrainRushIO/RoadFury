@@ -10,11 +10,11 @@ public class Loan {
 	public string loanName;
 
 	//subscribe to year event
-	void OnEnable() {
+	public Loan() {
 		PlayerStats.OnYearCompleted += AnnualUpdate;
 	}
 
-	void OnDisable() {
+	~Loan() {
 		PlayerStats.OnYearCompleted -= AnnualUpdate;
 	}
 

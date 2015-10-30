@@ -15,11 +15,11 @@ public class Investment {
 	public enum InvestmentType {Stock, Mutual, IRA};
 	public InvestmentType thisInvestmentType;
 	
-	void OnEnable() {
+	public Investment() {
 		PlayerStats.OnYearCompleted += AnnualUpdate;
 	}
 
-	void OnDisable() {
+	~Investment() {
 		PlayerStats.OnYearCompleted -= AnnualUpdate;
 	}
 
