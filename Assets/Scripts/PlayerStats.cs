@@ -131,6 +131,7 @@ public class PlayerStats : MonoBehaviour {
 		newBusiness.businessName = "Business" + businessType; 
 		money -= Business.BusinessPrices[businessType];
 		playerBusinesses.Add( newBusiness );
+		print ("ADD BUSINES");
 	}
 	
 	public void SellBusiness (int index) {

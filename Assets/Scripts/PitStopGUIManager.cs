@@ -24,6 +24,7 @@ public class PitStopGUIManager : MonoBehaviour {
 	public int lastIndexClicked; //used to refer to index in list of player Loan/Business/etc...
 
 	public void HandlePitStopClick(int index) {
+		print ("CLICK " + index);
 		if (currentPitStopState == PitStopState.Loans ||
 		    currentPitStopState == PitStopState.Investment ||
 		    currentPitStopState == PitStopState.RealEstate ||
@@ -141,11 +142,11 @@ public class PitStopGUIManager : MonoBehaviour {
 			#endregion
 			#region Business
 		case PitStopState.Business :
-			if (lastIndexClicked < 4 && PlayerStats.s_instance.playerBusinesses.Count > lastIndexClicked ) {
+			print (lastIndexClicked + " LIC");
+			if (lastIndexClicked < 4 && PlayerStats.s_instance.playerBusinesses[lastIndexClicked]!=null ) {
 				currentPitStopState = PitStopState.SelectBusiness;
 			}
-			else if (lastIndexClicked > 3 || lastIndexClicked < 7) {
-				print ("MADE A NEW BUSINESS");
+			else if (lastIndexClicked > 3 && lastIndexClicked < 7) {
 				PlayerStats.s_instance.AddBusiness(lastIndexClicked - 4);
 			}
 			else if (lastIndexClicked == 7) {
