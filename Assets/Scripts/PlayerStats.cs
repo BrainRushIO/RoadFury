@@ -16,7 +16,7 @@ public class PlayerStats : MonoBehaviour {
 	public float money = 1000f;
 	public float cashFlow = -200f;
 	public float happiness = 0.5f;
-	public float happinessDecreaseRate = 0.001f;
+	public float happinessDecreaseRate = 0.01f;
 
 	public List<Business> playerBusinesses;
 	public List<Loan> playerLoans;
@@ -97,7 +97,6 @@ public class PlayerStats : MonoBehaviour {
 			Loan selectedLoan = playerLoans[index];
 			selectedLoan.PayLoanAmount( selectedLoan.loanAmount );
 			playerLoans.Remove( selectedLoan );
-			Destroy( selectedLoan );
 			// TODO Update list on GUI
 		} else {
 			// TODO Add GUI notification
@@ -128,7 +127,7 @@ public class PlayerStats : MonoBehaviour {
 
 	public void AddBusiness ( int businessType ) {
 		Business newBusiness = new Business();
-		newBusiness.initialInvestment = Business.BusinessPrices[businessType];
+		newBusiness.SetBusinessType( businessType );
 		money -= Business.BusinessPrices[businessType];
 		playerBusinesses.Add( newBusiness );
 	}
@@ -137,16 +136,18 @@ public class PlayerStats : MonoBehaviour {
 		Business selectedBusiness = playerBusinesses[index];
 		money += selectedBusiness.valuation;
 		playerBusinesses.Remove( selectedBusiness );
-		Destroy( selectedBusiness );
 	}
 
 	public void WorkOvertime(int businessIndex) {
-		// TODO Decide conversion rate between Happiness/Money
+		// TODO GUI notification
+		Debug.LogWarning( "You lost happiness" );
+		happiness *= 0.9f;
+		playerBusinesses[businessIndex].revenueStream *= 1.1f;
 	}
 	#endregion
 
 	#region RealEstate
-	public bool CanBuyNewRealEstate( int realEstateTier ) {
+	public bool AddRealEstate( int realEstateTier ) {
 		float realEstateCost = RealEstate.RealEstatePrices[realEstateTier];
 		
 		if (realEstateCost <= money) {
@@ -156,6 +157,7 @@ public class PlayerStats : MonoBehaviour {
 			playerRealEstate.Add( newRealEstate );
 			return true;
 		} else {
+			// TODO GUI notification
 			Debug.LogWarning ("Not enough money to buy real estate.");
 			return false;
 		}

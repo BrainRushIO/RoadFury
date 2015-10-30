@@ -166,7 +166,8 @@ public class GameManager : MonoBehaviour {
 	}
 
 	public void SwitchToCutscene () {
-		inGameGUI.SetActive (false);
+		inGameGUI.GetComponent<Animator> ().SetTrigger("hide");
+		//inGameGUI.SetActive (false);
 		textIterator = 0;
 		switchToGame = false;
 		switchToCutScene = true;
@@ -179,7 +180,8 @@ public class GameManager : MonoBehaviour {
 		Camera.main.GetComponent<HoverFollowCam>().enabled = true;
 		if (currentGameState != GameState.Intro) {
 			currentGUIseries.SetActive (false);
-			inGameGUI.SetActive (true);
+			//inGameGUI.SetActive (true);
+			inGameGUI.GetComponent<Animator>().SetTrigger("show");
 		}
 		switchToGame = true;
 

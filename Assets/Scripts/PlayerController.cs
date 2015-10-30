@@ -82,16 +82,16 @@ public class PlayerController : MonoBehaviour {
 		if (other.gameObject.tag == "powerUp") {
 			PowerUp temp = other.gameObject.GetComponent<PowerUp> ();
 			if (temp.cost != 0f) {
-				GameManager.s_instance.money += temp.cost;
+				PlayerStats.s_instance.money += temp.cost;
 			}
 
 			if (temp.burnRate != 0f) {
-				GameManager.s_instance.costOfLiving += temp.burnRate;
-				GameManager.s_instance.SetNewBurnRate (GameManager.s_instance.costOfLiving);
+				PlayerStats.s_instance.cashFlow += temp.burnRate;
+				GameManager.s_instance.SetNewBurnRate (PlayerStats.s_instance.cashFlow);
 			}
 
 			if (temp.happiness != 0f) {
-				GUIManager.s_instance.happinessBar.value += temp.happiness;
+				PlayerStats.s_instance.happiness += temp.happiness/100f;
 			}
 			if (other.gameObject.GetComponent<PowerUp> ().thisPowerUpType == PowerUp.PowerUpType.None) {
 				Destroy (other.gameObject);
