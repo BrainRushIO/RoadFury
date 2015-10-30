@@ -91,6 +91,7 @@ public class PlayerStats : MonoBehaviour {
 		foreach (Loan x in playerLoans) {
 			if (x.thisLoanType == type) {
 				x.loanAmount+=thisLoanAmount;
+				print (x.loanAmount);
 			}
 		}
 	}
@@ -166,6 +167,7 @@ public class PlayerStats : MonoBehaviour {
 			return false;
 		}
 		if (realEstateCost <= money) {
+			Debug.Log ("REAL ESTATE COST " + realEstateCost);
 			AddLoanCost(realEstateCost, Loan.LoanType.RealEstate);
 			RealEstate newRealEstate = new RealEstate();
 			newRealEstate.SetTier( (RealEstate.RealEstateTier)realEstateTier );
