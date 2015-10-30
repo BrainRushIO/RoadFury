@@ -6,6 +6,8 @@ public class Investment {
 	public static float MAX_MONEY_ADDED_PER_YEAR_TO_IRA = 5000f;
 	private const float YEARS_BEFORE_IRA_LIQUIDATION = 5f;
 
+	private static int investmentNumber = 0;
+
 	public float annualGrowthRate;	// TODO set these values
 	public float monetaryValue;
 	public int initializationYear;
@@ -17,6 +19,8 @@ public class Investment {
 	
 	public Investment() {
 		PlayerStats.OnYearCompleted += AnnualUpdate;
+		investmentName = "Your Investment #" + investmentNumber.ToString();
+		investmentNumber++;
 	}
 
 	~Investment() {
