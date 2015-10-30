@@ -58,6 +58,9 @@ public class PlayerStats : MonoBehaviour {
 	}
 
 	void Update () {
+		if( Input.GetKeyDown( KeyCode.Return ) )
+			GUIManager.s_instance.DisplayNotification( "Notice!", "Eric pressed the Return key!" );
+
 		if( GameManager.s_instance.currentGameState == GameState.Playing ) {
 			// Add cashFlow to money
 			money += cashFlow * (1/secondsPerYear) * Time.deltaTime;
@@ -102,7 +105,7 @@ public class PlayerStats : MonoBehaviour {
 		if( money >= playerLoans[index].loanAmount )
 			playerLoans[index].PayLoanAmount( amount );
 		else {
-			GUIManager.s_instance.DisplayNotification( "Whoops!", "You don't have enough money to do that" );
+			GUIManager.s_instance.DisplayNotification( "Notice!", "You don't have enough money to do that" );
 		}
 	}
 
@@ -114,7 +117,7 @@ public class PlayerStats : MonoBehaviour {
 			playerLoans.Remove( selectedLoan );
 			// TODO Update list on GUI
 		} else {
-			GUIManager.s_instance.DisplayNotification( "Whoops!", "You don't have enough money to pay the loan off." );
+			GUIManager.s_instance.DisplayNotification( "Notice!", "You don't have enough money to pay the loan off." );
 		}
 	}
 	#endregion
@@ -170,7 +173,7 @@ public class PlayerStats : MonoBehaviour {
 			playerRealEstate.Add( newRealEstate );
 			return true;
 		} else {
-			GUIManager.s_instance.DisplayNotification( "Notice", "Not enough money to buy real estate." );
+			GUIManager.s_instance.DisplayNotification( "Notice!", "Not enough money to buy real estate." );
 			return false;
 		}
 	}

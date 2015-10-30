@@ -10,7 +10,8 @@ public class GUIManager : MonoBehaviour {
 	public Transform costSpawn, multiplierSpawn, messageSpawn;
 	public Slider happinessBar; 
 	public Text burnRate, moneyText;
-
+	public Text notificationTitle, notificationDesc;
+	public Animator notificationAnimator;
 
 	public static GUIManager s_instance;
 	
@@ -78,13 +79,15 @@ public class GUIManager : MonoBehaviour {
 	}
 
 	public void DisplayNotification( string title, string details ) {
-		// Set title
-		// Set description
-		// TODO Set trigger on animation for notification
+		notificationAnimator.SetBool( "hide", false );
+		notificationTitle.text = title;
+		notificationDesc.text = details;
+		notificationAnimator.SetBool( "show", true );
 	}
 
 	public void CloseNotification() {
-		// Call notification close call
+		notificationAnimator.SetBool( "show", false );
+		notificationAnimator.SetBool( "hide", true );
 	}
 
 	public void SpawnHappiness(float happy){
