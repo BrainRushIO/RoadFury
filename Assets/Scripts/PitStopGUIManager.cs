@@ -111,7 +111,7 @@ public class PitStopGUIManager : MonoBehaviour {
 					PlayerStats.s_instance.LiquidateInvestment(lastIndexClicked, .1f);
 
 				} else if (index == 7) { 
-					currentPitStopState = PitStopState.Main;
+					currentPitStopState = PitStopState.Investment;
 				}
 			}
 			else if (PlayerStats.s_instance.playerInvestments[lastIndexClicked].thisInvestmentType == Investment.InvestmentType.Mutual) {
