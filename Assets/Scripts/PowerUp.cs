@@ -28,7 +28,7 @@ public class PowerUp : MonoBehaviour {
 				GUIManager.s_instance.SpawnCost (cost);
 			}
 			if (happiness != 0) {
-				GUIManager.s_instance.SpawnHappiness (happiness);
+				GUIManager.s_instance.SpawnHappiness (happiness/100f);
 			}
 
 			if (burnRate != 0) {

@@ -16,7 +16,7 @@ public class PlayerStats : MonoBehaviour {
 	public float money = 1000f;
 	public float cashFlow = -200f;
 	public float happiness = 0.5f;
-	public float happinessDecreaseRate = 0.001f;
+	public float happinessDecreaseRate = 0.01f;
 
 	public List<Business> playerBusinesses;
 	public List<Loan> playerLoans;
