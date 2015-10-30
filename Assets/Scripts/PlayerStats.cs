@@ -18,10 +18,10 @@ public class PlayerStats : MonoBehaviour {
 	public float happiness = 0.5f;
 	public float happinessDecreaseRate = 0.01f;
 
-	public List<Business> playerBusinesses;
-	public List<Loan> playerLoans;
-	public List<Investment> playerInvestments;
-	public List<RealEstate> playerRealEstate;
+	public List<Business> playerBusinesses = new List<Business>();
+	public List<Loan> playerLoans = new List<Loan> ();
+	public List<Investment> playerInvestments = new List<Investment>();
+	public List<RealEstate> playerRealEstate = new List<RealEstate>();
 	public Family playerFamily;
 
 	public static PlayerStats s_instance { get {return _playerStats;} }
