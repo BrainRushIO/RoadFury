@@ -87,7 +87,6 @@ public class PlayerController : MonoBehaviour {
 
 			if (temp.burnRate != 0f) {
 				PlayerStats.s_instance.cashFlow += temp.burnRate;
-				GameManager.s_instance.SetNewBurnRate (PlayerStats.s_instance.cashFlow);
 			}
 
 			if (temp.happiness != 0f) {
