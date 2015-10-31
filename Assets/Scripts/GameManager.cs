@@ -33,6 +33,7 @@ public class GameManager : MonoBehaviour {
 	bool isCamRotateUp, isCamRotateDown;
 
 	public GameObject tutorialCam;
+	public GameObject pitStopGUI;
 	public GameObject inGameGUI;
 	public GameObject MainMenuGUI, MainMenuText;
 	int textIterator = 0;
@@ -81,11 +82,13 @@ public class GameManager : MonoBehaviour {
 		case GameState.Playing :
 
 			if (switchToCutScene) {
+				switchToCutScene = false;
 				slideTimer = 0;
 				currentGameState = GameState.Cutscene;
 			}
 			if (switchToPitstop) {
 				switchToPitstop = false;
+				pitStopGUI.GetComponent<Animator>().SetTrigger("pitstop");
 				currentGameState = GameState.PitStop;
 			}
 
@@ -99,7 +102,9 @@ public class GameManager : MonoBehaviour {
 			break;
 		case GameState.PitStop : 
 			if (switchToGame) {
+				switchToGame = false;
 				currentGameState = GameState.Playing;
+				pitStopGUI.GetComponent<Animator>().SetTrigger("pitstop");
 			}
 			if (switchToNotification) {
 				currentGameState = GameState.Notification;
