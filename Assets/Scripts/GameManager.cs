@@ -45,7 +45,6 @@ public class GameManager : MonoBehaviour {
 	//TODO add attrition rate increases depending on if player gets wife or gf or not
 	
 	void Start () {
-		SetNewBurnRate(-200);
 		Screen.orientation = ScreenOrientation.Portrait;
 		Screen.autorotateToLandscapeLeft = false;
 		Screen.autorotateToLandscapeRight = false;
