@@ -63,6 +63,7 @@ public class GameManager : MonoBehaviour {
 
 		case GameState.MainMenu : 
 			if (userPressedStart) {
+				userPressedStart = false;
 				currentGameState = GameState.Intro;
 			}
 			break;
@@ -72,6 +73,7 @@ public class GameManager : MonoBehaviour {
 				EndTutorial();
 			}
 			if (tutorialIsOver) {
+				tutorialIsOver = false;
 				currentGameState = GameState.Playing;
 			}
 			else {
@@ -83,12 +85,10 @@ public class GameManager : MonoBehaviour {
 
 			if (switchToCutScene) {
 				switchToCutScene = false;
-				slideTimer = 0;
 				currentGameState = GameState.Cutscene;
 			}
 			if (switchToPitstop) {
 				switchToPitstop = false;
-				pitStopGUI.GetComponent<Animator>().SetTrigger("pitstop");
 				currentGameState = GameState.PitStop;
 			}
 
@@ -97,6 +97,7 @@ public class GameManager : MonoBehaviour {
 		case GameState.Cutscene : 
 			RunCutSceneText();
 			if (switchToGame) {
+				switchToGame = false;
 				currentGameState = GameState.Playing;
 			}
 			break;
@@ -104,7 +105,6 @@ public class GameManager : MonoBehaviour {
 			if (switchToGame) {
 				switchToGame = false;
 				currentGameState = GameState.Playing;
-				pitStopGUI.GetComponent<Animator>().SetTrigger("pitstop");
 			}
 			if (switchToNotification) {
 				switchToNotification = false;
@@ -113,9 +113,11 @@ public class GameManager : MonoBehaviour {
 			break;
 		case GameState.Notification : 
 			if (switchToGame) {
+				switchToGame = false;
 				currentGameState = GameState.Playing;
 			}
 			if (switchToPitstop) {
+				switchToPitstop = false;
 				currentGameState = GameState.PitStop;
 			}
 			break;
@@ -165,6 +167,7 @@ public class GameManager : MonoBehaviour {
 	}
 
 	public void SwitchToCutscene () {
+		slideTimer = 0;
 		inGameGUI.GetComponent<Animator> ().SetTrigger("hide");
 		//inGameGUI.SetActive (false);
 		textIterator = 0;
@@ -196,13 +199,14 @@ public class GameManager : MonoBehaviour {
 				//inGameGUI.SetActive (true);
 				inGameGUI.GetComponent<Animator> ().SetTrigger ("show");
 			}
-			switchToGame = true;
 
-			switchToCutScene = false;
 		} else if (currentGameState == GameState.PitStop) {
-			switchToGame = true;
 			inGameGUI.GetComponent<Animator> ().SetTrigger("pitstop");
+			pitStopGUI.GetComponent<Animator>().SetTrigger("pitstop");
+
 		}
+		switchToGame = true;
+
 	}
 
 	public void SwitchToNotification() {
