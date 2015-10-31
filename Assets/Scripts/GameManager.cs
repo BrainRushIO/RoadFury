@@ -59,6 +59,7 @@ public class GameManager : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
+		print (currentGameState);
 		switch (currentGameState) {
 
 		case GameState.MainMenu : 
@@ -182,6 +183,7 @@ public class GameManager : MonoBehaviour {
 		if (currentGameState == GameState.Playing) {
 			switchToPitstop = true;
 			inGameGUI.GetComponent<Animator> ().SetTrigger ("pitstop");
+			pitStopGUI.GetComponent<Animator> ().SetTrigger ("pitstop");
 		}
 
 		if (currentGameState == GameState.Notification) {
@@ -198,14 +200,17 @@ public class GameManager : MonoBehaviour {
 				currentGUIseries.SetActive (false);
 				//inGameGUI.SetActive (true);
 				inGameGUI.GetComponent<Animator> ().SetTrigger ("show");
+				switchToGame = true;
+
 			}
 
 		} else if (currentGameState == GameState.PitStop) {
 			inGameGUI.GetComponent<Animator> ().SetTrigger("pitstop");
 			pitStopGUI.GetComponent<Animator>().SetTrigger("pitstop");
+			switchToGame = true;
 
+			
 		}
-		switchToGame = true;
 
 	}
 
