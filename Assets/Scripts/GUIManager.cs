@@ -79,6 +79,7 @@ public class GUIManager : MonoBehaviour {
 	}
 
 	public void DisplayNotification( string title, string details ) {
+		GameManager.s_instance.SwitchToNotification();
 		notificationAnimator.SetBool( "hide", false );
 		notificationTitle.text = title;
 		notificationDesc.text = details;
@@ -88,6 +89,16 @@ public class GUIManager : MonoBehaviour {
 	public void CloseNotification() {
 		notificationAnimator.SetBool( "show", false );
 		notificationAnimator.SetBool( "hide", true );
+
+		switch( GameManager.s_instance.previousGameState )
+		{
+		case GameState.Playing:
+			GameManager.s_instance.SwitchToGame();
+			break;
+		case GameState.PitStop:
+			GameManager.s_instance.SwitchToPitStop();
+			break;
+		}
 	}
 
 	public void SpawnHappiness(float happy){
@@ -97,6 +108,4 @@ public class GUIManager : MonoBehaviour {
 			happinessBar.GetComponentInChildren<ImageFlash>().Flash(negative);
 		}
 	}
-
-
 }

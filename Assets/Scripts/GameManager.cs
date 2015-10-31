@@ -40,7 +40,7 @@ public class GameManager : MonoBehaviour {
 	float slideTimer;
 
 	public GameObject currentGUIseries;
-	private GameState previousGameState;
+	public GameState previousGameState;
 
 	//TODO add attrition rate increases depending on if player gets wife or gf or not
 	
@@ -102,6 +102,7 @@ public class GameManager : MonoBehaviour {
 				currentGameState = GameState.Playing;
 			}
 			if (switchToNotification) {
+				switchToNotification = false;
 				currentGameState = GameState.Notification;
 			}
 			break;
@@ -201,6 +202,7 @@ public class GameManager : MonoBehaviour {
 
 	public void SwitchToNotification() {
 		switchToNotification = true;
-
+		if( previousGameState != GameState.Notification )
+			previousGameState = currentGameState;
 	}
 }
