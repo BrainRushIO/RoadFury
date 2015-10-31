@@ -2,10 +2,8 @@
 using System.Collections;
 using UnityEngine.UI;
 
-public enum GameState {Pause, MainMenu, Intro, Playing, Cutscene, PitStop, InventoryMode, GameOver, Win};
+public enum GameState {Pause, MainMenu, Intro, Playing, Cutscene, Notification, PitStop, InventoryMode, GameOver, Win};
 public enum AgeState {YoungAdult, Adult, OldAdult, SeniorCitizen};
-public enum CareerState {BusBoy, FryCook, Manager, StoreManager, RegionalManager, OperationsDirector, VPofOperations, COO, CEO, Retired};
-public enum CareerType {Medical, BusinessFinance, Engineering, Entertainment, GovernmentLegal}
 
 public class GameManager : MonoBehaviour {
 
@@ -21,20 +19,8 @@ public class GameManager : MonoBehaviour {
 		}
 	}
 
-	public float attrition = .1f;
-	public float strafeSpeed = .1f;
-	public float playerBounds = 4f;
-	public int age = 16, money = 1000;
-	public float costOfLiving = -200;
-	public Text moneyText, ageText, burnRateText;
-	public Slider happiness;
-
-	public float loseADollarRate = 0;
-	public float loseADollarTimer = 0f;
-	public float ageAYearRate = 10f;
-	public float ageAYearTimer = 0f;
-
 	//switches
+	bool switchToNotification;
 	bool switchToInventory;
 	bool switchToPitstop;
 	bool switchToGame;
@@ -64,7 +50,6 @@ public class GameManager : MonoBehaviour {
 		Screen.autorotateToLandscapeLeft = false;
 		Screen.autorotateToLandscapeRight = false;
 		Screen.autorotateToPortraitUpsideDown = false;
-
 	}
 
 
@@ -95,16 +80,6 @@ public class GameManager : MonoBehaviour {
 			break;
 
 		case GameState.Playing :
-			
-			loseADollarTimer += Time.deltaTime;
-			if (loseADollarTimer > Mathf.Abs(loseADollarRate) && loseADollarRate < 0) {
-				loseADollarTimer = 0;
-				money--;
-			}
-			else if (loseADollarTimer > Mathf.Abs(loseADollarRate) && loseADollarRate > 0) {
-				loseADollarTimer = 0;
-				money++;
-			}
 
 			if (switchToCutScene) {
 				slideTimer = 0;
@@ -127,14 +102,23 @@ public class GameManager : MonoBehaviour {
 			if (switchToGame) {
 				currentGameState = GameState.Playing;
 			}
+			if (switchToNotification) {
+				currentGameState = GameState.Notification;
+			}
 			break;
-		}
-
+		case GameState.Notification : 
+			if (switchToGame) {
+				currentGameState = GameState.Playing;
+			}
+			if (switchToPitstop) {
+				currentGameState = GameState.PitStop;
+			}
+			break;
+		
 	}
 	
-	public void SetNewBurnRate(float newBurnRate){
-		loseADollarRate = 60f / (newBurnRate);
-	}
+}
+
 
 	public void StartGame () {
 		userPressedStart = true;
@@ -187,12 +171,18 @@ public class GameManager : MonoBehaviour {
 	}
 
 	public void SwitchToPitStop () {
-		switchToPitstop = true;
-		inGameGUI.GetComponent<Animator> ().SetTrigger("pitstop");
+		if (currentGameState == GameState.Playing) {
+			switchToPitstop = true;
+			inGameGUI.GetComponent<Animator> ().SetTrigger ("pitstop");
+		}
 
+		if (currentGameState == GameState.Notification) {
+			switchToPitstop = true;
 
+		}
+			
+			
 	}
-
 	public void SwitchToGame () {
 		if (currentGameState == GameState.Cutscene) {
 			Camera.main.GetComponent<HoverFollowCam> ().enabled = true;
@@ -210,12 +200,8 @@ public class GameManager : MonoBehaviour {
 		}
 	}
 
-	public void TriggerNotificationState( bool triggerOn ) {
-		if( triggerOn ) {
-			previousGameState = currentGameState;
-			currentGameState = GameState.Cutscene;
-		} else {
-			currentGameState = previousGameState;
-		}
+	public void SwitchToNotification() {
+		switchToNotification = true;
+
 	}
 }
