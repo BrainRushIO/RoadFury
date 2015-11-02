@@ -7,7 +7,7 @@ public class PlayerController : MonoBehaviour {
 	// Movement and bounds
 	private float strafeSpeed = 4.5f, moveSpeed = 8f;
 	private float playerBounds = 4f;
-	private float pitStopBoundsOffset = 5f;
+	private float pitStopBoundsOffset = 4.5f;
 	private bool pitstopEntranceAvailable = false;
 	private bool isOnHorizontalRoad = false;
 	private Animator anim;
@@ -16,7 +16,7 @@ public class PlayerController : MonoBehaviour {
 	// Rotation
 	private bool isRotateLerp;
 	private float rotateLerpTimer;
-	private float rotateLerpDuration = 1f;
+	private float rotateLerpDuration = 0.8f;
 	private Quaternion startLerp, endLerp;
 
 	//TODO add attrition rate increases depending on if player gets wife or gf or not
@@ -53,11 +53,8 @@ public class PlayerController : MonoBehaviour {
 				if (touch.position.x > Screen.width / 2) {
 					//go right
 					horizontal = 1f;
-
-
 				} else if (touch.position.x < Screen.width / 2) {
 					horizontal = -1f;
-			
 				}
 			}
 
@@ -79,12 +76,10 @@ public class PlayerController : MonoBehaviour {
 				if (Mathf.Abs (transform.position.z - currentRoadSection.transform.position.z - (horizontal * strafeSpeed*Time.deltaTime)) < playerBounds + tempPitstopBoundsOffset) {
 					transform.Translate (horizontal * strafeSpeed*Time.deltaTime, 0, 0);
 				}
-
 			}
 		} else {
 			anim.SetFloat ("Turn", 0);
 		}
-
 	}
 	
 	void OnTriggerEnter(Collider other) {
@@ -93,11 +88,9 @@ public class PlayerController : MonoBehaviour {
 			if (temp.cost != 0f) {
 				PlayerStats.s_instance.money += temp.cost;
 			}
-
 			if (temp.burnRate != 0f) {
 				PlayerStats.s_instance.cashFlow += temp.burnRate;
 			}
-
 			if (temp.happiness != 0f) {
 				PlayerStats.s_instance.happiness += temp.happiness / 100f;
 			}
