@@ -69,7 +69,6 @@ public class PitStopGUIManager : MonoBehaviour {
 				PlayerStats.s_instance.IncreaseLoanPaymentRate(lastIndexClicked);
 			}
 			else if (index == 7) {
-				print ("BACK TO LOAN");
 				currentPitStopState = PitStopState.Loans;
 			}
 
@@ -240,9 +239,10 @@ public class PitStopGUIManager : MonoBehaviour {
 			break;
 		case PitStopState.SelectLoan :
 			allTextObjects[0].text = PlayerStats.s_instance.playerLoans[lastIndexClicked].loanName;
-			allTextObjects[1].text = "Interest Rate: " + PlayerStats.s_instance.playerLoans[lastIndexClicked].interestRate;
-			allTextObjects[2].text = "Amount Left: " + PlayerStats.s_instance.playerLoans[lastIndexClicked].loanAmount;
-			allTextObjects[5].text = "Annual Payment: " + PlayerStats.s_instance.playerLoans[lastIndexClicked].annualPaymentPercentage*100+"%";
+			allTextObjects[1].text = "Interest Rate: " + (PlayerStats.s_instance.playerLoans[lastIndexClicked].loanAmount == 0 ? 0 : PlayerStats.s_instance.playerLoans[lastIndexClicked].interestRate).ToString();
+			allTextObjects[2].text = "Amount Left: " + (PlayerStats.s_instance.playerLoans[lastIndexClicked].loanAmount);
+			string append2 = (PlayerStats.s_instance.playerLoans[lastIndexClicked].loanAmount == 0f) ? "0" : PlayerStats.s_instance.playerLoans[lastIndexClicked].annualPaymentPercentage*100+"%";
+			allTextObjects[5].text = "Annual Payment: " + append2;
 			allTextObjects[6].text = "Pay Off Loans";
 			allTextObjects[7].text = "Back";
 			break;
