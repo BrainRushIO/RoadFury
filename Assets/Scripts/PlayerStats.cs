@@ -136,11 +136,14 @@ public class PlayerStats : MonoBehaviour {
 	public void AddBusiness ( int businessType ) {
 		float businessCost = Business.BusinessPrices[businessType];
 
-		if (businessCost < money && playerBusinesses.Count < MAX_BUSINESSES && businessCost!=0) {
-			Business newBusiness = new Business();
-			newBusiness.SetBusinessType( businessType );
-			AddLoanCost(Business.BusinessPrices[businessType], Loan.LoanType.Business);
-			playerBusinesses.Add( newBusiness );
+		if (businessCost < money && playerBusinesses.Count < MAX_BUSINESSES && businessCost != 0) {
+			Business newBusiness = new Business ();
+			newBusiness.SetBusinessType (businessType);
+			AddLoanCost (Business.BusinessPrices [businessType], Loan.LoanType.Business);
+			playerBusinesses.Add (newBusiness);
+		} else {
+			GUIManager.s_instance.DisplayNotification( "Notice!", "Not enough money to start business." );
+
 		}
 	}
 	
@@ -186,24 +189,32 @@ public class PlayerStats : MonoBehaviour {
 	#region Investment
 	public void AddInvestment(Investment.InvestmentType thisType) {
 		if( playerInvestments.Count < MAX_INVESTMENTS ) {
-			Investment newInvestment = new Investment();
-			newInvestment.thisInvestmentType = thisType;
-			if (thisType == Investment.InvestmentType.IRA) {
-				newInvestment.SetMonetaryValue(IRA_INIT_COST);
-			}
-			else if (thisType == Investment.InvestmentType.Mutual){
-				newInvestment.SetMonetaryValue(MUTUAL_INIT_COST);
 
-			}
-			else if (thisType == Investment.InvestmentType.Stock) {
-				newInvestment.SetMonetaryValue(STOCK_INIT_COST);
-
-			}
-			playerInvestments.Add( newInvestment );
 
 		} else {
-			Debug.LogWarning( "You've maxed out the amount of investments you can have." );
+			GUIManager.s_instance.DisplayNotification( "Notice!", "Investment limit reached." );
+			return;
 		}
+
+		float cost;
+		if (thisType == Investment.InvestmentType.IRA) {
+			cost = IRA_INIT_COST;
+		}
+		else if (thisType == Investment.InvestmentType.Mutual){
+			cost = MUTUAL_INIT_COST;
+		}
+		else {
+			cost = STOCK_INIT_COST;
+		}
+		if (cost > money) {
+			GUIManager.s_instance.DisplayNotification ("Notice!", "Insufficient funds.");
+		} else {
+			Investment newInvestment = new Investment();
+			newInvestment.thisInvestmentType = thisType;
+			
+			playerInvestments.Add( newInvestment );
+		}
+
 	}
 
 	public bool AddMoneyToInvestment( int index, float amount ) {
@@ -217,7 +228,7 @@ public class PlayerStats : MonoBehaviour {
 			playerInvestments[index].AddMoreMoney( amount );
 			return true;
 		} else {
-			GUIManager.s_instance.DisplayNotification( "Notice!", "You don't have enough money to do this." );
+			GUIManager.s_instance.DisplayNotification( "Notice!", "Insufficient funds." );
 			return false;
 		}
 	}
