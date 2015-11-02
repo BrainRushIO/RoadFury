@@ -1,0 +1,130 @@
+fileFormatVersion: 2
+guid: 84262855a69745b4895a9147ff805b59
+timeCreated: 1446496917
+licenseType: Pro
+ModelImporter:
+  serializedVersion: 18
+  fileIDToRecycleName:
+    100000: guardRailPosts
+    100002: offampStart_01
+    100004: offRamp
+    100006: //RootNode
+    100008: offRamp_Sign
+    100010: offrampGuardRails
+    100012: offrampRoad_01
+    100014: Road_01
+    100016: threeLaneRoad_01
+    100018: threeLaneRoad_02
+    100020: threeLaneRoad_05
+    100022: threeLaneRoad_06
+    100024: threeLaneStart_01
+    400000: guardRailPosts
+    400002: offampStart_01
+    400004: offRamp
+    400006: //RootNode
+    400008: offRamp_Sign
+    400010: offrampGuardRails
+    400012: offrampRoad_01
+    400014: Road_01
+    400016: threeLaneRoad_01
+    400018: threeLaneRoad_02
+    400020: threeLaneRoad_05
+    400022: threeLaneRoad_06
+    400024: threeLaneStart_01
+    2300000: guardRailPosts
+    2300002: offampStart_01
+    2300004: offRamp_Sign
+    2300006: offrampGuardRails
+    2300008: offrampRoad_01
+    2300010: Road_01
+    2300012: threeLaneRoad_01
+    2300014: threeLaneRoad_02
+    2300016: threeLaneRoad_05
+    2300018: threeLaneRoad_06
+    2300020: threeLaneStart_01
+    3300000: guardRailPosts
+    3300002: offampStart_01
+    3300004: offRamp_Sign
+    3300006: offrampGuardRails
+    3300008: offrampRoad_01
+    3300010: Road_01
+    3300012: threeLaneRoad_01
+    3300014: threeLaneRoad_02
+    3300016: threeLaneRoad_05
+    3300018: threeLaneRoad_06
+    3300020: threeLaneStart_01
+    4300000: Road_01
+    4300002: guardRailPosts
+    4300004: threeLaneStart_01
+    4300006: threeLaneRoad_01
+    4300008: threeLaneRoad_02
+    4300010: threeLaneRoad_06
+    4300012: threeLaneRoad_05
+    4300014: offrampGuardRails
+    4300016: offampStart_01
+    4300018: offrampRoad_01
+    4300020: offRamp_Sign
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: .5
+    animationPositionError: .5
+    animationScaleError: .5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 100
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    splitTangentsAcrossUV: 1
+    normalImportMode: 0
+    tangentImportMode: 1
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: .5
+    foreArmTwist: .5
+    upperLegTwist: .5
+    legTwist: .5
+    armStretch: .0500000007
+    legStretch: .0500000007
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
