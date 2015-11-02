@@ -19,6 +19,9 @@ public class GameManager : MonoBehaviour {
 		}
 	}
 
+	// References
+	PlayerController playerController;
+
 	//switches
 	bool switchToNotification;
 	bool switchToInventory;
@@ -50,6 +53,10 @@ public class GameManager : MonoBehaviour {
 		Screen.autorotateToLandscapeLeft = false;
 		Screen.autorotateToLandscapeRight = false;
 		Screen.autorotateToPortraitUpsideDown = false;
+
+		playerController = GameObject.FindObjectOfType<PlayerController>();
+		if( playerController == null )
+			Debug.LogError( "GameManager didn't find a reference to a PlayerController in the scene." );
 	}
 
 
@@ -207,13 +214,13 @@ public class GameManager : MonoBehaviour {
 
 
 		} else if (currentGameState == GameState.PitStop) {
+			// UI
 			inGameGUI.GetComponent<Animator> ().SetTrigger("pitstop");
 			pitStopGUI.GetComponent<Animator>().SetTrigger("pitstop");
+			// Player
+			playerController.SetAtRespawnPos();
 			switchToGame = true;
-
-			
 		}
-
 	}
 
 	public void SwitchToNotification() {
