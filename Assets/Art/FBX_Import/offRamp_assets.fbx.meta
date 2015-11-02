@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: 84262855a69745b4895a9147ff805b59
-timeCreated: 1446496917
+timeCreated: 1446499935
 licenseType: Pro
 ModelImporter:
   serializedVersion: 18
@@ -65,7 +65,7 @@ ModelImporter:
     4300018: offrampRoad_01
     4300020: offRamp_Sign
   materials:
-    importMaterials: 1
+    importMaterials: 0
     materialName: 0
     materialSearch: 1
   animations:
