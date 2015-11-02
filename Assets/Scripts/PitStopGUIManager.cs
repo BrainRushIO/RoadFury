@@ -23,196 +23,168 @@ public class PitStopGUIManager : MonoBehaviour {
 	public int lastIndexClicked; //used to refer to index in list of player Loan/Business/etc...
 
 	public void HandlePitStopClick(int index) {
-		print ("handle click");
-		if (currentPitStopState == PitStopState.Loans ||
-			currentPitStopState == PitStopState.Investment ||
-			currentPitStopState == PitStopState.RealEstate ||
-			currentPitStopState == PitStopState.Business) {
-			print ("last index set");
-			lastIndexClicked = index;
-		}
+		if (GameManager.s_instance.currentGameState == GameState.PitStop) {
+			print ("handle click");
+			if (currentPitStopState == PitStopState.Loans ||
+				currentPitStopState == PitStopState.Investment ||
+				currentPitStopState == PitStopState.RealEstate ||
+				currentPitStopState == PitStopState.Business) {
+				print ("last index set");
+				lastIndexClicked = index;
+			}
 
-		switch (currentPitStopState) {
-		case PitStopState.Main :
-			switch (index) {
-			case 0 :
-				currentPitStopState = PitStopState.Loans;
-				break;
-			case 1 :
-				currentPitStopState = PitStopState.Investment;
-				break;
-			case 2 :
-				currentPitStopState = PitStopState.Business;
-				break;
-			case 3 :
-				currentPitStopState = PitStopState.RealEstate;
-				break;
+			switch (currentPitStopState) {
+			case PitStopState.Main:
+				switch (index) {
+				case 0:
+					currentPitStopState = PitStopState.Loans;
+					break;
+				case 1:
+					currentPitStopState = PitStopState.Investment;
+					break;
+				case 2:
+					currentPitStopState = PitStopState.Business;
+					break;
+				case 3:
+					currentPitStopState = PitStopState.RealEstate;
+					break;
 			
-			case 7 :
+				case 7:
 				//goback to road
-				GameManager.s_instance.SwitchToGame();
+					GameManager.s_instance.SwitchToGame ();
+					break;
+				}
 				break;
-			}
-			break;
 			#region Loans
-		case PitStopState.Loans :
-			if (lastIndexClicked < 7 && PlayerStats.s_instance.playerLoans.Count > lastIndexClicked) {
-				currentPitStopState = PitStopState.SelectLoan;
-			}
-			else if (index == 7){
-				currentPitStopState = PitStopState.Main;
-			}
-			break;
+			case PitStopState.Loans:
+				if (lastIndexClicked < 7 && PlayerStats.s_instance.playerLoans.Count > lastIndexClicked) {
+					currentPitStopState = PitStopState.SelectLoan;
+				} else if (index == 7) {
+					currentPitStopState = PitStopState.Main;
+				}
+				break;
 
-		case PitStopState.SelectLoan :
-			if (index == 6) {
-				PlayerStats.s_instance.PayOffLoan(lastIndexClicked);
-			}
-			else if (index == 7) {
-				currentPitStopState = PitStopState.Loans;
-			}
+			case PitStopState.SelectLoan:
+				if (index == 6) {
+					PlayerStats.s_instance.PayOffLoan (lastIndexClicked);
+				} else if (index == 7) {
+					currentPitStopState = PitStopState.Loans;
+				}
 
-			break;
+				break;
 			#endregion
 			#region Investment
-		case PitStopState.Investment :
-			if (lastIndexClicked < 4 && PlayerStats.s_instance.playerInvestments.Count > lastIndexClicked) {
-				currentPitStopState = PitStopState.SelectInvestment;
-			}
-			else if (lastIndexClicked == 4) {
-				PlayerStats.s_instance.AddInvestment(Investment.InvestmentType.Stock);
-			}
-
-			else if (lastIndexClicked == 5) {
-				PlayerStats.s_instance.AddInvestment(Investment.InvestmentType.Mutual);
-			}
-
-			else if (lastIndexClicked == 6) {
-				PlayerStats.s_instance.AddInvestment(Investment.InvestmentType.IRA);
-			} else if (lastIndexClicked == 7) { 
-				currentPitStopState = PitStopState.Main;
-			}
-			break;
-		case PitStopState.SelectInvestment :
-			if (PlayerStats.s_instance.playerInvestments[lastIndexClicked].thisInvestmentType == Investment.InvestmentType.Stock) {
-				if (index == 2) {
-					PlayerStats.s_instance.AddMoneyToInvestment(lastIndexClicked, 10000);
-				}
-				else if (index == 3) {
-					PlayerStats.s_instance.AddMoneyToInvestment(lastIndexClicked, 500000);
-				}
-				else if (index == 4) {
-					PlayerStats.s_instance.LiquidateInvestment(lastIndexClicked, 1f);
-					currentPitStopState = PitStopState.Investment;
-				}
-				else if (index == 5) {
-					PlayerStats.s_instance.LiquidateInvestment(lastIndexClicked, .5f);
-				}
-				else if (index == 6) {
-					PlayerStats.s_instance.LiquidateInvestment(lastIndexClicked, .1f);
-
-				} else if (index == 7) { 
-					currentPitStopState = PitStopState.Investment;
-				}
-			}
-			else if (PlayerStats.s_instance.playerInvestments[lastIndexClicked].thisInvestmentType == Investment.InvestmentType.Mutual) {
-				if (index == 2) {
-					PlayerStats.s_instance.AddMoneyToInvestment(lastIndexClicked, 1000);
-				}
-				else if (index == 3) {
-					PlayerStats.s_instance.AddMoneyToInvestment(lastIndexClicked, 50000);
-				}
-				else if (index == 4) {
-					PlayerStats.s_instance.LiquidateInvestment(lastIndexClicked, 1f);
-					currentPitStopState = PitStopState.Investment;
-				}
-				else if (index == 5) {
-					PlayerStats.s_instance.LiquidateInvestment(lastIndexClicked, .5f);
-					//TODO make sure ppl cant spam this shit
-				}
-				else if (index == 6) {
-					PlayerStats.s_instance.LiquidateInvestment(lastIndexClicked, .1f);
-
-				} else if (index == 7) { 
+			case PitStopState.Investment:
+				if (lastIndexClicked < 4 && PlayerStats.s_instance.playerInvestments.Count > lastIndexClicked) {
+					currentPitStopState = PitStopState.SelectInvestment;
+				} else if (lastIndexClicked == 4) {
+					PlayerStats.s_instance.AddInvestment (Investment.InvestmentType.Stock);
+				} else if (lastIndexClicked == 5) {
+					PlayerStats.s_instance.AddInvestment (Investment.InvestmentType.Mutual);
+				} else if (lastIndexClicked == 6) {
+					PlayerStats.s_instance.AddInvestment (Investment.InvestmentType.IRA);
+				} else if (lastIndexClicked == 7) { 
 					currentPitStopState = PitStopState.Main;
 				}
-			}
+				break;
+			case PitStopState.SelectInvestment:
+				if (PlayerStats.s_instance.playerInvestments [lastIndexClicked].thisInvestmentType == Investment.InvestmentType.Stock) {
+					if (index == 2) {
+						PlayerStats.s_instance.AddMoneyToInvestment (lastIndexClicked, 10000);
+					} else if (index == 3) {
+						PlayerStats.s_instance.AddMoneyToInvestment (lastIndexClicked, 500000);
+					} else if (index == 4) {
+						PlayerStats.s_instance.LiquidateInvestment (lastIndexClicked, 1f);
+						currentPitStopState = PitStopState.Investment;
+					} else if (index == 5) {
+						PlayerStats.s_instance.LiquidateInvestment (lastIndexClicked, .5f);
+					} else if (index == 6) {
+						PlayerStats.s_instance.LiquidateInvestment (lastIndexClicked, .1f);
 
-			else if (PlayerStats.s_instance.playerInvestments[lastIndexClicked].thisInvestmentType == Investment.InvestmentType.IRA) {
-				if (index == 2) {
-					PlayerStats.s_instance.AddMoneyToInvestment(lastIndexClicked, 100f);
+					} else if (index == 7) { 
+						currentPitStopState = PitStopState.Investment;
+					}
+				} else if (PlayerStats.s_instance.playerInvestments [lastIndexClicked].thisInvestmentType == Investment.InvestmentType.Mutual) {
+					if (index == 2) {
+						PlayerStats.s_instance.AddMoneyToInvestment (lastIndexClicked, 1000);
+					} else if (index == 3) {
+						PlayerStats.s_instance.AddMoneyToInvestment (lastIndexClicked, 50000);
+					} else if (index == 4) {
+						PlayerStats.s_instance.LiquidateInvestment (lastIndexClicked, 1f);
+						currentPitStopState = PitStopState.Investment;
+					} else if (index == 5) {
+						PlayerStats.s_instance.LiquidateInvestment (lastIndexClicked, .5f);
+						//TODO make sure ppl cant spam this shit
+					} else if (index == 6) {
+						PlayerStats.s_instance.LiquidateInvestment (lastIndexClicked, .1f);
+
+					} else if (index == 7) { 
+						currentPitStopState = PitStopState.Main;
+					}
+				} else if (PlayerStats.s_instance.playerInvestments [lastIndexClicked].thisInvestmentType == Investment.InvestmentType.IRA) {
+					if (index == 2) {
+						PlayerStats.s_instance.AddMoneyToInvestment (lastIndexClicked, 100f);
+					} else if (index == 3) {
+						PlayerStats.s_instance.AddMoneyToInvestment (lastIndexClicked, 1000f);
+					} else if (index == 6) {
+						PlayerStats.s_instance.LiquidateInvestment (lastIndexClicked, 1f);
+						currentPitStopState = PitStopState.Investment;
+					} else if (index == 7) { 
+						currentPitStopState = PitStopState.Main;
+					}
 				}
-				else if (index == 3) {
-					PlayerStats.s_instance.AddMoneyToInvestment(lastIndexClicked, 1000f);
-				}
-				else if (index == 6) {
-					PlayerStats.s_instance.LiquidateInvestment(lastIndexClicked, 1f);
-					currentPitStopState = PitStopState.Investment;
-				} else if (index == 7) { 
-					currentPitStopState = PitStopState.Main;
-				}
-			}
-			break;
+				break;
 			#endregion
 			#region Business
-		case PitStopState.Business :
-			print (lastIndexClicked + " LIC");
-			if (lastIndexClicked < 4 && PlayerStats.s_instance.playerBusinesses[lastIndexClicked]!=null ) {
-				currentPitStopState = PitStopState.SelectBusiness;
-			}
-			else if (lastIndexClicked > 3 && lastIndexClicked < 7) {
-				PlayerStats.s_instance.AddBusiness(lastIndexClicked - 4);
-			}
-			else if (lastIndexClicked == 7) {
-				currentPitStopState = PitStopState.Main;
-			}
-			else {
-				Debug.LogWarning("Index out of bounds in PitStopGUIManager");
-			}
-			break;
-		case PitStopState.SelectBusiness :
-			if (index == 2) {
-				PlayerStats.s_instance.WorkOvertime(lastIndexClicked);
-			}
-			else if (index == 3) {
-				PlayerStats.s_instance.SellBusiness(lastIndexClicked);
-				currentPitStopState = PitStopState.Business;
-			}
-			else if (index == 7) {
-				currentPitStopState = PitStopState.Business;
-			}
-			break;
+			case PitStopState.Business:
+				print (lastIndexClicked + " LIC");
+				if (lastIndexClicked < 4 && PlayerStats.s_instance.playerBusinesses [lastIndexClicked] != null) {
+					currentPitStopState = PitStopState.SelectBusiness;
+				} else if (lastIndexClicked > 3 && lastIndexClicked < 7) {
+					PlayerStats.s_instance.AddBusiness (lastIndexClicked - 4);
+				} else if (lastIndexClicked == 7) {
+					currentPitStopState = PitStopState.Main;
+				} else {
+					Debug.LogWarning ("Index out of bounds in PitStopGUIManager");
+				}
+				break;
+			case PitStopState.SelectBusiness:
+				if (index == 2) {
+					PlayerStats.s_instance.WorkOvertime (lastIndexClicked);
+				} else if (index == 3) {
+					PlayerStats.s_instance.SellBusiness (lastIndexClicked);
+					currentPitStopState = PitStopState.Business;
+				} else if (index == 7) {
+					currentPitStopState = PitStopState.Business;
+				}
+				break;
 			#endregion
 			#region RealEstate
-		case PitStopState.RealEstate :
-			if (lastIndexClicked < 4 && PlayerStats.s_instance.playerRealEstate[lastIndexClicked]!=null) {
-				currentPitStopState = PitStopState.SelectRealEstate;
-			}
-			else if (index == 4) {
-				PlayerStats.s_instance.AddRealEstate(0);
-			}
-			else if (index == 5) {
-				PlayerStats.s_instance.AddRealEstate(1);
-			}
-			else if (index == 6) {
-				PlayerStats.s_instance.AddRealEstate(2);
-			}
-			else if (index == 7) {
-				currentPitStopState = PitStopState.Main;
-			}
-			break;
-		case PitStopState.SelectRealEstate :
-			if (index == 6) {
-				PlayerStats.s_instance.SellRealEstate(lastIndexClicked);
-				currentPitStopState = PitStopState.RealEstate;
-			}
-			else if (index == 7) {
-				currentPitStopState = PitStopState.RealEstate;
-			}
-			break;
+			case PitStopState.RealEstate:
+				if (lastIndexClicked < 4 && PlayerStats.s_instance.playerRealEstate [lastIndexClicked] != null) {
+					currentPitStopState = PitStopState.SelectRealEstate;
+				} else if (index == 4) {
+					PlayerStats.s_instance.AddRealEstate (0);
+				} else if (index == 5) {
+					PlayerStats.s_instance.AddRealEstate (1);
+				} else if (index == 6) {
+					PlayerStats.s_instance.AddRealEstate (2);
+				} else if (index == 7) {
+					currentPitStopState = PitStopState.Main;
+				}
+				break;
+			case PitStopState.SelectRealEstate:
+				if (index == 6) {
+					PlayerStats.s_instance.SellRealEstate (lastIndexClicked);
+					currentPitStopState = PitStopState.RealEstate;
+				} else if (index == 7) {
+					currentPitStopState = PitStopState.RealEstate;
+				}
+				break;
 			#endregion
+			}
+			DisplayCurrentMenu ();
 		}
-		DisplayCurrentMenu();
 	}
 
 	public void DisplayCurrentMenu() {
