@@ -114,7 +114,7 @@ public class PlayerStats : MonoBehaviour {
 		if( money >= playerLoans[index].loanAmount ) {
 			Loan selectedLoan = playerLoans[index];
 			selectedLoan.PayLoanAmount( selectedLoan.loanAmount );
-			playerLoans.Remove( selectedLoan );
+//			playerLoans.Remove( selectedLoan );
 			// TODO Update list on GUI
 		} else {
 			GUIManager.s_instance.DisplayNotification( "Notice!", "You don't have enough money to pay the loan off." );

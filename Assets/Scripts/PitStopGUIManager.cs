@@ -25,9 +25,12 @@ public class PitStopGUIManager : MonoBehaviour {
 	public void HandlePitStopClick(int index) {
 		print ("handle click");
 		if (currentPitStopState == PitStopState.Loans ||
-		    currentPitStopState == PitStopState.Investment ||
-		    currentPitStopState == PitStopState.RealEstate ||
-		    currentPitStopState == PitStopState.Business) lastIndexClicked = index;
+			currentPitStopState == PitStopState.Investment ||
+			currentPitStopState == PitStopState.RealEstate ||
+			currentPitStopState == PitStopState.Business) {
+			print ("last index set");
+			lastIndexClicked = index;
+		}
 
 		switch (currentPitStopState) {
 		case PitStopState.Main :
@@ -62,11 +65,8 @@ public class PitStopGUIManager : MonoBehaviour {
 			break;
 
 		case PitStopState.SelectLoan :
-			if (index == 2) {
+			if (index == 6) {
 				PlayerStats.s_instance.PayOffLoan(lastIndexClicked);
-			}
-			else if (index == 3) {
-				PlayerStats.s_instance.IncreaseLoanPaymentRate(lastIndexClicked);
 			}
 			else if (index == 7) {
 				currentPitStopState = PitStopState.Loans;
@@ -238,6 +238,7 @@ public class PitStopGUIManager : MonoBehaviour {
 			allTextObjects[7].text = "Back";
 			break;
 		case PitStopState.SelectLoan :
+			print ("LIC " + lastIndexClicked);
 			allTextObjects[0].text = PlayerStats.s_instance.playerLoans[lastIndexClicked].loanName;
 			allTextObjects[1].text = "Interest Rate: " + (PlayerStats.s_instance.playerLoans[lastIndexClicked].loanAmount == 0 ? 0 : PlayerStats.s_instance.playerLoans[lastIndexClicked].interestRate).ToString();
 			allTextObjects[2].text = "Amount Left: " + (PlayerStats.s_instance.playerLoans[lastIndexClicked].loanAmount);
