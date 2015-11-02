@@ -12,6 +12,7 @@ public class PlayerController : MonoBehaviour {
 	private bool isOnHorizontalRoad = false;
 	private Animator anim;
 	public GameObject currentRoadSection;
+	public Transform respawnPos;
 
 	// Rotation
 	private bool isRotateLerp;
@@ -105,6 +106,7 @@ public class PlayerController : MonoBehaviour {
 		} else if (other.tag == "pitstop") {
 			GameManager.s_instance.SwitchToPitStop();
 			pitstopEntranceAvailable = false;
+			respawnPos = other.GetComponent<PitStopRespawn>().respawnPosition;
 		} else if (other.tag == "pitstopRoad" ) {
 			pitstopEntranceAvailable = true;
 		}
@@ -124,5 +126,14 @@ public class PlayerController : MonoBehaviour {
 		} else if( other.tag == "pitstopRoad" ) {
 			pitstopEntranceAvailable = false;
 		}
+	}
+
+	public void SetAtRespawnPos() {
+		if( respawnPos == null ) {
+			Debug.LogError( "No respawn position set for this trigger." );
+			return;
+		}
+
+		transform.position = respawnPos.position;
 	}
 }
