@@ -70,14 +70,16 @@ public class GameManager : MonoBehaviour {
 			break;
 
 		case GameState.Intro :
+
+			if(switchToGame) {
+				switchToGame = false;
+				currentGameState = GameState.Playing;
+			}
+
 			if (Input.GetKeyDown(KeyCode.Space)) {
 				SwitchToGame ();
 
 				EndTutorial();
-			}
-			if (tutorialIsOver) {
-				tutorialIsOver = false;
-				currentGameState = GameState.Playing;
 			}
 			else {
 				RunCutSceneText();
@@ -141,7 +143,6 @@ public class GameManager : MonoBehaviour {
 	}
 
 	public void EndTutorial () {
-		tutorialIsOver = true;
 		currentGUIseries.SetActive (false);
 		GameObject.FindGameObjectWithTag ("CamPos").GetComponent<Cinematographer> ().RollCamera ();
 		GameObject.FindGameObjectWithTag ("Player").GetComponent<Animator> ().SetTrigger ("run");
