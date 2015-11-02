@@ -65,7 +65,7 @@ ModelImporter:
     4300018: offrampRoad_01
     4300020: offRamp_Sign
   materials:
-    importMaterials: 1
+    importMaterials: 0
     materialName: 0
     materialSearch: 1
   animations:
