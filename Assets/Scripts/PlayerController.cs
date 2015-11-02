@@ -87,20 +87,21 @@ public class PlayerController : MonoBehaviour {
 
 			if (temp.burnRate != 0f) {
 				PlayerStats.s_instance.cashFlow += temp.burnRate;
-				GameManager.s_instance.SetNewBurnRate (PlayerStats.s_instance.cashFlow);
 			}
 
 			if (temp.happiness != 0f) {
-				PlayerStats.s_instance.happiness += temp.happiness/100f;
+				PlayerStats.s_instance.happiness += temp.happiness / 100f;
 			}
 			if (other.gameObject.GetComponent<PowerUp> ().thisPowerUpType == PowerUp.PowerUpType.None) {
 				Destroy (other.gameObject);
 			}
 		} else if (other.tag == "branch") {
-			GameManager.s_instance.currentGUIseries = other.GetComponent<RoadBranch>().GUIObject;
-			GameManager.s_instance.currentGUIseries.SetActive(true);
-			GameManager.s_instance.SwitchToCutscene();
+			GameManager.s_instance.currentGUIseries = other.GetComponent<RoadBranch> ().GUIObject;
+			GameManager.s_instance.currentGUIseries.SetActive (true);
+			GameManager.s_instance.SwitchToCutscene ();
 			print ("HIT BRANCH");
+		} else if (other.tag == "pitstop") {
+			GameManager.s_instance.SwitchToPitStop();
 		}
 	}
 

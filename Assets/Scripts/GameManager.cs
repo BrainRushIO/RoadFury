@@ -2,10 +2,8 @@
 using System.Collections;
 using UnityEngine.UI;
 
-public enum GameState {Pause, MainMenu, Intro, Playing, Cutscene, PitStop, InventoryMode, GameOver, Win};
+public enum GameState {Pause, MainMenu, Intro, Playing, Cutscene, Notification, PitStop, InventoryMode, GameOver, Win};
 public enum AgeState {YoungAdult, Adult, OldAdult, SeniorCitizen};
-public enum CareerState {BusBoy, FryCook, Manager, StoreManager, RegionalManager, OperationsDirector, VPofOperations, COO, CEO, Retired};
-public enum CareerType {Medical, BusinessFinance, Engineering, Entertainment, GovernmentLegal}
 
 public class GameManager : MonoBehaviour {
 
@@ -21,21 +19,10 @@ public class GameManager : MonoBehaviour {
 		}
 	}
 
-	public float attrition = .1f;
-	public float strafeSpeed = .1f;
-	public float playerBounds = 4f;
-	public int age = 16, money = 1000;
-	public float costOfLiving = -200;
-	public Text moneyText, ageText, burnRateText;
-	public Slider happiness;
-
-	public float loseADollarRate = 0;
-	public float loseADollarTimer = 0f;
-	public float ageAYearRate = 10f;
-	public float ageAYearTimer = 0f;
-
 	//switches
+	bool switchToNotification;
 	bool switchToInventory;
+	bool switchToPitstop;
 	bool switchToGame;
 	bool userPressedStart = false;
 	bool tutorialIsOver = false;
@@ -46,6 +33,7 @@ public class GameManager : MonoBehaviour {
 	bool isCamRotateUp, isCamRotateDown;
 
 	public GameObject tutorialCam;
+	public GameObject pitStopGUI;
 	public GameObject inGameGUI;
 	public GameObject MainMenuGUI, MainMenuText;
 	int textIterator = 0;
@@ -53,17 +41,15 @@ public class GameManager : MonoBehaviour {
 	float slideTimer;
 
 	public GameObject currentGUIseries;
-	private GameState previousGameState;
+	public GameState previousGameState;
 
 	//TODO add attrition rate increases depending on if player gets wife or gf or not
 	
 	void Start () {
-		SetNewBurnRate(-200);
 		Screen.orientation = ScreenOrientation.Portrait;
 		Screen.autorotateToLandscapeLeft = false;
 		Screen.autorotateToLandscapeRight = false;
 		Screen.autorotateToPortraitUpsideDown = false;
-
 	}
 
 
@@ -73,10 +59,12 @@ public class GameManager : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
+		print (currentGameState);
 		switch (currentGameState) {
 
 		case GameState.MainMenu : 
 			if (userPressedStart) {
+				userPressedStart = false;
 				currentGameState = GameState.Intro;
 			}
 			break;
@@ -86,6 +74,7 @@ public class GameManager : MonoBehaviour {
 				EndTutorial();
 			}
 			if (tutorialIsOver) {
+				tutorialIsOver = false;
 				currentGameState = GameState.Playing;
 			}
 			else {
@@ -94,20 +83,14 @@ public class GameManager : MonoBehaviour {
 			break;
 
 		case GameState.Playing :
-			
-			loseADollarTimer += Time.deltaTime;
-			if (loseADollarTimer > Mathf.Abs(loseADollarRate) && loseADollarRate < 0) {
-				loseADollarTimer = 0;
-				money--;
-			}
-			else if (loseADollarTimer > Mathf.Abs(loseADollarRate) && loseADollarRate > 0) {
-				loseADollarTimer = 0;
-				money++;
-			}
 
 			if (switchToCutScene) {
-				slideTimer = 0;
+				switchToCutScene = false;
 				currentGameState = GameState.Cutscene;
+			}
+			if (switchToPitstop) {
+				switchToPitstop = false;
+				currentGameState = GameState.PitStop;
 			}
 
 			break;
@@ -115,16 +98,35 @@ public class GameManager : MonoBehaviour {
 		case GameState.Cutscene : 
 			RunCutSceneText();
 			if (switchToGame) {
+				switchToGame = false;
 				currentGameState = GameState.Playing;
 			}
 			break;
-		}
-
+		case GameState.PitStop : 
+			if (switchToGame) {
+				switchToGame = false;
+				currentGameState = GameState.Playing;
+			}
+			if (switchToNotification) {
+				switchToNotification = false;
+				currentGameState = GameState.Notification;
+			}
+			break;
+		case GameState.Notification : 
+			if (switchToGame) {
+				switchToGame = false;
+				currentGameState = GameState.Playing;
+			}
+			if (switchToPitstop) {
+				switchToPitstop = false;
+				currentGameState = GameState.PitStop;
+			}
+			break;
+		
 	}
 	
-	public void SetNewBurnRate(float newBurnRate){
-		loseADollarRate = 60f / (newBurnRate);
-	}
+}
+
 
 	public void StartGame () {
 		userPressedStart = true;
@@ -166,6 +168,7 @@ public class GameManager : MonoBehaviour {
 	}
 
 	public void SwitchToCutscene () {
+		slideTimer = 0;
 		inGameGUI.GetComponent<Animator> ().SetTrigger("hide");
 		//inGameGUI.SetActive (false);
 		textIterator = 0;
@@ -176,24 +179,44 @@ public class GameManager : MonoBehaviour {
 
 	}
 
-	public void SwitchToGame () {
-		Camera.main.GetComponent<HoverFollowCam>().enabled = true;
-		if (currentGameState != GameState.Intro) {
-			currentGUIseries.SetActive (false);
-			//inGameGUI.SetActive (true);
-			inGameGUI.GetComponent<Animator>().SetTrigger("show");
+	public void SwitchToPitStop () {
+		if (currentGameState == GameState.Playing) {
+			switchToPitstop = true;
+			inGameGUI.GetComponent<Animator> ().SetTrigger ("pitstop");
+			pitStopGUI.GetComponent<Animator> ().SetTrigger ("pitstop");
 		}
-		switchToGame = true;
 
-		switchToCutScene = false;
+		if (currentGameState == GameState.Notification) {
+			switchToPitstop = true;
+
+		}
+			
+			
+	}
+	public void SwitchToGame () {
+		if (currentGameState == GameState.Cutscene) {
+			Camera.main.GetComponent<HoverFollowCam> ().enabled = true;
+			if (currentGameState != GameState.Intro) {
+				currentGUIseries.SetActive (false);
+				//inGameGUI.SetActive (true);
+				inGameGUI.GetComponent<Animator> ().SetTrigger ("show");
+				switchToGame = true;
+
+			}
+
+		} else if (currentGameState == GameState.PitStop) {
+			inGameGUI.GetComponent<Animator> ().SetTrigger("pitstop");
+			pitStopGUI.GetComponent<Animator>().SetTrigger("pitstop");
+			switchToGame = true;
+
+			
+		}
+
 	}
 
-	public void TriggerNotificationState( bool triggerOn ) {
-		if( triggerOn ) {
+	public void SwitchToNotification() {
+		switchToNotification = true;
+		if( previousGameState != GameState.Notification )
 			previousGameState = currentGameState;
-			currentGameState = GameState.Cutscene;
-		} else {
-			currentGameState = previousGameState;
-		}
 	}
 }

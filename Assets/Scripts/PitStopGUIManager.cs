@@ -23,6 +23,7 @@ public class PitStopGUIManager : MonoBehaviour {
 	public int lastIndexClicked; //used to refer to index in list of player Loan/Business/etc...
 
 	public void HandlePitStopClick(int index) {
+		print ("handle click");
 		if (currentPitStopState == PitStopState.Loans ||
 		    currentPitStopState == PitStopState.Investment ||
 		    currentPitStopState == PitStopState.RealEstate ||
@@ -46,6 +47,7 @@ public class PitStopGUIManager : MonoBehaviour {
 			
 			case 7 :
 				//goback to road
+				GameManager.s_instance.SwitchToGame();
 				break;
 			}
 			break;
