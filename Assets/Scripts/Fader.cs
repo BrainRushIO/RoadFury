@@ -26,7 +26,7 @@ public class Fader : MonoBehaviour {
 		text = GetComponent<Text> ();
 	}
 	
-	void Update() {
+	protected void Update() {
 		if (fading) {
 			float timePassed = (Time.time - startTime);
 			float fracJourney = timePassed / fadeTime;
@@ -38,7 +38,6 @@ public class Fader : MonoBehaviour {
 				else {
 					currColor = Color.Lerp (customEndColor, customStartColor, fracJourney);
 				}
-				
 			}
 			
 			else if (!oneToZeroAlpha) {
@@ -69,11 +68,11 @@ public class Fader : MonoBehaviour {
 				text.color = currColor;
 			}
 			if (image != null) {
-
 				image.color = currColor;
 			}
 			if (fracJourney >= 1) {
 				fading = false;
+
 			}
 		}
 	}

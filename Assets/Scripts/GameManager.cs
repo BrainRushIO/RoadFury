@@ -39,6 +39,7 @@ public class GameManager : MonoBehaviour {
 	public GameObject pitStopGUI;
 	public GameObject inGameGUI;
 	public GameObject MainMenuGUI, MainMenuText;
+	public GameObject faderObj;
 	int textIterator = 0;
 	float slideDuration = 3f;
 	float slideTimer;
@@ -227,5 +228,26 @@ public class GameManager : MonoBehaviour {
 		switchToNotification = true;
 		if( previousGameState != GameState.Notification )
 			previousGameState = currentGameState;
+	}
+
+	public void PitstopFlashEnter() {
+		StartCoroutine("FlashIn");
+	}
+
+	public void PitstopFlashExit() {
+		StartCoroutine("FlashOut");
+	}
+
+	private IEnumerator FlashIn() {
+		faderObj.GetComponent<Fader>().StartFadeIn();
+		yield return new WaitForSeconds(1f);
+		//switch camera
+		faderObj.GetComponent<Fader>().StartFadeOut();
+	}
+	private IEnumerator FlashOut() {
+		faderObj.GetComponent<Fader>().StartFadeIn();
+		yield return new WaitForSeconds(1f);
+		//switch camera
+		faderObj.GetComponent<Fader>().StartFadeOut();
 	}
 }
