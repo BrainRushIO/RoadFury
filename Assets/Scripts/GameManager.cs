@@ -71,6 +71,8 @@ public class GameManager : MonoBehaviour {
 
 		case GameState.Intro :
 			if (Input.GetKeyDown(KeyCode.Space)) {
+				SwitchToGame ();
+
 				EndTutorial();
 			}
 			if (tutorialIsOver) {
@@ -194,15 +196,14 @@ public class GameManager : MonoBehaviour {
 			
 	}
 	public void SwitchToGame () {
-		if (currentGameState == GameState.Cutscene) {
+		if (currentGameState == GameState.Intro) {
 			Camera.main.GetComponent<HoverFollowCam> ().enabled = true;
-			if (currentGameState != GameState.Intro) {
-				currentGUIseries.SetActive (false);
-				//inGameGUI.SetActive (true);
-				inGameGUI.GetComponent<Animator> ().SetTrigger ("show");
-				switchToGame = true;
+			currentGUIseries.SetActive (false);
+//				inGameGUI.SetActive (true);
+			inGameGUI.GetComponent<Animator> ().SetTrigger ("show");
+			print ("SET TRIGGER SHOW");
+			switchToGame = true;
 
-			}
 
 		} else if (currentGameState == GameState.PitStop) {
 			inGameGUI.GetComponent<Animator> ().SetTrigger("pitstop");

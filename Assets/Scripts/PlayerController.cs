@@ -4,16 +4,20 @@ using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour {
 
-	float strafeSpeed = .1f, moveSpeed = 8f;
-	float playerBounds = 4f;
-	public GameObject currentRoadSection;
-	bool isOnHorizontalRoad = false;
+	// Movement and bounds
+	private float strafeSpeed = 4.5f, moveSpeed = 8f;
+	private float playerBounds = 4f;
+	private float pitStopBoundsOffset = 5f;
+	private bool pitstopEntranceAvailable = false;
+	private bool isOnHorizontalRoad = false;
 	private Animator anim;
+	public GameObject currentRoadSection;
 
-	bool isRotateLerp;
-	float rotateLerpTimer;
-	float rotateLerpDuration = 1f;
-	Quaternion startLerp, endLerp;
+	// Rotation
+	private bool isRotateLerp;
+	private float rotateLerpTimer;
+	private float rotateLerpDuration = 1f;
+	private Quaternion startLerp, endLerp;
 
 	//TODO add attrition rate increases depending on if player gets wife or gf or not
 	void Start(){
@@ -57,18 +61,23 @@ public class PlayerController : MonoBehaviour {
 				}
 			}
 
-			anim.SetFloat ("Turn", horizontal * .7f);
+			anim.SetFloat ("Turn", horizontal * .6f);
 			transform.Translate (Vector3.forward*moveSpeed*Time.deltaTime);
 
+			// Calculate if we are entering a pitstop
+			float tempPitstopBoundsOffset = 0f;
+			if( pitstopEntranceAvailable ) {
+				tempPitstopBoundsOffset = pitStopBoundsOffset;
+			}
 
 			//bound player
 			if (!isOnHorizontalRoad) {
-				if (Mathf.Abs (transform.position.x + (horizontal * strafeSpeed)) < playerBounds + currentRoadSection.transform.position.x) {
-					transform.Translate (horizontal * strafeSpeed, 0, 0);
+				if (Mathf.Abs (transform.position.x + (horizontal * strafeSpeed*Time.deltaTime)) < playerBounds + tempPitstopBoundsOffset + currentRoadSection.transform.position.x) {
+					transform.Translate (horizontal * strafeSpeed*Time.deltaTime, 0, 0);
 				}
 			} else {
-				if (Mathf.Abs (transform.position.z - currentRoadSection.transform.position.z - (horizontal * strafeSpeed)) < playerBounds) {
-					transform.Translate (horizontal * strafeSpeed, 0, 0);
+				if (Mathf.Abs (transform.position.z - currentRoadSection.transform.position.z - (horizontal * strafeSpeed*Time.deltaTime)) < playerBounds + tempPitstopBoundsOffset) {
+					transform.Translate (horizontal * strafeSpeed*Time.deltaTime, 0, 0);
 				}
 
 			}
@@ -102,6 +111,9 @@ public class PlayerController : MonoBehaviour {
 			print ("HIT BRANCH");
 		} else if (other.tag == "pitstop") {
 			GameManager.s_instance.SwitchToPitStop();
+			pitstopEntranceAvailable = false;
+		} else if (other.tag == "pitstopRoad" ) {
+			pitstopEntranceAvailable = true;
 		}
 	}
 
@@ -116,7 +128,8 @@ public class PlayerController : MonoBehaviour {
 				anim.SetTrigger ("Retired");
 				transform.Translate(0,0,0);
 			}
-
+		} else if( other.tag == "pitstopRoad" ) {
+			pitstopEntranceAvailable = false;
 		}
 	}
 }

@@ -46,7 +46,6 @@ public class Cinematographer : MonoBehaviour {
 				else if (!isLerping) {
 //					textUIObjects[currentIndex].SetActive(false);
 					hasStarted = false;
-					GameManager.s_instance.SwitchToGame();
 					currentIndex =0;
 				}
 
