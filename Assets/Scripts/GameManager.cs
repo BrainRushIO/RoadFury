@@ -195,6 +195,7 @@ public class GameManager : MonoBehaviour {
 			switchToPitstop = true;
 			inGameGUI.GetComponent<Animator> ().SetTrigger ("pitstop");
 			pitStopGUI.GetComponent<Animator> ().SetTrigger ("pitstop");
+			FlashIn ();
 		}
 
 		if (currentGameState == GameState.Notification) {
@@ -210,7 +211,6 @@ public class GameManager : MonoBehaviour {
 			currentGUIseries.SetActive (false);
 //				inGameGUI.SetActive (true);
 			inGameGUI.GetComponent<Animator> ().SetTrigger ("show");
-			print ("SET TRIGGER SHOW");
 			switchToGame = true;
 
 
@@ -220,6 +220,7 @@ public class GameManager : MonoBehaviour {
 			pitStopGUI.GetComponent<Animator>().SetTrigger("pitstop");
 			// Player
 			playerController.SetAtRespawnPos();
+			FlashOut();
 			switchToGame = true;
 		}
 	}
@@ -242,12 +243,16 @@ public class GameManager : MonoBehaviour {
 		faderObj.GetComponent<Fader>().StartFadeIn();
 		yield return new WaitForSeconds(1f);
 		//switch camera
+		Camera.main.GetComponent<Camera> ().enabled = false;
+		GameObject.FindGameObjectWithTag ("Camera2").GetComponent<Camera>().enabled = true;
 		faderObj.GetComponent<Fader>().StartFadeOut();
 	}
 	private IEnumerator FlashOut() {
 		faderObj.GetComponent<Fader>().StartFadeIn();
 		yield return new WaitForSeconds(1f);
 		//switch camera
+		GameObject.FindGameObjectWithTag ("Camera2").GetComponent<Camera>().enabled = false;
+		Camera.main.GetComponent<Camera> ().enabled = true;
 		faderObj.GetComponent<Fader>().StartFadeOut();
 	}
 }
