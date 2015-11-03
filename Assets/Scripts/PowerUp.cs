@@ -5,8 +5,8 @@ using UnityEngine.UI;
 
 public class PowerUp : MonoBehaviour {
 
-	public enum PowerUpType{Girlfriend, Pet, None};
-	public PowerUpType thisPowerUpType = PowerUpType.None;
+//	public enum PowerUpType{Girlfriend, Pet, None};
+//	public PowerUpType thisPowerUpType = PowerUpType.None;
 	public Text thisText;
 	public string nameOfObj, guiMessage;
 	public float happiness, burnRate;

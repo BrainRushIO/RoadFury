@@ -10,8 +10,8 @@ public class GUIManager : MonoBehaviour {
 	public Transform costSpawn, multiplierSpawn, messageSpawn;
 	public Slider happinessBar; 
 	public Text burnRate, moneyText;
-	public Text notificationTitle, notificationDesc;
-	public Animator notificationAnimator;
+	public Text notificationTitle, notificationDesc, birthdayText;
+	public Animator notificationAnimator, birthdayAnimator;
 
 	public static GUIManager s_instance;
 	
@@ -74,8 +74,21 @@ public class GUIManager : MonoBehaviour {
 
 	}
 
-	public void DisplayAreYouSure () {
+	public void DisplayBday(int age) {
+		birthdayAnimator.SetBool ("hide", false);
+		birthdayText.text = "You turned " + age.ToString () + ".";
+		birthdayAnimator.SetBool ("show", true);
+		StartCoroutine ("CloseBdayCounter");
+	}
 
+	IEnumerator CloseBdayCounter() {
+		yield return new WaitForSeconds (2f);
+		CloseBday ();
+	}
+
+	public void CloseBday() {
+		birthdayAnimator.SetBool( "show", false );
+		birthdayAnimator.SetBool( "hide", true );
 	}
 
 	public void DisplayNotification( string title, string details ) {

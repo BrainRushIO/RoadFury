@@ -135,9 +135,7 @@ public class PlayerController : MonoBehaviour {
 			if (temp.happiness != 0f) {
 				PlayerStats.s_instance.happiness += temp.happiness / 100f;
 			}
-			if (other.gameObject.GetComponent<PowerUp> ().thisPowerUpType == PowerUp.PowerUpType.None) {
-				Destroy (other.gameObject);
-			}
+			Destroy (other.gameObject);
 		} else if (other.tag == "branch") {
 			GameManager.s_instance.currentGUIseries = other.GetComponent<RoadBranch> ().GUIObject;
 			GameManager.s_instance.currentGUIseries.SetActive (true);
