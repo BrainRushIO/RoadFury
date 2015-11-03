@@ -35,6 +35,7 @@ public class GameManager : MonoBehaviour {
 	float cameraRotateDuration = .5f;
 	bool isCamRotateUp, isCamRotateDown;
 
+	public GameObject camera1;
 	public GameObject tutorialCam;
 	public GameObject pitStopGUI;
 	public GameObject inGameGUI;
@@ -193,9 +194,7 @@ public class GameManager : MonoBehaviour {
 	public void SwitchToPitStop () {
 		if (currentGameState == GameState.Playing) {
 			switchToPitstop = true;
-			inGameGUI.GetComponent<Animator> ().SetTrigger ("pitstop");
-			pitStopGUI.GetComponent<Animator> ().SetTrigger ("pitstop");
-			FlashIn ();
+			PitstopFlashEnter ();
 		}
 
 		if (currentGameState == GameState.Notification) {
@@ -215,12 +214,10 @@ public class GameManager : MonoBehaviour {
 
 
 		} else if (currentGameState == GameState.PitStop) {
-			// UI
-			inGameGUI.GetComponent<Animator> ().SetTrigger("pitstop");
-			pitStopGUI.GetComponent<Animator>().SetTrigger("pitstop");
+
 			// Player
 			playerController.SetAtRespawnPos();
-			FlashOut();
+			PitstopFlashExit();
 			switchToGame = true;
 		}
 	}
@@ -240,19 +237,25 @@ public class GameManager : MonoBehaviour {
 	}
 
 	private IEnumerator FlashIn() {
+		print ("FLASH IN");
 		faderObj.GetComponent<Fader>().StartFadeIn();
 		yield return new WaitForSeconds(1f);
+		// UI
+		inGameGUI.GetComponent<Animator> ().SetTrigger("pitstop");
+		pitStopGUI.GetComponent<Animator>().SetTrigger("pitstop");
 		//switch camera
-		Camera.main.GetComponent<Camera> ().enabled = false;
+		camera1.GetComponent<Camera> ().enabled = false;
 		GameObject.FindGameObjectWithTag ("Camera2").GetComponent<Camera>().enabled = true;
 		faderObj.GetComponent<Fader>().StartFadeOut();
 	}
 	private IEnumerator FlashOut() {
 		faderObj.GetComponent<Fader>().StartFadeIn();
 		yield return new WaitForSeconds(1f);
+		inGameGUI.GetComponent<Animator> ().SetTrigger ("pitstop");
+		pitStopGUI.GetComponent<Animator> ().SetTrigger ("pitstop");
 		//switch camera
 		GameObject.FindGameObjectWithTag ("Camera2").GetComponent<Camera>().enabled = false;
-		Camera.main.GetComponent<Camera> ().enabled = true;
+		camera1.GetComponent<Camera> ().enabled = true;
 		faderObj.GetComponent<Fader>().StartFadeOut();
 	}
 }
