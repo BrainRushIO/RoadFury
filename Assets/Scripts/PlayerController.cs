@@ -84,7 +84,8 @@ public class PlayerController : MonoBehaviour {
 //			}
 //		}
 		if (GameManager.s_instance.currentGameState == GameState.Cutscene) {
-			//transform.Translate (Vector3.forward*moveSpeed*Time.deltaTime);
+			if( !isOnCart )
+				transform.Translate (Vector3.forward*moveSpeed*Time.deltaTime);
 		}
 		if (GameManager.s_instance.currentGameState == GameState.Playing) {
 			float horizontal = Input.GetAxis ("Horizontal");
