@@ -37,7 +37,7 @@ public class GameManager : MonoBehaviour {
 	public GameObject tutorialCam;
 	public GameObject pitStopGUI;
 	public GameObject inGameGUI;
-	public GameObject MainMenuGUI, MainMenuText;
+	public GameObject MainMenuGUI;
 	public GameObject faderObj;
 	int textIterator = 0;
 	float slideDuration = 3f;
@@ -142,7 +142,6 @@ public class GameManager : MonoBehaviour {
 	public void StartGame () {
 		userPressedStart = true;
 		MainMenuGUI.SetActive (false);
-		MainMenuText.SetActive (false);
 		currentGUIseries.SetActive (true);
 		Camera.main.transform.SetParent(GameObject.FindGameObjectWithTag("Player").transform);
 		tutorialCam.GetComponent<Cinematographer> ().quaternions [0] = Camera.main.transform;
