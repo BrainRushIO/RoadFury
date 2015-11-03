@@ -59,6 +59,7 @@ public class PlayerController : MonoBehaviour {
 					currentCartAnimator.SetTrigger( "right" );
 
 				isOnCart = true;
+				return;
 			} else {
 				lerpTimer += Time.deltaTime;
 			}
