@@ -14,11 +14,10 @@ public class LerpToGuyCart : MonoBehaviour {
 			//turn off other collider so make sure logic works correctly
 			oppositeSideCollider.enabled = false;
 
-			int direction = 0;
-			if( cartDirection == CartDirection.LEFT )
-				direction = -1;
+			if( cartDirection == CartDirection.LEFT ) 
+				cart.SetTrigger( "posLeft" );
 			else
-				direction = 1;
+				cart.SetTrigger( "posRight" );
 			col.GetComponent<PlayerController>().LerpToGuyCart( lerpToPos, cart, cartDirection );
 		}
 	}
