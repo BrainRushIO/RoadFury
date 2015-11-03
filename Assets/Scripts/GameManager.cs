@@ -28,11 +28,9 @@ public class GameManager : MonoBehaviour {
 	bool switchToPitstop;
 	bool switchToGame;
 	bool userPressedStart = false;
-	bool tutorialIsOver = false;
 	bool switchToCutScene;
 	//lerps
 	float cameraRotateStartTime;
-	float cameraRotateDuration = .5f;
 	bool isCamRotateUp, isCamRotateDown;
 
 	public GameObject camera1;

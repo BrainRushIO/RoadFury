@@ -6,7 +6,6 @@ using UnityEngine.UI;
 public class PitStopGUIManager : MonoBehaviour {
 
 	
-	public GameObject pitStopCanvas;
 	public enum PitStopState {Main, Business, SelectBusiness, StartNewBusiness, Loans, SelectLoan, Investment, SelectInvestment, RealEstate, SelectRealEstate};
 	public PitStopState currentPitStopState = PitStopState.Main;
 	public List<Text> allTextObjects;
