@@ -8,15 +8,15 @@ public class NumberToString {
 
 		if( absNumber >= 1000000000f ) {
 			absNumber /= 1000000000f;
-			return System.Math.Round( absNumber, 1 ).ToString() + "B"; 
+			return System.Math.Round( absNumber*Mathf.Sign(number), 1 ).ToString() + "B"; 
 		} else if( absNumber >= 1000000f ) {
 			absNumber /= 1000000f;
-			return System.Math.Round( absNumber, 1 ).ToString() + "M";
+			return System.Math.Round( absNumber*Mathf.Sign(number), 1 ).ToString() + "M";
 		} else if( absNumber >= 1000f ) {
 			absNumber /= 1000f;
-			return System.Math.Round( absNumber, 1 ).ToString() + "K";
+			return System.Math.Round( absNumber*Mathf.Sign(number), 1 ).ToString() + "K";
 		} else {
-			return System.Math.Round( absNumber, 0 ).ToString();
+			return System.Math.Round( absNumber*Mathf.Sign(number), 0 ).ToString();
 		}
 	}
 }
