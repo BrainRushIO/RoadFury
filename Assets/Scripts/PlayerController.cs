@@ -14,6 +14,16 @@ public class PlayerController : MonoBehaviour {
 	public GameObject currentRoadSection;
 	public Transform respawnPos;
 
+	// Guy Cart
+	private Vector3 lerpToStartPos;
+	private Vector3 lerpToEndPos;
+	private float lerpTimer;
+	private float lerpDuration;
+	private bool isLerpingToGuyCart = false;
+	private bool isOnCart = false;
+	private Animator currentCartAnimator;
+	private LerpToGuyCart.CartDirection cartDirection;
+
 	// Rotation
 	private bool isRotateLerp;
 	private float rotateLerpTimer;
@@ -34,17 +44,47 @@ public class PlayerController : MonoBehaviour {
 
 
 	void Update () {
-		if (isRotateLerp) {
-			float perc = (Time.time - rotateLerpTimer) / rotateLerpDuration;
-			transform.rotation = Quaternion.Lerp(startLerp, endLerp, perc);
-			if (perc > .99) {
-				perc = 1;
-				Quaternion.Lerp(startLerp, endLerp,perc);
-				isRotateLerp = false;
+		if( isLerpingToGuyCart ) {
+			float t = lerpTimer / lerpDuration;
+			transform.position = Vector3.Lerp( lerpToStartPos, lerpToEndPos, t );
+			if (t > 0.99f) {
+				transform.position = lerpToEndPos;
+				isLerpingToGuyCart = false;
+				lerpTimer = 0f;
+
+				// Activate cart
+				if( cartDirection == global::LerpToGuyCart.CartDirection.LEFT )
+					currentCartAnimator.SetTrigger( "left" );
+				else
+					currentCartAnimator.SetTrigger( "right" );
+
+				isOnCart = true;
+			} else {
+				lerpTimer += Time.deltaTime;
 			}
 		}
+		if( isOnCart ) {
+			AnimatorStateInfo info = currentCartAnimator.GetCurrentAnimatorStateInfo(0);
+			if( info.normalizedTime >= 0.99f && !info.IsName( "New State" ) ) {
+				isOnCart = false;
+				return;
+			}  else {
+				transform.forward = currentCartAnimator.transform.right;
+				transform.position = new Vector3( currentCartAnimator.transform.position.x, transform.position.y, currentCartAnimator.transform.position.z );
+			}
+		}
+
+//		if (isRotateLerp) {
+//			float perc = (Time.time - rotateLerpTimer) / rotateLerpDuration;
+//			transform.rotation = Quaternion.Lerp(startLerp, endLerp, perc);
+//			if (perc > .99) {
+//				perc = 1;
+//				Quaternion.Lerp(startLerp, endLerp,perc);
+//				isRotateLerp = false;
+//			}
+//		}
 		if (GameManager.s_instance.currentGameState == GameState.Cutscene) {
-			transform.Translate (Vector3.forward*moveSpeed*Time.deltaTime);
+			//transform.Translate (Vector3.forward*moveSpeed*Time.deltaTime);
 		}
 		if (GameManager.s_instance.currentGameState == GameState.Playing) {
 			float horizontal = Input.GetAxis ("Horizontal");
@@ -135,5 +175,15 @@ public class PlayerController : MonoBehaviour {
 		}
 
 		transform.position = respawnPos.position;
+	}
+
+	public void LerpToGuyCart( Transform newLerpPos, Animator cart, LerpToGuyCart.CartDirection newDir ) {
+		lerpToStartPos = transform.position;
+		lerpToEndPos = newLerpPos.position;
+		lerpDuration = Vector3.Distance( lerpToStartPos, lerpToEndPos ) / moveSpeed;
+		GameManager.s_instance.SwitchToCutscene();
+		isLerpingToGuyCart = true;
+		currentCartAnimator = cart;
+		cartDirection = newDir;
 	}
 }
