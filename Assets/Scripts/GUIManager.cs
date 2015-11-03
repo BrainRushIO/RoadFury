@@ -5,7 +5,6 @@ using UnityEngine.UI;
 public class GUIManager : MonoBehaviour {
 	
 	public Color positive, negative, neutral;
-	public GameObject OnRoadGUI, InventoryGUI;
 	public GameObject message;
 	public Transform costSpawn, multiplierSpawn, messageSpawn;
 	public Slider happinessBar; 
