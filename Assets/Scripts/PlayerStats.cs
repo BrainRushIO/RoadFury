@@ -76,7 +76,7 @@ public class PlayerStats : MonoBehaviour {
 			yearTimer += Time.deltaTime;
 			if( yearTimer >= secondsPerYear ) {
 				age++;
-
+				GUIManager.s_instance.DisplayBday(age);
 				yearTimer = 0f;
 
 				if( OnYearCompleted != null ) 
