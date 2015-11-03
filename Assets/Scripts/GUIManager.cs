@@ -10,8 +10,8 @@ public class GUIManager : MonoBehaviour {
 	public Transform costSpawn, multiplierSpawn, messageSpawn;
 	public Slider happinessBar; 
 	public Text burnRate, moneyText;
-	public Text notificationTitle, notificationDesc;
-	public Animator notificationAnimator;
+	public Text notificationTitle, notificationDesc, birthdayText;
+	public Animator notificationAnimator, birthdayAnimator;
 
 	public static GUIManager s_instance;
 	
