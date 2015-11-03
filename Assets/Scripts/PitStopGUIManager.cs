@@ -198,7 +198,7 @@ public class PitStopGUIManager : MonoBehaviour {
 			allTextObjects[1].text = "Investments";
 			allTextObjects[2].text = "Businesses";
 			allTextObjects[3].text = "Real Estate";
-			allTextObjects[7].text = "Back to the Road";
+			allTextObjects[7].text = "Back to Road";
 			break;
 			#region LoanOptions
 		case PitStopState.Loans :

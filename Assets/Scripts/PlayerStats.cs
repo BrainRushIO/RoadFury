@@ -141,8 +141,9 @@ public class PlayerStats : MonoBehaviour {
 			newBusiness.SetBusinessType (businessType);
 			AddLoanCost (Business.BusinessPrices [businessType], Loan.LoanType.Business);
 			playerBusinesses.Add (newBusiness);
+			GUIManager.s_instance.DisplayNotification("Notice!", "Business Loan Added.");
 		} else {
-			GUIManager.s_instance.DisplayNotification( "Notice!", "Not enough money to start business." );
+			GUIManager.s_instance.DisplayNotification( "Notice!", "Insufficient Funds." );
 
 		}
 	}
@@ -174,9 +175,11 @@ public class PlayerStats : MonoBehaviour {
 			RealEstate newRealEstate = new RealEstate();
 			newRealEstate.SetTier( (RealEstate.RealEstateTier)realEstateTier );
 			playerRealEstate.Add( newRealEstate );
+			GUIManager.s_instance.DisplayNotification("Notice!", "Real Estate Loan Added.");
+
 			return true;
 		} else {
-			GUIManager.s_instance.DisplayNotification( "Notice!", "Not enough money to buy real estate." );
+			GUIManager.s_instance.DisplayNotification( "Notice!", "Insufficient Funds." );
 			return false;
 		}
 	}
@@ -211,7 +214,7 @@ public class PlayerStats : MonoBehaviour {
 		} else {
 			Investment newInvestment = new Investment();
 			newInvestment.thisInvestmentType = thisType;
-			
+			newInvestment.SetMonetaryValue(cost);
 			playerInvestments.Add( newInvestment );
 		}
 
@@ -220,8 +223,8 @@ public class PlayerStats : MonoBehaviour {
 	public bool AddMoneyToInvestment( int index, float amount ) {
 		if ( money >= amount ) {
 			// If this is an IRA and we have invested too much money this year
-			if( playerInvestments[index].thisInvestmentType == Investment.InvestmentType.IRA && playerInvestments[index].moneyAddedThisYear+amount <= Investment.MAX_MONEY_ADDED_PER_YEAR_TO_IRA ) {
-				GUIManager.s_instance.DisplayNotification( "Notice!", "You can only add money to IRAs "+Investment.MAX_MONEY_ADDED_PER_YEAR_TO_IRA+" a year." );
+			if( playerInvestments[index].thisInvestmentType == Investment.InvestmentType.IRA && playerInvestments[index].moneyAddedThisYear+amount >= Investment.MAX_MONEY_ADDED_PER_YEAR_TO_IRA ) {
+				GUIManager.s_instance.DisplayNotification( "Notice!", "IRA Limit 5K/YR" );
 				return false;
 			}
 
