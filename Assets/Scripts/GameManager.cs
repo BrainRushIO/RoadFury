@@ -40,6 +40,7 @@ public class GameManager : MonoBehaviour {
 	public GameObject inGameGUI;
 	public GameObject MainMenuGUI;
 	public GameObject faderObj;
+	public Animator[] allAnimators;
 	int textIterator = 0;
 	float slideDuration = 3f;
 	float slideTimer;
@@ -54,7 +55,8 @@ public class GameManager : MonoBehaviour {
 		Screen.autorotateToLandscapeLeft = false;
 		Screen.autorotateToLandscapeRight = false;
 		Screen.autorotateToPortraitUpsideDown = false;
-
+		allAnimators = GameObject.FindObjectsOfType<Animator> ();
+		print (allAnimators.Length + "total animators");
 		playerController = GameObject.FindObjectOfType<PlayerController>();
 		if( playerController == null )
 			Debug.LogError( "GameManager didn't find a reference to a PlayerController in the scene." );
@@ -193,7 +195,6 @@ public class GameManager : MonoBehaviour {
 	}
 	public void SwitchToGame () {
 		if (currentGameState == GameState.PitStop) {
-
 			// Player
 			playerController.SetAtRespawnPos();
 			PitstopFlashExit();
@@ -202,8 +203,8 @@ public class GameManager : MonoBehaviour {
 
 		if (currentGameState == GameState.Pause) {
 			GUIManager.s_instance.ClosePauseMenu();
+			GameObject.FindGameObjectWithTag("Player").GetComponent<Animator>().StopPlayback();
 			switchToGame = true;
-
 		} else if ( currentGameState == GameState.Intro ) {
 			playerController.CheckGroundOrientation();
 		} else if ( currentGameState == GameState.Cutscene ) {
@@ -250,6 +251,7 @@ public class GameManager : MonoBehaviour {
 
 	public void SwitchToPauseMenu () {
 		if (GameManager.s_instance.currentGameState == GameState.Playing) {
+			GameObject.FindGameObjectWithTag("Player").GetComponent<Animator>().StartPlayback();
 			switchToPaused = true;
 			GUIManager.s_instance.DisplayPauseMenu ();
 		}
