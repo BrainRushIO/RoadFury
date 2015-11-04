@@ -10,8 +10,9 @@ public class PlayerController : MonoBehaviour {
 	private float pitStopBoundsOffset = 4.5f;
 	private bool pitstopEntranceAvailable = false;
 	private bool isOnHorizontalRoad = false;
-	private Animator anim;
-	public GameObject currentRoadSection;
+	private Animator myAnimator;
+	public Transform currentRoadSection;
+	public Vector2 moveDirVector;				// x component being world x; y component being world z (topdown view)
 	public Transform respawnPos;
 
 	// Guy Cart
@@ -25,23 +26,23 @@ public class PlayerController : MonoBehaviour {
 	private LerpToGuyCart.CartDirection cartDirection;
 
 	// Rotation
-	private bool isRotateLerp;
-	private float rotateLerpTimer;
-	private float rotateLerpDuration = 0.8f;
-	private Quaternion startLerp, endLerp;
+//	private bool isRotateLerp;
+//	private float rotateLerpTimer;
+//	private float rotateLerpDuration = 0.8f;
+//	private Quaternion startLerp, endLerp;
 
 	//TODO add attrition rate increases depending on if player gets wife or gf or not
 	void Start(){
-		anim = GetComponent<Animator> ();
-	
+		myAnimator = GetComponent<Animator> ();
+		moveDirVector = new Vector2( 0f, 1f );
+		CheckGroundOrientation();
 	}
 
-	void StartRotateLerp() {
-		startLerp = transform.rotation;
-		rotateLerpTimer = Time.time;
-		isRotateLerp = true;
-	}
-
+//	void StartRotateLerp() {
+//		startLerp = transform.rotation;
+//		rotateLerpTimer = Time.time;
+//		isRotateLerp = true;
+//	}
 
 	void Update () {
 		if( isLerpingToGuyCart ) {
@@ -66,8 +67,10 @@ public class PlayerController : MonoBehaviour {
 		}
 		if( isOnCart ) {
 			AnimatorStateInfo info = currentCartAnimator.GetCurrentAnimatorStateInfo(0);
+			// Exit cart if we are more than 99% into animation
 			if( info.normalizedTime >= 0.99f && !info.IsName( "New State" ) ) {
 				isOnCart = false;
+				CheckGroundOrientation();
 				return;
 			}  else {
 				transform.forward = currentCartAnimator.transform.right;
@@ -101,7 +104,7 @@ public class PlayerController : MonoBehaviour {
 				}
 			}
 
-			anim.SetFloat ("Turn", horizontal * .6f);
+			myAnimator.SetFloat ("Turn", horizontal * .6f);
 			transform.Translate (Vector3.forward*moveSpeed*Time.deltaTime);
 
 			// Calculate if we are entering a pitstop
@@ -110,7 +113,14 @@ public class PlayerController : MonoBehaviour {
 				tempPitstopBoundsOffset = pitStopBoundsOffset;
 			}
 
-			//bound player
+			// Find distance from center of road
+			Vector2 diff = new Vector2( transform.position.x, transform.position.z ) - new Vector2( currentRoadSection.position.x, currentRoadSection.transform.position.z );
+			float moveDirVMag = diff.magnitude;
+			Vector2 projVector =  moveDirVector*moveDirVMag * ( Vector2.Dot( diff, moveDirVector*moveDirVMag )/( moveDirVMag*moveDirVMag ) );
+			float distance = (new Vector2( transform.position.x, transform.position.z ) - new Vector2( currentRoadSection.transform.position.x + projVector.x, currentRoadSection.transform.position.z + projVector.y )).magnitude;
+			Debug.LogWarning( "Distance: " + distance );
+
+			// Bound Player
 			if (!isOnHorizontalRoad) {
 				if (Mathf.Abs (transform.position.x + (horizontal * strafeSpeed*Time.deltaTime)) < playerBounds + tempPitstopBoundsOffset + currentRoadSection.transform.position.x) {
 					transform.Translate (horizontal * strafeSpeed*Time.deltaTime, 0, 0);
@@ -121,7 +131,7 @@ public class PlayerController : MonoBehaviour {
 				}
 			}
 		} else {
-			anim.SetFloat ("Turn", 0);
+			myAnimator.SetFloat ("Turn", 0);
 		}
 	}
 	
@@ -155,12 +165,12 @@ public class PlayerController : MonoBehaviour {
 	void OnTriggerExit(Collider other) {
 		if (other.tag == "branch") {
 			//rotating player 90 degrees depending on what it says
-			endLerp = transform.rotation * Quaternion.Euler(0,other.GetComponent<RoadBranch>().degreeToTurnBy,0);
-			StartRotateLerp();
-			currentRoadSection = other.GetComponent<RoadBranch>().nextRoadBranch;
+//			endLerp = transform.rotation * Quaternion.Euler(0,other.GetComponent<RoadBranch>().degreeToTurnBy,0);
+//			StartRotateLerp();
+//			currentRoadSection = other.GetComponent<RoadBranch>().nextRoadBranch.transform;
 			isOnHorizontalRoad = !isOnHorizontalRoad;
 			if(other.GetComponent<RoadBranch>().GUIObject.name == "Retire"){
-				anim.SetTrigger ("Retired");
+				myAnimator.SetTrigger ("Retired");
 				transform.Translate(0,0,0);
 			}
 		} else if( other.tag == "pitstopRoad" ) {
@@ -185,5 +195,17 @@ public class PlayerController : MonoBehaviour {
 		isLerpingToGuyCart = true;
 		currentCartAnimator = cart;
 		cartDirection = newDir;
+	}
+
+	private void CheckGroundOrientation() {
+		Ray ray = new Ray( transform.position, Vector3.down );
+		RaycastHit hitInfo;
+		if( Physics.Raycast( ray, out hitInfo ) ) {
+			Vector3 roadRotation = hitInfo.transform.rotation.eulerAngles;
+			moveDirVector = new Vector2( Mathf.Cos( roadRotation.y ), Mathf.Sin( roadRotation.y ) );
+			currentRoadSection = hitInfo.transform;
+		} else {
+			Debug.LogError( "PlayerContoller's CheckGroundOrientation didn't detect any gound under player." );
+		}
 	}
 }
