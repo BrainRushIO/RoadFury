@@ -16,7 +16,7 @@ public class PitStopGUIManager : MonoBehaviour {
 	}
 
 	void Update() {
-		print (currentPitStopState);
+//		print (currentPitStopState);
 	}
 
 	public int lastIndexClicked; //used to refer to index in list of player Loan/Business/etc...
@@ -197,6 +197,9 @@ public class PitStopGUIManager : MonoBehaviour {
 			allTextObjects[1].text = "Investments";
 			allTextObjects[2].text = "Businesses";
 			allTextObjects[3].text = "Real Estate";
+			allTextObjects[5].text = "Total Money: $" + NumberToString.Convert (PlayerStats.s_instance.money);
+			allTextObjects[6].text = "Cash Flow: $" + NumberToString.Convert (PlayerStats.s_instance.cashFlow);
+
 			allTextObjects[7].text = "Back to Road";
 			break;
 			#region LoanOptions

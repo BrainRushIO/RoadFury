@@ -10,7 +10,7 @@ public class PlayerStats : MonoBehaviour {
 	public static event YearCompletion OnYearCompleted;
 	
 	public float yearTimer = 0f;
-	public float secondsPerYear = 15f;
+	public float secondsPerYear = 16f;
 
 	public int age = 15;
 	public float money = 1000f;

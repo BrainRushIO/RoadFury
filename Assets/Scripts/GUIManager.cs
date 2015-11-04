@@ -6,16 +6,14 @@ public class GUIManager : MonoBehaviour {
 	
 	public Color positive, negative, neutral;
 	public GameObject message;
-	public Transform costSpawn, multiplierSpawn, messageSpawn;
+	public Transform costSpawn, multiplierSpawn, messageSpawn, pauseMenuTexts;
 	public Slider happinessBar; 
 	public Text burnRate, moneyText;
 	public Text notificationTitle, notificationDesc, birthdayText, tutorialTitle, tutorialDesc;
-	public Animator notificationAnimator, birthdayAnimator, tutorialAnimator;
-
+	public Animator notificationAnimator, birthdayAnimator, tutorialAnimator, pauseMenuAnimator;
 
 	public static GUIManager s_instance;
-	
-	
+
 	void Awake () {
 		if (s_instance == null) {
 			s_instance = this;
@@ -27,18 +25,13 @@ public class GUIManager : MonoBehaviour {
 		}
 	}
 	
-
-	// Update is called once per frame
 	void Update () {
 		moneyText.text = "$" + NumberToString.Convert( PlayerStats.s_instance.money );
 		burnRate.text = "$" + Mathf.CeilToInt (PlayerStats.s_instance.cashFlow).ToString () + "/year";
 		happinessBar.value = PlayerStats.s_instance.happiness*100f;
 
 	}
-
-
-
-
+	
 	public void SpawnCost (int costValue) {
 		GameObject temp = Instantiate (message);
 		if (costValue > 0) {
@@ -55,14 +48,19 @@ public class GUIManager : MonoBehaviour {
 	}
 
 	public void SpawnBurnRate (float burnRateValue) {
+		GameObject temp = Instantiate (message);
+		temp.GetComponent<Text> ().text = "Cash Flow $" + burnRateValue;
+
+		temp.transform.SetParent (multiplierSpawn);
+		temp.transform.localScale = Vector3.one;
+		temp.transform.localPosition = new Vector3(0,0,0);
 		if (burnRateValue > 0) {
+			temp.GetComponent<Text> ().color = positive;
 			burnRate.GetComponent<ImageFlash>().Flash(positive);
 		} else {
+			temp.GetComponent<Text> ().color = negative;
 			burnRate.GetComponent<ImageFlash>().Flash(negative);
-
 		}
-	
-
 	}
 	public void SpawnMessage (string messageString) {
 		GameObject temp = Instantiate (message);
@@ -72,6 +70,18 @@ public class GUIManager : MonoBehaviour {
 		temp.transform.localScale = Vector3.one;
 		temp.transform.localPosition = new Vector3(0,0,0);
 
+	}
+
+	public void DisplayPauseMenu() {
+			pauseMenuAnimator.SetTrigger ("pitstop");
+			pauseMenuTexts.transform.GetChild (0).GetComponent<Text> ().text = "Age: $" + PlayerStats.s_instance.age;
+			pauseMenuTexts.transform.GetChild (1).GetComponent<Text> ().text = "Total Money: $" + NumberToString.Convert (PlayerStats.s_instance.money);
+			pauseMenuTexts.transform.GetChild (2).GetComponent<Text> ().text = "Cash Flow: $" + NumberToString.Convert (PlayerStats.s_instance.cashFlow);
+			pauseMenuTexts.transform.GetChild (3).GetComponent<Text> ().text = "Happiness: " + Mathf.CeilToInt(PlayerStats.s_instance.happiness*100) + "/100";
+	}
+
+	public void ClosePauseMenu() {
+		pauseMenuAnimator.SetTrigger ("pitstop");
 	}
 
 	public void DisplayBday(int age) {
@@ -99,6 +109,21 @@ public class GUIManager : MonoBehaviour {
 		case "1" : 
 			DisplayNotification("Power-Ups", "Power-Ups affect your happiness and money", true);
 			break;
+		case "2" : 
+			DisplayNotification("Age", "Objective: Retire at 65", true);
+			break;
+		case "3" : 
+			DisplayNotification("Happiness", "If you run out of happiness - GAME OVER", true);
+			break;
+		case "4" : 
+			DisplayNotification("Cash Flow", "You are losing money, get a job!", true);
+			break;
+		case "5" : 
+			DisplayNotification("Obstacles", "Be careful, some Power-Ups hurt you", true);
+			break;
+		case "6" :
+			DisplayNotification("Pit Stop", "Goto a Pit-Stop to manage your Financial Assets", true);
+			break;
 		}
 	}
 
@@ -119,7 +144,7 @@ public class GUIManager : MonoBehaviour {
 	}
 
 	IEnumerator CloseTutorialCorout () {
-		yield return new WaitForSeconds (3f);
+		yield return new WaitForSeconds (4f);
 		CloseTutorial ();
 	}
 
