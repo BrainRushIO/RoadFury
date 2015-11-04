@@ -6,11 +6,12 @@ public class GUIManager : MonoBehaviour {
 	
 	public Color positive, negative, neutral;
 	public GameObject message;
-	public Transform costSpawn, multiplierSpawn, messageSpawn;
+	public Transform costSpawn, multiplierSpawn, messageSpawn, pauseMenuTexts;
 	public Slider happinessBar; 
 	public Text burnRate, moneyText;
 	public Text notificationTitle, notificationDesc, birthdayText, tutorialTitle, tutorialDesc;
-	public Animator notificationAnimator, birthdayAnimator, tutorialAnimator;
+	public Animator notificationAnimator, birthdayAnimator, tutorialAnimator, pauseMenuAnimator;
+
 
 
 	public static GUIManager s_instance;
@@ -72,6 +73,22 @@ public class GUIManager : MonoBehaviour {
 		temp.transform.localScale = Vector3.one;
 		temp.transform.localPosition = new Vector3(0,0,0);
 
+	}
+
+	public void DisplayPauseMenu() {
+		if (GameManager.s_instance.currentGameState == GameState.Playing) {
+			pauseMenuAnimator.SetTrigger ("pitstop");
+			pauseMenuTexts.transform.GetChild (0).GetComponent<Text> ().text = "Age: $" + PlayerStats.s_instance.age;
+			pauseMenuTexts.transform.GetChild (1).GetComponent<Text> ().text = "Total Money: $" + NumberToString.Convert (PlayerStats.s_instance.money);
+			pauseMenuTexts.transform.GetChild (2).GetComponent<Text> ().text = "Cash Flow: $" + NumberToString.Convert (PlayerStats.s_instance.cashFlow);
+			pauseMenuTexts.transform.GetChild (3).GetComponent<Text> ().text = "Happiness: " + Mathf.CeilToInt(PlayerStats.s_instance.happiness*100) + "/100";
+		}
+			
+
+	}
+
+	public void ClosePauseMenu() {
+		pauseMenuAnimator.SetTrigger ("pitstop");
 	}
 
 	public void DisplayBday(int age) {

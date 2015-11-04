@@ -29,6 +29,7 @@ public class GameManager : MonoBehaviour {
 	bool switchToGame;
 	bool userPressedStart = false;
 	bool switchToCutScene;
+	bool switchToPaused;
 	//lerps
 	float cameraRotateStartTime;
 	bool isCamRotateUp, isCamRotateDown;
@@ -76,9 +77,14 @@ public class GameManager : MonoBehaviour {
 			}
 			break;
 
+		case GameState.Pause :
+			if (switchToGame) {
+				switchToGame = false;
+				currentGameState = GameState.Playing;
+			}
 
+			break;
 		case GameState.Playing :
-
 			if (switchToCutScene) {
 				switchToCutScene = false;
 				currentGameState = GameState.Cutscene;
@@ -86,6 +92,11 @@ public class GameManager : MonoBehaviour {
 			if (switchToPitstop) {
 				switchToPitstop = false;
 				currentGameState = GameState.PitStop;
+			}
+
+			if (switchToPaused) {
+				switchToPaused = false;
+				currentGameState = GameState.Pause;
 			}
 
 			break;
@@ -188,6 +199,12 @@ public class GameManager : MonoBehaviour {
 			PitstopFlashExit();
 			switchToGame = true;
 		}
+
+		if (currentGameState == GameState.Pause) {
+			GUIManager.s_instance.ClosePauseMenu();
+			switchToGame = true;
+
+		}
 	}
 
 	public void SwitchToNotification() {
@@ -225,5 +242,15 @@ public class GameManager : MonoBehaviour {
 		GameObject.FindGameObjectWithTag ("Camera2").GetComponent<Camera>().enabled = false;
 		camera1.GetComponent<Camera> ().enabled = true;
 		faderObj.GetComponent<Fader>().StartFadeOut();
+	}
+
+	public void SwitchToPauseMenu () {
+		switchToPaused = true;
+
+		GUIManager.s_instance.DisplayPauseMenu ();
+	}
+
+	public void LoadMainMenu() {
+		Application.LoadLevel (1);
 	}
 }
