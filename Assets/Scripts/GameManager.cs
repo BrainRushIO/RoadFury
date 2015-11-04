@@ -72,26 +72,10 @@ public class GameManager : MonoBehaviour {
 		case GameState.MainMenu : 
 			if (userPressedStart) {
 				userPressedStart = false;
-				currentGameState = GameState.Intro;
-			}
-			break;
-
-		case GameState.Intro :
-
-			if(switchToGame) {
-				switchToGame = false;
 				currentGameState = GameState.Playing;
 			}
-
-			if (Input.GetKeyDown(KeyCode.Space)) {
-				SwitchToGame ();
-
-				EndTutorial();
-			}
-			else {
-				RunCutSceneText();
-			}
 			break;
+
 
 		case GameState.Playing :
 
@@ -107,7 +91,6 @@ public class GameManager : MonoBehaviour {
 			break;
 
 		case GameState.Cutscene : 
-			RunCutSceneText();
 			if (switchToGame) {
 				switchToGame = false;
 				currentGameState = GameState.Playing;
@@ -144,37 +127,40 @@ public class GameManager : MonoBehaviour {
 		MainMenuGUI.SetActive (false);
 		currentGUIseries.SetActive (true);
 		Camera.main.transform.SetParent(GameObject.FindGameObjectWithTag("Player").transform);
-		tutorialCam.GetComponent<Cinematographer> ().quaternions [0] = Camera.main.transform;
-		tutorialCam.GetComponent<Cinematographer> ().RollCamera ();
+		GameObject.FindGameObjectWithTag ("CamPos").GetComponent<Cinematographer> ().quaternions [0] = Camera.main.transform;
+		GameObject.FindGameObjectWithTag ("CamPos").GetComponent<Cinematographer> ().RollCamera ();
+		GameObject.FindGameObjectWithTag ("Player").GetComponent<Animator> ().SetTrigger ("run");
+		Camera.main.GetComponent<HoverFollowCam> ().enabled = true;
+		//				inGameGUI.SetActive (true);
+		inGameGUI.GetComponent<Animator> ().SetTrigger ("show");
 	}
 
 	public void EndTutorial () {
 		currentGUIseries.SetActive (false);
-		GameObject.FindGameObjectWithTag ("CamPos").GetComponent<Cinematographer> ().RollCamera ();
-		GameObject.FindGameObjectWithTag ("Player").GetComponent<Animator> ().SetTrigger ("run");
+
 
 	}
 
-	void RunCutSceneText () {
-		slideTimer += Time.deltaTime;
-		if (slideTimer > slideDuration) {
-			if (textIterator == currentGUIseries.transform.childCount-1) {
-				slideTimer = 0;
-				if (currentGameState == GameState.Intro) {
-					EndTutorial();
-				}
-				else {
-					currentGUIseries.SetActive (false);
-				}
-			}
-			else if (textIterator < currentGUIseries.transform.childCount - 1) {
-				currentGUIseries.transform.GetChild(textIterator).gameObject.SetActive(false);
-				textIterator++;
-				currentGUIseries.transform.GetChild(textIterator).gameObject.SetActive(true);
-				slideTimer = 0;
-			}
-		}
-	}
+//	void RunCutSceneText () {
+//		slideTimer += Time.deltaTime;
+//		if (slideTimer > slideDuration) {
+//			if (textIterator == currentGUIseries.transform.childCount-1) {
+//				slideTimer = 0;
+//				if (currentGameState == GameState.Intro) {
+//					EndTutorial();
+//				}
+//				else {
+//					currentGUIseries.SetActive (false);
+//				}
+//			}
+//			else if (textIterator < currentGUIseries.transform.childCount - 1) {
+//				currentGUIseries.transform.GetChild(textIterator).gameObject.SetActive(false);
+//				textIterator++;
+//				currentGUIseries.transform.GetChild(textIterator).gameObject.SetActive(true);
+//				slideTimer = 0;
+//			}
+//		}
+//	}
 
 	public void SwitchToCutscene () {
 		slideTimer = 0;
@@ -202,15 +188,7 @@ public class GameManager : MonoBehaviour {
 			
 	}
 	public void SwitchToGame () {
-		if (currentGameState == GameState.Intro) {
-			Camera.main.GetComponent<HoverFollowCam> ().enabled = true;
-			currentGUIseries.SetActive (false);
-//				inGameGUI.SetActive (true);
-			inGameGUI.GetComponent<Animator> ().SetTrigger ("show");
-			switchToGame = true;
-
-
-		} else if (currentGameState == GameState.PitStop) {
+		if (currentGameState == GameState.PitStop) {
 
 			// Player
 			playerController.SetAtRespawnPos();
