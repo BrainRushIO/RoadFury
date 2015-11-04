@@ -47,6 +47,8 @@ public class Cinematographer : MonoBehaviour {
 //					textUIObjects[currentIndex].SetActive(false);
 					hasStarted = false;
 					currentIndex =0;
+					if( GameManager.s_instance.currentGameState == GameState.Cutscene )
+						GameManager.s_instance.SwitchToGame();
 				}
 
 			}

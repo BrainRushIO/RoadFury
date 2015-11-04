@@ -25,6 +25,8 @@ public class PlayerController : MonoBehaviour {
 	private Animator currentCartAnimator;
 	private LerpToGuyCart.CartDirection cartDirection;
 
+
+	Vector3 projV = Vector3.zero;
 	// Rotation
 //	private bool isRotateLerp;
 //	private float rotateLerpTimer;
@@ -113,21 +115,22 @@ public class PlayerController : MonoBehaviour {
 			}
 
 			// Find distance from center of road
-			Vector2 diff = new Vector2( transform.position.x, transform.position.z ) - new Vector2( currentRoadSection.position.x, currentRoadSection.position.z );
-			float moveDirVMag = diff.magnitude;
-			Vector2 projVector =  moveDirVector*moveDirVMag * ( Vector2.Dot( diff, moveDirVector*moveDirVMag )/( moveDirVMag*moveDirVMag ) );
-			float distanceFromCenterOfRoad = (new Vector2( transform.position.x, transform.position.z ) - new Vector2( currentRoadSection.transform.position.x + projVector.x, currentRoadSection.transform.position.z + projVector.y )).magnitude;
-			Debug.LogWarning( "Distance: " + distanceFromCenterOfRoad );
+			Vector2 currentRoadPos = new Vector2( currentRoadSection.position.x, currentRoadSection.position.z );
+			Vector2 playerPos = new Vector2( transform.position.x, transform.position.z );
+
+			Vector2 roadToPlayerVector = playerPos - currentRoadPos;
+			float moveDirVectorLength = roadToPlayerVector.magnitude;
+			Vector2 projVector = ( Vector2.Dot( moveDirVector*moveDirVectorLength ,roadToPlayerVector )/( moveDirVectorLength*moveDirVectorLength ) ) * (moveDirVector*moveDirVectorLength) ;
+			projVector += currentRoadPos;
+			projV = new Vector3( projVector.x, 0f, projVector.y );
+			float distanceFromCenterOfRoad = ( playerPos - new Vector2( currentRoadPos.x + projVector.x, currentRoadPos.y + projVector.y )).magnitude;
+			Debug.Log( "Distance: " + distanceFromCenterOfRoad );
 
 			// Bound Player
 			if ( Mathf.Abs(distanceFromCenterOfRoad) < playerBounds + tempPitstopBoundsOffset ) {
 				transform.Translate (horizontal * strafeSpeed*Time.deltaTime, 0, 0);
 			} else {
-				if( Mathf.Sign( distanceFromCenterOfRoad ) == 1 ) {
-
-				} else {
-
-				}
+				Debug.Log( "Out of bounds." );
 			}
 		} else {
 			myAnimator.SetFloat ("Turn", 0);
@@ -202,12 +205,24 @@ public class PlayerController : MonoBehaviour {
 		Ray ray = new Ray( transform.position, Vector3.down * 1.5f );
 		RaycastHit hitInfo;
 		if( Physics.Raycast( ray, out hitInfo ) ) {
-			Vector3 roadRotation = hitInfo.transform.rotation.eulerAngles;
-			moveDirVector = new Vector2( Mathf.Cos( roadRotation.y ), Mathf.Sin( roadRotation.y ) );
+			float roadRotation = hitInfo.transform.rotation.eulerAngles.y;
+			moveDirVector = new Vector2( Mathf.Cos( roadRotation ), Mathf.Sin( roadRotation ) );
 			currentRoadSection = hitInfo.transform;
 			Debug.LogWarning( "Current road piece: " + hitInfo.transform.name );
 		} else {
+			// This won't work for the first ground piece. Set the ground piece directly under player
 			Debug.LogError( "PlayerContoller's CheckGroundOrientation didn't detect any gound under player." );
 		}
+	}
+
+	void OnDrawGizmos() {
+		Gizmos.color = Color.yellow;
+		Gizmos.DrawSphere( currentRoadSection.position, 1f );
+		Gizmos.color = Color.red;
+		Gizmos.DrawSphere( transform.position, 2f );
+		Gizmos.color = Color.green;
+		Gizmos.DrawSphere( projV, 1f );
+		Gizmos.color = Color.cyan ;
+		Gizmos.DrawSphere( currentRoadSection.position + new Vector3(moveDirVector.x, 0f, moveDirVector.y ), 0.5f );
 	}
 }
