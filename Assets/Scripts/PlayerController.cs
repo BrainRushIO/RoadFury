@@ -154,11 +154,13 @@ public class PlayerController : MonoBehaviour {
 			GameManager.s_instance.SwitchToCutscene ();
 			print ("HIT BRANCH");
 		} else if (other.tag == "pitstop") {
-			GameManager.s_instance.SwitchToPitStop();
+			GameManager.s_instance.SwitchToPitStop ();
 			pitstopEntranceAvailable = false;
-			respawnPos = other.GetComponent<PitStopRespawn>().respawnPosition;
-		} else if (other.tag == "pitstopRoad" ) {
+			respawnPos = other.GetComponent<PitStopRespawn> ().respawnPosition;
+		} else if (other.tag == "pitstopRoad") {
 			pitstopEntranceAvailable = true;
+		} else if (other.tag == "tutorial") {
+			GUIManager.s_instance.DisplayTutorial(other.name);
 		}
 	}
 

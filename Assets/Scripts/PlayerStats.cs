@@ -12,7 +12,7 @@ public class PlayerStats : MonoBehaviour {
 	public float yearTimer = 0f;
 	public float secondsPerYear = 15f;
 
-	public int age = 16;
+	public int age = 15;
 	public float money = 1000f;
 	public float cashFlow = -200f;
 	public float happiness = 0.5f;
