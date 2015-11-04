@@ -187,7 +187,7 @@ public class GameManager : MonoBehaviour {
 		} else if ( currentGameState == GameState.Intro ) {
 			playerController.CheckGroundOrientation();
 		} else if ( currentGameState == GameState.Cutscene ) {
-			playerController.CheckGroundOrientation();
+			switchToGame = true;
 		}
 	}
 
