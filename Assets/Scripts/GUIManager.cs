@@ -9,8 +9,9 @@ public class GUIManager : MonoBehaviour {
 	public Transform costSpawn, multiplierSpawn, messageSpawn;
 	public Slider happinessBar; 
 	public Text burnRate, moneyText;
-	public Text notificationTitle, notificationDesc, birthdayText;
-	public Animator notificationAnimator, birthdayAnimator;
+	public Text notificationTitle, notificationDesc, birthdayText, tutorialTitle, tutorialDesc;
+	public Animator notificationAnimator, birthdayAnimator, tutorialAnimator;
+
 
 	public static GUIManager s_instance;
 	
@@ -90,12 +91,38 @@ public class GUIManager : MonoBehaviour {
 		birthdayAnimator.SetBool( "hide", true );
 	}
 
-	public void DisplayNotification( string title, string details ) {
-		GameManager.s_instance.SwitchToNotification();
-		notificationAnimator.SetBool( "hide", false );
-		notificationTitle.text = title;
-		notificationDesc.text = details;
-		notificationAnimator.SetBool( "show", true );
+	public void DisplayTutorial(string index) {
+		switch (index) {
+		case "0" : 
+			DisplayNotification("Controls", "Touch the screen to steer", true);
+			break;
+		}
+	}
+
+	public void DisplayNotification( string title, string details, bool tutorial=false ) {
+		if (tutorial) {
+			StartCoroutine ("CloseTutorialCorout");
+			tutorialAnimator.SetBool ("hide", false);
+			tutorialTitle.text = title;
+			tutorialDesc.text = details;
+			tutorialAnimator.SetBool ("show", true);
+		} else {
+			GameManager.s_instance.SwitchToNotification ();
+			notificationAnimator.SetBool ("hide", false);
+			notificationTitle.text = title;
+			notificationDesc.text = details;
+			notificationAnimator.SetBool ("show", true);
+		}
+	}
+
+	IEnumerator CloseTutorialCorout () {
+		yield return new WaitForSeconds (3f);
+		CloseTutorial ();
+	}
+
+	public void CloseTutorial() {
+		tutorialAnimator.SetBool( "show", false );
+		tutorialAnimator.SetBool( "hide", true );
 	}
 
 	public void CloseNotification() {

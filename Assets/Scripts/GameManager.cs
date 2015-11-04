@@ -133,13 +133,7 @@ public class GameManager : MonoBehaviour {
 		//				inGameGUI.SetActive (true);
 		inGameGUI.GetComponent<Animator> ().SetTrigger ("show");
 	}
-
-	public void EndTutorial () {
-		currentGUIseries.SetActive (false);
-
-
-	}
-
+	
 //	void RunCutSceneText () {
 //		slideTimer += Time.deltaTime;
 //		if (slideTimer > slideDuration) {
