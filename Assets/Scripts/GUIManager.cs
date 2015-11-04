@@ -96,6 +96,9 @@ public class GUIManager : MonoBehaviour {
 		case "0" : 
 			DisplayNotification("Controls", "Touch the screen to steer", true);
 			break;
+		case "1" : 
+			DisplayNotification("Power-Ups", "Power-Ups affect your happiness and money", true);
+			break;
 		}
 	}
 
