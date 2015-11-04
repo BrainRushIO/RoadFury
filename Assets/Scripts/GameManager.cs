@@ -125,7 +125,6 @@ public class GameManager : MonoBehaviour {
 	public void StartGame () {
 		userPressedStart = true;
 		MainMenuGUI.SetActive (false);
-		currentGUIseries.SetActive (true);
 		Camera.main.transform.SetParent(GameObject.FindGameObjectWithTag("Player").transform);
 		GameObject.FindGameObjectWithTag ("CamPos").GetComponent<Cinematographer> ().quaternions [0] = Camera.main.transform;
 		GameObject.FindGameObjectWithTag ("CamPos").GetComponent<Cinematographer> ().RollCamera ();
