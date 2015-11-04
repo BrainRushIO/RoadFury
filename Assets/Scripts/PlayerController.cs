@@ -123,12 +123,13 @@ public class PlayerController : MonoBehaviour {
 			Vector2 projVector = ( Vector2.Dot( moveDirVector*moveDirVectorLength ,roadToPlayerVector )/( moveDirVectorLength*moveDirVectorLength ) ) * (moveDirVector*moveDirVectorLength) ;
 			projVector += currentRoadPos;
 			projV = new Vector3( projVector.x, 0f, projVector.y );
-			float distanceFromCenterOfRoad = ( playerPos - new Vector2( currentRoadPos.x + projVector.x, currentRoadPos.y + projVector.y )).magnitude;
+			float distanceFromCenterOfRoad = Vector2.Distance( playerPos, projVector );
 			Debug.Log( "Distance: " + distanceFromCenterOfRoad );
 
 			// Bound Player
 			if ( Mathf.Abs(distanceFromCenterOfRoad) < playerBounds + tempPitstopBoundsOffset ) {
-				transform.Translate (horizontal * strafeSpeed*Time.deltaTime, 0, 0);
+				transform.Translate(transform.right*horizontal*strafeSpeed*Time.deltaTime);
+				//transform.Translate (horizontal * strafeSpeed*Time.deltaTime, 0, 0);
 			} else {
 				Debug.Log( "Out of bounds." );
 			}
@@ -207,7 +208,7 @@ public class PlayerController : MonoBehaviour {
 		RaycastHit hitInfo;
 		if( Physics.Raycast( ray, out hitInfo ) ) {
 			float roadRotation = hitInfo.transform.rotation.eulerAngles.y;
-			moveDirVector = new Vector2( Mathf.Cos( roadRotation ), Mathf.Sin( roadRotation ) );
+			moveDirVector = new Vector2( Mathf.Cos( roadRotation*Mathf.Deg2Rad ), Mathf.Sin( roadRotation*Mathf.Deg2Rad ) );
 			currentRoadSection = hitInfo.transform;
 			Debug.LogWarning( "Current road piece: " + hitInfo.transform.name );
 		} else {
@@ -220,9 +221,9 @@ public class PlayerController : MonoBehaviour {
 		Gizmos.color = Color.yellow;
 		Gizmos.DrawSphere( currentRoadSection.position, 1f );
 		Gizmos.color = Color.red;
-		Gizmos.DrawSphere( transform.position, 2f );
+		Gizmos.DrawSphere( transform.position, 1f );
 		Gizmos.color = Color.green;
-		Gizmos.DrawSphere( projV, 1f );
+		Gizmos.DrawSphere( projV, 0.7f );
 		Gizmos.color = Color.cyan ;
 		Gizmos.DrawSphere( currentRoadSection.position + new Vector3(moveDirVector.x, 0f, moveDirVector.y ), 0.5f );
 	}
