@@ -49,7 +49,7 @@ public class GUIManager : MonoBehaviour {
 
 	public void SpawnBurnRate (float burnRateValue) {
 		GameObject temp = Instantiate (message);
-		temp.GetComponent<Text> ().text = "Cash Flow " + burnRateValue;
+		temp.GetComponent<Text> ().text = "Cash Flow $" + burnRateValue;
 
 		temp.transform.SetParent (multiplierSpawn);
 		temp.transform.localScale = Vector3.one;
@@ -113,13 +113,15 @@ public class GUIManager : MonoBehaviour {
 			DisplayNotification("Age", "Objective: Retire at 65", true);
 			break;
 		case "3" : 
-			DisplayNotification("Happiness", "If you run out of happiness - GAME OVER!", true);
+			DisplayNotification("Happiness", "If you run out of happiness - GAME OVER", true);
 			break;
 		case "4" : 
-			DisplayNotification("Obstacles", "Be careful, some Power-Ups hurt you!", true);
+			DisplayNotification("Cash Flow", "You are losing money, get a job!", true);
 			break;
-
-		case "5" :
+		case "5" : 
+			DisplayNotification("Obstacles", "Be careful, some Power-Ups hurt you", true);
+			break;
+		case "6" :
 			DisplayNotification("Pit Stop", "Goto a Pit-Stop to manage your Financial Assets", true);
 			break;
 		}
