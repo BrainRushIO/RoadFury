@@ -216,6 +216,7 @@ public class PlayerStats : MonoBehaviour {
 			Investment newInvestment = new Investment();
 			newInvestment.thisInvestmentType = thisType;
 			newInvestment.SetMonetaryValue(cost);
+			money -= cost;
 			playerInvestments.Add( newInvestment );
 		}
 
