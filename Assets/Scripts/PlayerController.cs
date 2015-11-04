@@ -35,7 +35,6 @@ public class PlayerController : MonoBehaviour {
 	void Start(){
 		myAnimator = GetComponent<Animator> ();
 		moveDirVector = new Vector2( 0f, 1f );
-		CheckGroundOrientation();
 	}
 
 //	void StartRotateLerp() {
@@ -112,21 +111,22 @@ public class PlayerController : MonoBehaviour {
 			if( pitstopEntranceAvailable ) {
 				tempPitstopBoundsOffset = pitStopBoundsOffset;
 			}
+
 			// Find distance from center of road
 			Vector2 diff = new Vector2( transform.position.x, transform.position.z ) - new Vector2( currentRoadSection.position.x, currentRoadSection.position.z );
 			float moveDirVMag = diff.magnitude;
 			Vector2 projVector =  moveDirVector*moveDirVMag * ( Vector2.Dot( diff, moveDirVector*moveDirVMag )/( moveDirVMag*moveDirVMag ) );
-			float distance = (new Vector2( transform.position.x, transform.position.z ) - new Vector2( currentRoadSection.transform.position.x + projVector.x, currentRoadSection.transform.position.z + projVector.y )).magnitude;
-//			Debug.LogWarning( "Distance: " + distance );
+			float distanceFromCenterOfRoad = (new Vector2( transform.position.x, transform.position.z ) - new Vector2( currentRoadSection.transform.position.x + projVector.x, currentRoadSection.transform.position.z + projVector.y )).magnitude;
+			Debug.LogWarning( "Distance: " + distanceFromCenterOfRoad );
 
 			// Bound Player
-			if (!isOnHorizontalRoad) {
-				if (Mathf.Abs (transform.position.x + (horizontal * strafeSpeed*Time.deltaTime)) < playerBounds + tempPitstopBoundsOffset + currentRoadSection.transform.position.x) {
-					transform.Translate (horizontal * strafeSpeed*Time.deltaTime, 0, 0);
-				}
+			if ( Mathf.Abs(distanceFromCenterOfRoad) < playerBounds + tempPitstopBoundsOffset ) {
+				transform.Translate (horizontal * strafeSpeed*Time.deltaTime, 0, 0);
 			} else {
-				if (Mathf.Abs (transform.position.z - currentRoadSection.transform.position.z - (horizontal * strafeSpeed*Time.deltaTime)) < playerBounds + tempPitstopBoundsOffset) {
-					transform.Translate (horizontal * strafeSpeed*Time.deltaTime, 0, 0);
+				if( Mathf.Sign( distanceFromCenterOfRoad ) == 1 ) {
+
+				} else {
+
 				}
 			}
 		} else {
@@ -198,15 +198,16 @@ public class PlayerController : MonoBehaviour {
 		cartDirection = newDir;
 	}
 
-	private void CheckGroundOrientation() {
-//		Ray ray = new Ray( transform.position, Vector3.down );
-//		RaycastHit hitInfo;
-//		if( Physics.Raycast( ray, out hitInfo ) ) {
-//			Vector3 roadRotation = hitInfo.transform.rotation.eulerAngles;
-//			moveDirVector = new Vector2( Mathf.Cos( roadRotation.y ), Mathf.Sin( roadRotation.y ) );
-//			currentRoadSection = hitInfo.transform;
-//		} else {
-//			Debug.LogError( "PlayerContoller's CheckGroundOrientation didn't detect any gound under player." );
-//		}
+	public void CheckGroundOrientation() {
+		Ray ray = new Ray( transform.position, Vector3.down * 1.5f );
+		RaycastHit hitInfo;
+		if( Physics.Raycast( ray, out hitInfo ) ) {
+			Vector3 roadRotation = hitInfo.transform.rotation.eulerAngles;
+			moveDirVector = new Vector2( Mathf.Cos( roadRotation.y ), Mathf.Sin( roadRotation.y ) );
+			currentRoadSection = hitInfo.transform;
+			Debug.LogWarning( "Current road piece: " + hitInfo.transform.name );
+		} else {
+			Debug.LogError( "PlayerContoller's CheckGroundOrientation didn't detect any gound under player." );
+		}
 	}
 }

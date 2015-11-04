@@ -204,6 +204,10 @@ public class GameManager : MonoBehaviour {
 			GUIManager.s_instance.ClosePauseMenu();
 			switchToGame = true;
 
+		} else if ( currentGameState == GameState.Intro ) {
+			playerController.CheckGroundOrientation();
+		} else if ( currentGameState == GameState.Cutscene ) {
+			playerController.CheckGroundOrientation();
 		}
 	}
 
