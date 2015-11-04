@@ -117,17 +117,17 @@ public class PlayerController : MonoBehaviour {
 			Vector2 diff = new Vector2( transform.position.x, transform.position.z ) - new Vector2( currentRoadSection.position.x, currentRoadSection.transform.position.z );
 			float moveDirVMag = diff.magnitude;
 			Vector2 projVector =  moveDirVector*moveDirVMag * ( Vector2.Dot( diff, moveDirVector*moveDirVMag )/( moveDirVMag*moveDirVMag ) );
-			float distance = (new Vector2( transform.position.x, transform.position.z ) - new Vector2( currentRoadSection.transform.position.x + projVector.x, currentRoadSection.transform.position.z + projVector.y )).magnitude;
-			Debug.LogWarning( "Distance: " + distance );
+			float distanceFromCenterOfRoad = (new Vector2( transform.position.x, transform.position.z ) - new Vector2( currentRoadSection.transform.position.x + projVector.x, currentRoadSection.transform.position.z + projVector.y )).magnitude;
+			Debug.LogWarning( "Distance: " + distanceFromCenterOfRoad );
 
 			// Bound Player
-			if (!isOnHorizontalRoad) {
-				if (Mathf.Abs (transform.position.x + (horizontal * strafeSpeed*Time.deltaTime)) < playerBounds + tempPitstopBoundsOffset + currentRoadSection.transform.position.x) {
-					transform.Translate (horizontal * strafeSpeed*Time.deltaTime, 0, 0);
-				}
+			if ( Mathf.Abs(distanceFromCenterOfRoad) < playerBounds + tempPitstopBoundsOffset ) {
+				transform.Translate (horizontal * strafeSpeed*Time.deltaTime, 0, 0);
 			} else {
-				if (Mathf.Abs (transform.position.z - currentRoadSection.transform.position.z - (horizontal * strafeSpeed*Time.deltaTime)) < playerBounds + tempPitstopBoundsOffset) {
-					transform.Translate (horizontal * strafeSpeed*Time.deltaTime, 0, 0);
+				if( Mathf.Sign( distanceFromCenterOfRoad ) == 1 ) {
+
+				} else {
+
 				}
 			}
 		} else {
