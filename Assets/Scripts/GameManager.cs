@@ -245,9 +245,10 @@ public class GameManager : MonoBehaviour {
 	}
 
 	public void SwitchToPauseMenu () {
-		switchToPaused = true;
-
-		GUIManager.s_instance.DisplayPauseMenu ();
+		if (GameManager.s_instance.currentGameState == GameState.Playing) {
+			switchToPaused = true;
+			GUIManager.s_instance.DisplayPauseMenu ();
+		}
 	}
 
 	public void LoadMainMenu() {
