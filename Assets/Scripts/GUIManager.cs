@@ -116,6 +116,15 @@ public class GUIManager : MonoBehaviour {
 		case "1" : 
 			DisplayNotification("Power-Ups", "Power-Ups affect your happiness and money", true);
 			break;
+		case "2" : 
+			DisplayNotification("Age", "Try to make it to 65 and retire RICH", true);
+			break;
+		case "3" : 
+			DisplayNotification("Happiness", "If you run out of happiness - GAME OVER!", true);
+			break;
+		case "4" : 
+			DisplayNotification("Obstacles", "Be careful, some Power-Ups hurt you!", true);
+			break;
 
 		case "5" :
 			DisplayNotification("Pit Stop", "Goto a Pit-Stop to manage your Financial Assets", true);
@@ -140,7 +149,7 @@ public class GUIManager : MonoBehaviour {
 	}
 
 	IEnumerator CloseTutorialCorout () {
-		yield return new WaitForSeconds (3f);
+		yield return new WaitForSeconds (4f);
 		CloseTutorial ();
 	}
 
