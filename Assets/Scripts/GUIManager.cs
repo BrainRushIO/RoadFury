@@ -116,6 +116,10 @@ public class GUIManager : MonoBehaviour {
 		case "1" : 
 			DisplayNotification("Power-Ups", "Power-Ups affect your happiness and money", true);
 			break;
+
+		case "5" :
+			DisplayNotification("Pit Stop", "Goto a Pit-Stop to manage your Financial Assets", true);
+			break;
 		}
 	}
 

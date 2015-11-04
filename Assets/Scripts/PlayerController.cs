@@ -117,7 +117,7 @@ public class PlayerController : MonoBehaviour {
 			float moveDirVMag = diff.magnitude;
 			Vector2 projVector =  moveDirVector*moveDirVMag * ( Vector2.Dot( diff, moveDirVector*moveDirVMag )/( moveDirVMag*moveDirVMag ) );
 			float distance = (new Vector2( transform.position.x, transform.position.z ) - new Vector2( currentRoadSection.transform.position.x + projVector.x, currentRoadSection.transform.position.z + projVector.y )).magnitude;
-			Debug.LogWarning( "Distance: " + distance );
+//			Debug.LogWarning( "Distance: " + distance );
 
 			// Bound Player
 			if (!isOnHorizontalRoad) {
