@@ -160,6 +160,7 @@ public class PlayerController : MonoBehaviour {
 			pitstopEntranceAvailable = true;
 		} else if (other.tag == "tutorial") {
 			GUIManager.s_instance.DisplayTutorial(other.name);
+			GameManager.s_instance.SwitchToPaused();
 		}
 	}
 

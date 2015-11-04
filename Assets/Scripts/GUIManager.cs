@@ -81,7 +81,9 @@ public class GUIManager : MonoBehaviour {
 	}
 
 	public void ClosePauseMenu() {
-		pauseMenuAnimator.SetTrigger ("pitstop");
+		if (pauseMenuAnimator.GetCurrentAnimatorStateInfo (0).IsName("PitStop_Onscreen")) {
+			pauseMenuAnimator.SetTrigger ("pitstop");
+		}
 	}
 
 	public void DisplayBday(int age) {
@@ -129,7 +131,6 @@ public class GUIManager : MonoBehaviour {
 
 	public void DisplayNotification( string title, string details, bool tutorial=false ) {
 		if (tutorial) {
-			StartCoroutine ("CloseTutorialCorout");
 			tutorialAnimator.SetBool ("hide", false);
 			tutorialTitle.text = title;
 			tutorialDesc.text = details;
@@ -141,16 +142,6 @@ public class GUIManager : MonoBehaviour {
 			notificationDesc.text = details;
 			notificationAnimator.SetBool ("show", true);
 		}
-	}
-
-	IEnumerator CloseTutorialCorout () {
-		yield return new WaitForSeconds (4f);
-		CloseTutorial ();
-	}
-
-	public void CloseTutorial() {
-		tutorialAnimator.SetBool( "show", false );
-		tutorialAnimator.SetBool( "hide", true );
 	}
 
 	public void CloseNotification() {
@@ -166,6 +157,12 @@ public class GUIManager : MonoBehaviour {
 			GameManager.s_instance.SwitchToPitStop();
 			break;
 		}
+	}
+
+	public void CloseTutorial() {
+		tutorialAnimator.SetBool( "show", false );
+		tutorialAnimator.SetBool( "hide", true );
+		GameManager.s_instance.SwitchToGame ();
 	}
 
 	public void SpawnHappiness(float happy){

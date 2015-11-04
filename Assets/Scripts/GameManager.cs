@@ -146,27 +146,6 @@ public class GameManager : MonoBehaviour {
 		//				inGameGUI.SetActive (true);
 		inGameGUI.GetComponent<Animator> ().SetTrigger ("show");
 	}
-	
-//	void RunCutSceneText () {
-//		slideTimer += Time.deltaTime;
-//		if (slideTimer > slideDuration) {
-//			if (textIterator == currentGUIseries.transform.childCount-1) {
-//				slideTimer = 0;
-//				if (currentGameState == GameState.Intro) {
-//					EndTutorial();
-//				}
-//				else {
-//					currentGUIseries.SetActive (false);
-//				}
-//			}
-//			else if (textIterator < currentGUIseries.transform.childCount - 1) {
-//				currentGUIseries.transform.GetChild(textIterator).gameObject.SetActive(false);
-//				textIterator++;
-//				currentGUIseries.transform.GetChild(textIterator).gameObject.SetActive(true);
-//				slideTimer = 0;
-//			}
-//		}
-//	}
 
 	public void SwitchToCutscene () {
 		slideTimer = 0;
@@ -248,7 +227,10 @@ public class GameManager : MonoBehaviour {
 		camera1.GetComponent<Camera> ().enabled = true;
 		faderObj.GetComponent<Fader>().StartFadeOut();
 	}
-
+	public void SwitchToPaused () {
+		switchToPaused = true;
+		GameObject.FindGameObjectWithTag("Player").GetComponent<Animator>().StartPlayback();
+	}
 	public void SwitchToPauseMenu () {
 		if (GameManager.s_instance.currentGameState == GameState.Playing) {
 			GameObject.FindGameObjectWithTag("Player").GetComponent<Animator>().StartPlayback();
