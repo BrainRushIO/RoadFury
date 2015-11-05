@@ -112,7 +112,7 @@ public class PlayerController : MonoBehaviour {
 			Vector2 roadToPlayerVector = playerPos - currentRoadPos;
 			float moveDirVectorLength = roadToPlayerVector.magnitude;
 			Vector2 projVector = ( Vector2.Dot( moveDirVector*moveDirVectorLength ,roadToPlayerVector )/( moveDirVectorLength*moveDirVectorLength ) ) * (moveDirVector*moveDirVectorLength) ;
-			projVector += currentRoadPos;
+			projVector += currentRoadPos; // for gizmos
 			projV = new Vector3( projVector.x, 0f, projVector.y );
 			float distanceFromCenterOfRoad = Vector2.Distance( playerPos, projVector );
 
@@ -129,9 +129,8 @@ public class PlayerController : MonoBehaviour {
 			// Bound Player
 			if ( Mathf.Abs(distanceFromCenterOfRoad + playerLateralMovement) <= playerBounds + tempPitstopBoundsOffset ) {
 				transform.Translate( Vector3.right * playerLateralMovement);
-				Debug.Log( "Lat Movement: " + (Vector3.right*playerLateralMovement) );
 			} else {
-				Debug.Log( "Out of bounds." );
+				//Debug.Log( "Trying to move out of bounds." );
 			}
 		} else {
 			myAnimator.SetFloat ("Turn", 0);
@@ -204,7 +203,7 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	public void CheckGroundOrientation() {
-		Ray ray = new Ray( transform.position, Vector3.down * 1.5f );
+		Ray ray = new Ray( transform.position+Vector3.up, Vector3.down * 5f );
 		RaycastHit hitInfo;
 		if( Physics.Raycast( ray, out hitInfo ) ) {
 			float roadRotation = hitInfo.transform.rotation.eulerAngles.y;
