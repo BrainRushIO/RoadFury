@@ -163,6 +163,8 @@ public class GameManager : MonoBehaviour {
 		if (currentGameState == GameState.Playing) {
 			switchToPitstop = true;
 			PitstopFlashEnter ();
+			GameObject.FindGameObjectWithTag("Player").GetComponent<Animator>().StartPlayback();
+
 		}
 
 		if (currentGameState == GameState.Notification) {
@@ -175,6 +177,8 @@ public class GameManager : MonoBehaviour {
 	public void SwitchToGame () {
 		if (currentGameState == GameState.PitStop) {
 			// Player
+			GameObject.FindGameObjectWithTag("Player").GetComponent<Animator>().StopPlayback();
+
 			playerController.SetAtRespawnPos();
 			PitstopFlashExit();
 			switchToGame = true;
