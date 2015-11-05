@@ -5,7 +5,7 @@ using UnityEngine.UI;
 public class PlayerController : MonoBehaviour {
 
 	// Movement and bounds
-	private float strafeSpeed = 4.5f, moveSpeed = 8f;
+	private float strafeSpeed = 4.5f, moveSpeed = 14f;
 	private float playerBounds = 4f;
 	private float pitStopBoundsOffset = 4.5f;
 	private bool pitstopEntranceAvailable = false;
