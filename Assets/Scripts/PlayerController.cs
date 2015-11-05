@@ -170,6 +170,7 @@ public class PlayerController : MonoBehaviour {
 			GUIManager.s_instance.DisplayTutorial(other.name);
 			GameManager.s_instance.SwitchToPaused();
 		}
+
 	}
 
 	void OnTriggerExit(Collider other) {
