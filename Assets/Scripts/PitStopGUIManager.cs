@@ -24,6 +24,7 @@ public class PitStopGUIManager : MonoBehaviour {
 	public void HandlePitStopClick(int index) {
 		if (GameManager.s_instance.currentGameState == GameState.PitStop) {
 			print ("handle click");
+			SoundtrackManager.s_instance.PlayAudioSource(SoundtrackManager.s_instance.click); 	
 			if (currentPitStopState == PitStopState.Loans ||
 				currentPitStopState == PitStopState.Investment ||
 				currentPitStopState == PitStopState.RealEstate ||

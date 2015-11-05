@@ -160,8 +160,10 @@ public class PlayerController : MonoBehaviour {
 			pitstopEntranceAvailable = false;
 			respawnPos = other.GetComponent<PitStopRespawn> ().respawnPosition;
 		} else if (other.tag == "pitstopRoad") {
+			SoundtrackManager.s_instance.PlayAudioSource(SoundtrackManager.s_instance.pitstop);
 			pitstopEntranceAvailable = true;
 		} else if (other.tag == "tutorial") {
+			SoundtrackManager.s_instance.PlayAudioSource(SoundtrackManager.s_instance.click2);
 			GUIManager.s_instance.DisplayTutorial(other.name);
 			GameManager.s_instance.SwitchToPaused();
 		}

@@ -11,6 +11,7 @@ public class PowerUp : MonoBehaviour {
 	public string nameOfObj, guiMessage;
 	public float happiness, burnRate;
 	public int cost;
+	public AudioSource playOnCollision;
 	// Use this for initialization
 	void Start () {
 //		thisText.text = nameOfObj;
@@ -22,7 +23,9 @@ public class PowerUp : MonoBehaviour {
 	}
 
 	void OnTriggerEnter (Collider other) {
-
+		if (playOnCollision != null) {
+			playOnCollision.Play();
+		}
 		if (other.gameObject.tag == "Player") {
 			if (cost != 0) {
 				GUIManager.s_instance.SpawnCost (cost);

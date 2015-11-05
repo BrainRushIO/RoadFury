@@ -76,6 +76,7 @@ public class PlayerStats : MonoBehaviour {
 			yearTimer += Time.deltaTime;
 			if( yearTimer >= secondsPerYear ) {
 				age++;
+				SoundtrackManager.s_instance.PlayAudioSource(SoundtrackManager.s_instance.newYear);
 				GUIManager.s_instance.DisplayBday(age);
 				yearTimer = 0f;
 
