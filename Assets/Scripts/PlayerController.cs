@@ -154,7 +154,6 @@ public class PlayerController : MonoBehaviour {
 			GameManager.s_instance.currentGUIseries = other.GetComponent<RoadBranch> ().GUIObject;
 			GameManager.s_instance.currentGUIseries.SetActive (true);
 			GameManager.s_instance.SwitchToCutscene ();
-			print ("HIT BRANCH");
 		} else if (other.tag == "pitstop") {
 			GameManager.s_instance.SwitchToPitStop ();
 			pitstopEntranceAvailable = false;
