@@ -25,7 +25,7 @@ public class Cinematographer : MonoBehaviour {
 	Vector3 lerpPositionStart, lerpPositionEnd;
 	//lerp
 	float lerpTimer;
-	public float lerpDuration = 3f;
+	float lerpDuration = 2f;
 	bool isLerping;
 
 	public void RollCamera () {
