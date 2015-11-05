@@ -93,19 +93,19 @@ public class PlayerController : MonoBehaviour {
 				transform.Translate (Vector3.forward*moveSpeed*Time.deltaTime);
 		}
 		if (GameManager.s_instance.currentGameState == GameState.Playing) {
-			float horizontal = Input.GetAxis ("Horizontal");
+			float horizontalInput = Input.GetAxis ("Horizontal");
 	
 			if (Input.touchCount > 0) {
 				Touch touch = Input.GetTouch (0);
 				if (touch.position.x > Screen.width / 2) {
 					//go right
-					horizontal = 1f;
+					horizontalInput = 1f;
 				} else if (touch.position.x < Screen.width / 2) {
-					horizontal = -1f;
+					horizontalInput = -1f;
 				}
 			}
 
-			myAnimator.SetFloat ("Turn", horizontal * .6f);
+			myAnimator.SetFloat ("Turn", horizontalInput * .6f);
 			transform.Translate (Vector3.forward*moveSpeed*Time.deltaTime);
 
 			// Calculate if we are entering a pitstop
@@ -124,12 +124,20 @@ public class PlayerController : MonoBehaviour {
 			projVector += currentRoadPos;
 			projV = new Vector3( projVector.x, 0f, projVector.y );
 			float distanceFromCenterOfRoad = Vector2.Distance( playerPos, projVector );
-			Debug.Log( "Distance: " + distanceFromCenterOfRoad );
 
+			// Check if the player is to the left or right of road center
+			float centerOfRoadPos = transform.InverseTransformPoint( new Vector3( projVector.x, transform.position.y, projVector.y ) ).x;
+			if( 0f < centerOfRoadPos ) {
+				// If the center of the road is to the right of the player, he is positioned to its left, which is a negative distance
+				distanceFromCenterOfRoad *= -1f;
+			}
+
+			// Calculate player movement scalar
+			float playerLateralMovement = horizontalInput*strafeSpeed*Time.deltaTime;
+				 
 			// Bound Player
-			if ( Mathf.Abs(distanceFromCenterOfRoad) < playerBounds + tempPitstopBoundsOffset ) {
-				transform.Translate(transform.right*horizontal*strafeSpeed*Time.deltaTime);
-				//transform.Translate (horizontal * strafeSpeed*Time.deltaTime, 0, 0);
+			if ( Mathf.Abs(distanceFromCenterOfRoad + playerLateralMovement) <= playerBounds + tempPitstopBoundsOffset ) {
+				transform.Translate( transform.right * playerLateralMovement);
 			} else {
 				Debug.Log( "Out of bounds." );
 			}
@@ -208,7 +216,9 @@ public class PlayerController : MonoBehaviour {
 		RaycastHit hitInfo;
 		if( Physics.Raycast( ray, out hitInfo ) ) {
 			float roadRotation = hitInfo.transform.rotation.eulerAngles.y;
-			moveDirVector = new Vector2( Mathf.Cos( roadRotation*Mathf.Deg2Rad ), Mathf.Sin( roadRotation*Mathf.Deg2Rad ) );
+			Debug.Log( "Road rot :" + roadRotation);
+			moveDirVector = new Vector2( Mathf.Sin( roadRotation*Mathf.Deg2Rad ), Mathf.Cos( roadRotation*Mathf.Deg2Rad ) );
+			Debug.Log( "moveDirV :" + moveDirVector );
 			currentRoadSection = hitInfo.transform;
 			Debug.LogWarning( "Current road piece: " + hitInfo.transform.name );
 		} else {
