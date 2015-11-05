@@ -118,8 +118,8 @@ public class PlayerController : MonoBehaviour {
 			float distanceFromCenterOfRoad = Vector2.Distance( playerPos, projVector );
 
 			// Check if the player is to the left or right of road center
-			float centerOfRoadPos = transform.InverseTransformPoint( new Vector3( projVector.x, transform.position.y, projVector.y ) ).x;
-			if( 0f < centerOfRoadPos ) {
+			float centerOfRoadPosAccordingToPlayer = transform.InverseTransformPoint( new Vector3( projVector.x, transform.position.y, projVector.y ) ).x;
+			if( 0f < centerOfRoadPosAccordingToPlayer ) {
 				// If the center of the road is to the right of the player, he is positioned to its left, which is a negative distance
 				distanceFromCenterOfRoad *= -1f;
 			}
@@ -129,7 +129,11 @@ public class PlayerController : MonoBehaviour {
 				 
 			// Bound Player
 			if ( Mathf.Abs(distanceFromCenterOfRoad + playerLateralMovement) <= playerBounds + tempPitstopBoundsOffset ) {
+				// Prevent the player from moving if his next movement will land him outside of the bounds
 				transform.Translate( Vector3.right * playerLateralMovement);
+			} else if ( Mathf.Abs(distanceFromCenterOfRoad) > playerBounds + tempPitstopBoundsOffset) {
+				Vector2 playerDirFromRoadCenter = (playerPos - projVector).normalized;
+				transform.position = new Vector3( projVector.x, transform.position.y, projVector.y ) + new Vector3( playerDirFromRoadCenter.x, 0f, playerDirFromRoadCenter.y ) * (playerBounds*Mathf.Sign(-distanceFromCenterOfRoad)) ;
 			} else {
 				//Debug.Log( "Trying to move out of bounds." );
 			}
