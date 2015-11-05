@@ -79,15 +79,6 @@ public class PlayerController : MonoBehaviour {
 			}
 		}
 
-//		if (isRotateLerp) {
-//			float perc = (Time.time - rotateLerpTimer) / rotateLerpDuration;
-//			transform.rotation = Quaternion.Lerp(startLerp, endLerp, perc);
-//			if (perc > .99) {
-//				perc = 1;
-//				Quaternion.Lerp(startLerp, endLerp,perc);
-//				isRotateLerp = false;
-//			}
-//		}
 		if (GameManager.s_instance.currentGameState == GameState.Cutscene) {
 			if( !isOnCart )
 				transform.Translate (Vector3.forward*moveSpeed*Time.deltaTime);
@@ -137,7 +128,8 @@ public class PlayerController : MonoBehaviour {
 				 
 			// Bound Player
 			if ( Mathf.Abs(distanceFromCenterOfRoad + playerLateralMovement) <= playerBounds + tempPitstopBoundsOffset ) {
-				transform.Translate( transform.right * playerLateralMovement);
+				transform.Translate( Vector3.right * playerLateralMovement);
+				Debug.Log( "Lat Movement: " + (Vector3.right*playerLateralMovement) );
 			} else {
 				Debug.Log( "Out of bounds." );
 			}
