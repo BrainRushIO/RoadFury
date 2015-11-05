@@ -126,6 +126,9 @@ public class GUIManager : MonoBehaviour {
 		case "6" :
 			DisplayNotification("Pit Stop", "Goto a Pit-Stop to manage your Financial Assets", true);
 			break;
+		case "7" :
+			DisplayNotification("Life Decision", "Left: Goto College \n Right: Join the Workforce", true);
+		break;
 		}
 	}
 

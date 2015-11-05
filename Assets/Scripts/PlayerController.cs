@@ -154,13 +154,11 @@ public class PlayerController : MonoBehaviour {
 			GameManager.s_instance.currentGUIseries = other.GetComponent<RoadBranch> ().GUIObject;
 			GameManager.s_instance.currentGUIseries.SetActive (true);
 			GameManager.s_instance.SwitchToCutscene ();
-			print ("HIT BRANCH");
 		} else if (other.tag == "pitstop") {
 			GameManager.s_instance.SwitchToPitStop ();
 			pitstopEntranceAvailable = false;
 			respawnPos = other.GetComponent<PitStopRespawn> ().respawnPosition;
 		} else if (other.tag == "pitstopRoad") {
-			SoundtrackManager.s_instance.PlayAudioSource(SoundtrackManager.s_instance.pitstop);
 			pitstopEntranceAvailable = true;
 		} else if (other.tag == "tutorial") {
 			SoundtrackManager.s_instance.PlayAudioSource(SoundtrackManager.s_instance.click2);
@@ -182,6 +180,8 @@ public class PlayerController : MonoBehaviour {
 			}
 		} else if( other.tag == "pitstopRoad" ) {
 			pitstopEntranceAvailable = false;
+			SoundtrackManager.s_instance.PlayAudioSource(SoundtrackManager.s_instance.pitstop);
+
 		}
 	}
 

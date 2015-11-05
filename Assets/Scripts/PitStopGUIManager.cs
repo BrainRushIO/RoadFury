@@ -12,10 +12,12 @@ public class PitStopGUIManager : MonoBehaviour {
 
 
 	void Start () {
-		DisplayCurrentMenu ();
 	}
 
 	void Update() {
+		if (currentPitStopState == PitStopState.Main && GameManager.s_instance.currentGameState == GameState.PitStop) {
+			DisplayCurrentMenu ();
+		}
 //		print (currentPitStopState);
 	}
 
