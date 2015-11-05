@@ -74,7 +74,7 @@ public class GUIManager : MonoBehaviour {
 
 	public void DisplayPauseMenu() {
 			pauseMenuAnimator.SetTrigger ("pitstop");
-			pauseMenuTexts.transform.GetChild (0).GetComponent<Text> ().text = "Age: $" + PlayerStats.s_instance.age;
+			pauseMenuTexts.transform.GetChild (0).GetComponent<Text> ().text = "Age: " + PlayerStats.s_instance.age;
 			pauseMenuTexts.transform.GetChild (1).GetComponent<Text> ().text = "Total Money: $" + NumberToString.Convert (PlayerStats.s_instance.money);
 			pauseMenuTexts.transform.GetChild (2).GetComponent<Text> ().text = "Cash Flow: $" + NumberToString.Convert (PlayerStats.s_instance.cashFlow);
 			pauseMenuTexts.transform.GetChild (3).GetComponent<Text> ().text = "Happiness: " + Mathf.CeilToInt(PlayerStats.s_instance.happiness*100) + "/100";
