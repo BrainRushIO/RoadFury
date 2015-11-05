@@ -133,7 +133,7 @@ public class PlayerController : MonoBehaviour {
 				transform.Translate( Vector3.right * playerLateralMovement);
 			} else if ( Mathf.Abs(distanceFromCenterOfRoad) > playerBounds + tempPitstopBoundsOffset) {
 				Vector2 playerDirFromRoadCenter = (playerPos - projVector).normalized;
-				transform.position = new Vector3( projVector.x, transform.position.y, projVector.y ) + new Vector3( playerDirFromRoadCenter.x, 0f, playerDirFromRoadCenter.y ) * (playerBounds*Mathf.Sign(-distanceFromCenterOfRoad)) ;
+//				transform.position = new Vector3( projVector.x, transform.position.y, projVector.y ) + new Vector3( playerDirFromRoadCenter.x, 0f, playerDirFromRoadCenter.y ) * (playerBounds*Mathf.Sign(-distanceFromCenterOfRoad)) ;
 			} else {
 				//Debug.Log( "Trying to move out of bounds." );
 			}
@@ -175,10 +175,6 @@ public class PlayerController : MonoBehaviour {
 
 	void OnTriggerExit(Collider other) {
 		if (other.tag == "branch") {
-			//rotating player 90 degrees depending on what it says
-//			endLerp = transform.rotation * Quaternion.Euler(0,other.GetComponent<RoadBranch>().degreeToTurnBy,0);
-//			StartRotateLerp();
-//			currentRoadSection = other.GetComponent<RoadBranch>().nextRoadBranch.transform;
 			isOnHorizontalRoad = !isOnHorizontalRoad;
 			if(other.GetComponent<RoadBranch>().GUIObject.name == "Retire"){
 				myAnimator.SetTrigger ("Retired");
