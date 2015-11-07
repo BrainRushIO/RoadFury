@@ -2,6 +2,11 @@
 using System.Collections;
 using UnityEngine.UI;
 
+
+/*
+This class handles all changes to the GUI - except for the pitstopgui which has its own class
+*/
+
 public class GUIManager : MonoBehaviour {
 	
 	public Color positive, negative, neutral;
@@ -109,37 +114,6 @@ public class GUIManager : MonoBehaviour {
 		birthdayAnimator.SetBool( "hide", true );
 	}
 
-	public void DisplayTutorial(string index) {
-		switch (index) {
-		case "0" : 
-			DisplayNotification("Controls", "Touch the screen to steer", true);
-			break;
-		case "1" : 
-			DisplayNotification("Power-Ups", "Power-Ups affect your happiness and money", true);
-			break;
-		case "2" : 
-			DisplayNotification("Age", "Objective: Retire at 65", true);
-			break;
-		case "3" : 
-			DisplayNotification("Happiness", "If you run out of happiness - GAME OVER", true);
-			break;
-		case "4" : 
-			DisplayNotification("Cash Flow", "You are losing money, get a job!", true);
-			break;
-		case "5" : 
-			DisplayNotification("Obstacles", "Be careful, some Power-Ups hurt you", true);
-			break;
-		case "6" :
-			DisplayNotification("Pit Stop", "Goto a Pit-Stop to manage your Financial Assets", true);
-			break;
-		case "7" :
-			DisplayNotification("Life Decision", "Left: Goto College \n Right: Join the Workforce", true);
-		break;
-		case "8" :
-			DisplayNotification("Loans", "You took out a college loan - manage it in the Pit Stop", true);
-			break;
-		}
-	}
 
 	public void DisplayNotification( string title, string details, bool tutorial=false ) {
 		if (tutorial) {
@@ -214,5 +188,37 @@ public class GUIManager : MonoBehaviour {
 		GameObject.FindGameObjectWithTag ("Camera2").GetComponent<Camera>().enabled = false;
 		camera1.GetComponent<Camera> ().enabled = true;
 		faderObj.GetComponent<Fader>().StartFadeOut();
+	}
+
+	public void DisplayTutorial(string index) {
+		switch (index) {
+		case "0" : 
+			DisplayNotification("Controls", "Touch the screen to steer", true);
+			break;
+		case "1" : 
+			DisplayNotification("Power-Ups", "Power-Ups affect your happiness and money", true);
+			break;
+		case "2" : 
+			DisplayNotification("Age", "Objective: Retire at 65", true);
+			break;
+		case "3" : 
+			DisplayNotification("Happiness", "If you run out of happiness - GAME OVER", true);
+			break;
+		case "4" : 
+			DisplayNotification("Cash Flow", "You are losing money, get a job!", true);
+			break;
+		case "5" : 
+			DisplayNotification("Obstacles", "Be careful, some Power-Ups hurt you", true);
+			break;
+		case "6" :
+			DisplayNotification("Pit Stop", "Goto a Pit-Stop to manage your Financial Assets", true);
+			break;
+		case "7" :
+			DisplayNotification("Life Decision", "Left: Goto College \n Right: Join the Workforce", true);
+			break;
+		case "8" :
+			DisplayNotification("Loans", "You took out a college loan - manage it in the Pit Stop", true);
+			break;
+		}
 	}
 }

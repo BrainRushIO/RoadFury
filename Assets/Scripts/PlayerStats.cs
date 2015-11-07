@@ -2,6 +2,9 @@
 using System.Collections;
 using System.Collections.Generic;
 
+/*
+This class handles player metrics
+*/
 public class PlayerStats : MonoBehaviour {
 	private static PlayerStats _playerStats;
 

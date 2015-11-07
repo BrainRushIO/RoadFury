@@ -2,6 +2,10 @@
 using System.Collections;
 using UnityEngine.UI;
 
+/*
+This class handles the physical aspects of the player object
+ */
+
 public class PlayerController : MonoBehaviour {
 
 	// Movement and bounds
@@ -28,24 +32,14 @@ public class PlayerController : MonoBehaviour {
 
 
 	Vector3 projV = Vector3.zero;
-	// Rotation
-//	private bool isRotateLerp;
-//	private float rotateLerpTimer;
-//	private float rotateLerpDuration = 0.8f;
-//	private Quaternion startLerp, endLerp;
+
 
 	//TODO add attrition rate increases depending on if player gets wife or gf or not
 	void Start(){
 		myAnimator = GetComponent<Animator> ();
 		moveDirVector = new Vector2( 0f, 1f );
 	}
-
-//	void StartRotateLerp() {
-//		startLerp = transform.rotation;
-//		rotateLerpTimer = Time.time;
-//		isRotateLerp = true;
-//	}
-
+	
 	void Update () {
 		if( isLerpingToGuyCart ) {
 			float t = lerpTimer / lerpDuration;
