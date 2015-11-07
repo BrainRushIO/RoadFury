@@ -6,7 +6,7 @@ public enum GameState {Pause, MainMenu, Intro, Playing, Cutscene, Notification, 
 public enum AgeState {YoungAdult, Adult, OldAdult, SeniorCitizen};
 
 /*
-This class managed game states, switches between game states
+This class manages game states, switches between game states
  */
 
 public class GameManager : MonoBehaviour {
@@ -58,29 +58,19 @@ public class GameManager : MonoBehaviour {
 			Debug.LogError( "GameManager didn't find a reference to a PlayerController in the scene." );
 	}
 
-
-
-	//Swipe up to switchToInventory
-	//Swipe down to switchToRoad
-
-	// Update is called once per frame
 	void Update () {
-//		print (currentGameState);
 		switch (currentGameState) {
-
 		case GameState.MainMenu : 
 			if (userPressedStart) {
 				userPressedStart = false;
 				currentGameState = GameState.Playing;
 			}
 			break;
-
 		case GameState.Pause :
 			if (switchToGame) {
 				switchToGame = false;
 				currentGameState = GameState.Playing;
 			}
-
 			break;
 		case GameState.Playing :
 			if (switchToCutScene) {
@@ -91,14 +81,11 @@ public class GameManager : MonoBehaviour {
 				switchToPitstop = false;
 				currentGameState = GameState.PitStop;
 			}
-
 			if (switchToPaused) {
 				switchToPaused = false;
 				currentGameState = GameState.Pause;
 			}
-
 			break;
-
 		case GameState.Cutscene : 
 			if (switchToGame) {
 				switchToGame = false;
@@ -125,12 +112,9 @@ public class GameManager : MonoBehaviour {
 				currentGameState = GameState.PitStop;
 			}
 			break;
-		
 	}
 	
 }
-
-
 	public void StartGame () {
 		userPressedStart = true;
 		GUIManager.s_instance.MainMenuGUI.SetActive (false);
