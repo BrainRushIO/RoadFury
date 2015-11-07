@@ -5,7 +5,6 @@ using UnityEngine.UI;
 
 /*
 This class handles the the text and clickable options displayed in the PitStop sections
-
 */
 
 public class PitStopGUIManager : MonoBehaviour {
@@ -31,13 +30,11 @@ public class PitStopGUIManager : MonoBehaviour {
 
 	public void HandlePitStopClick(int index) {
 		if (GameManager.s_instance.currentGameState == GameState.PitStop) {
-			print ("handle click");
 			SoundtrackManager.s_instance.PlayAudioSource(SoundtrackManager.s_instance.click); 	
 			if (currentPitStopState == PitStopState.Loans ||
 				currentPitStopState == PitStopState.Investment ||
 				currentPitStopState == PitStopState.RealEstate ||
 				currentPitStopState == PitStopState.Business) {
-				print ("last index set");
 				lastIndexClicked = index;
 			}
 

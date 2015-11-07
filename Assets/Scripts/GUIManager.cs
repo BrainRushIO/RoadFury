@@ -12,6 +12,12 @@ public class GUIManager : MonoBehaviour {
 	public Text notificationTitle, notificationDesc, birthdayText, tutorialTitle, tutorialDesc;
 	public Animator notificationAnimator, birthdayAnimator, tutorialAnimator, pauseMenuAnimator;
 
+	public GameObject camera1;
+	public GameObject pitStopGUI;
+	public GameObject inGameGUI;
+	public GameObject MainMenuGUI;
+	public GameObject faderObj;
+
 	public static GUIManager s_instance;
 
 	void Awake () {
@@ -177,5 +183,36 @@ public class GUIManager : MonoBehaviour {
 		} else {
 			happinessBar.GetComponentInChildren<ImageFlash>().Flash(negative);
 		}
+	}
+
+	public void PitstopFlashEnter() {
+		StartCoroutine("FlashIn");
+	}
+	
+	public void PitstopFlashExit() {
+		StartCoroutine("FlashOut");
+	}
+	
+	private IEnumerator FlashIn() {
+		print ("FLASH IN");
+		faderObj.GetComponent<Fader>().StartFadeIn();
+		yield return new WaitForSeconds(1f);
+		// UI
+		inGameGUI.GetComponent<Animator> ().SetTrigger("pitstop");
+		pitStopGUI.GetComponent<Animator>().SetTrigger("pitstop");
+		//switch camera
+		camera1.GetComponent<Camera> ().enabled = false;
+		GameObject.FindGameObjectWithTag ("Camera2").GetComponent<Camera>().enabled = true;
+		faderObj.GetComponent<Fader>().StartFadeOut();
+	}
+	private IEnumerator FlashOut() {
+		faderObj.GetComponent<Fader>().StartFadeIn();
+		yield return new WaitForSeconds(1f);
+		inGameGUI.GetComponent<Animator> ().SetTrigger ("pitstop");
+		pitStopGUI.GetComponent<Animator> ().SetTrigger ("pitstop");
+		//switch camera
+		GameObject.FindGameObjectWithTag ("Camera2").GetComponent<Camera>().enabled = false;
+		camera1.GetComponent<Camera> ().enabled = true;
+		faderObj.GetComponent<Fader>().StartFadeOut();
 	}
 }
