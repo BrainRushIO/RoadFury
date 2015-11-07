@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿//#define DEBUG_MODE
+
+using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
 
@@ -113,8 +115,9 @@ public class PlayerController : MonoBehaviour {
 				Vector2 orthoV = new Vector2( moveDirVector.y, -moveDirVector.x );
 				projVector += orthoV*(pitStopBoundsOffset/2f);
 			}
-
+#if DEBUG_MODE
 			projVector += currentRoadPos; // for gizmos
+#endif
 			projV = new Vector3( projVector.x, 0f, projVector.y );
 			float distanceFromCenterOfRoad = Vector2.Distance( playerPos, projVector );
 
@@ -164,8 +167,11 @@ public class PlayerController : MonoBehaviour {
 			GameManager.s_instance.SwitchToPitStop ();
 			pitstopEntranceAvailable = false;
 			respawnPos = other.GetComponent<PitStopRespawn> ().respawnPosition;
-		} else if (other.tag == "pitstopRoad") {
+		} else if (other.tag == "pitstopEnter") {
 			pitstopEntranceAvailable = true;
+		} else if( other.tag == "pitstopExit" ) {
+			pitstopEntranceAvailable = false;
+			SoundtrackManager.s_instance.PlayAudioSource(SoundtrackManager.s_instance.pitstop);
 		} else if (other.tag == "tutorial") {
 			SoundtrackManager.s_instance.PlayAudioSource(SoundtrackManager.s_instance.click2);
 			GUIManager.s_instance.DisplayTutorial(other.name);
@@ -181,10 +187,6 @@ public class PlayerController : MonoBehaviour {
 				myAnimator.SetTrigger ("Retired");
 				transform.Translate(0,0,0);
 			}
-		} else if( other.tag == "pitstopRoad" ) {
-			pitstopEntranceAvailable = false;
-			SoundtrackManager.s_instance.PlayAudioSource(SoundtrackManager.s_instance.pitstop);
-
 		}
 	}
 
@@ -222,7 +224,7 @@ public class PlayerController : MonoBehaviour {
 			Debug.LogError( "PlayerContoller's CheckGroundOrientation didn't detect any gound under player." );
 		}
 	}
-
+#if DEBUG_MODE
 	void OnDrawGizmos() {
 		Gizmos.color = Color.yellow;
 		Gizmos.DrawSphere( currentRoadSection.position, 1f );
@@ -233,4 +235,5 @@ public class PlayerController : MonoBehaviour {
 		Gizmos.color = Color.cyan ;
 		Gizmos.DrawSphere( currentRoadSection.position + new Vector3(moveDirVector.x, 0f, moveDirVector.y ), 0.5f );
 	}
+#endif
 }
