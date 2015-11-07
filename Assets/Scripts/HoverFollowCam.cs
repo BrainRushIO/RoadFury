@@ -17,7 +17,6 @@ public class HoverFollowCam : MonoBehaviour
 		camPos = GameObject.FindGameObjectWithTag("CamPos").transform;
 	}
 	
-	
 	void Update()
 	{
 		switch (thisCameraMode) {
