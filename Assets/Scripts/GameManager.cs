@@ -164,12 +164,11 @@ public class GameManager : MonoBehaviour {
 			switchToPitstop = true;
 			PitstopFlashEnter ();
 			GameObject.FindGameObjectWithTag("Player").GetComponent<Animator>().StartPlayback();
-
+			PitStopGUIManager.s_instance.DisplayCurrentMenu(); //fixes the update issue where money incorrectly displayed
 		}
 
 		if (currentGameState == GameState.Notification) {
 			switchToPitstop = true;
-
 		}
 			
 			

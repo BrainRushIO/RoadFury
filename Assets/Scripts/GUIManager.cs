@@ -8,7 +8,7 @@ public class GUIManager : MonoBehaviour {
 	public GameObject message;
 	public Transform costSpawn, multiplierSpawn, messageSpawn, pauseMenuTexts;
 	public Slider happinessBar; 
-	public Text burnRate, moneyText;
+	public Text cashFlow, moneyText;
 	public Text notificationTitle, notificationDesc, birthdayText, tutorialTitle, tutorialDesc;
 	public Animator notificationAnimator, birthdayAnimator, tutorialAnimator, pauseMenuAnimator;
 
@@ -27,7 +27,7 @@ public class GUIManager : MonoBehaviour {
 	
 	void Update () {
 		moneyText.text = "$" + NumberToString.Convert( PlayerStats.s_instance.money );
-		burnRate.text = "$" + Mathf.CeilToInt (PlayerStats.s_instance.cashFlow).ToString () + "/year";
+		cashFlow.text = "$" + Mathf.CeilToInt (PlayerStats.s_instance.cashFlow).ToString () + "/year";
 		happinessBar.value = PlayerStats.s_instance.happiness*100f;
 
 	}
@@ -47,19 +47,19 @@ public class GUIManager : MonoBehaviour {
 		temp.transform.localPosition = new Vector3(0,0,0);
 	}
 
-	public void SpawnBurnRate (float burnRateValue) {
+	public void SpawnBurnRate (float cashFlowValue) {
 		GameObject temp = Instantiate (message);
-		temp.GetComponent<Text> ().text = "Cash Flow $" + burnRateValue;
+		temp.GetComponent<Text> ().text = "Cash Flow $" + cashFlowValue;
 
 		temp.transform.SetParent (multiplierSpawn);
 		temp.transform.localScale = Vector3.one;
 		temp.transform.localPosition = new Vector3(0,0,0);
-		if (burnRateValue > 0) {
+		if (cashFlowValue > 0) {
 			temp.GetComponent<Text> ().color = positive;
-			burnRate.GetComponent<ImageFlash>().Flash(positive);
+			cashFlow.GetComponent<ImageFlash>().Flash(positive);
 		} else {
 			temp.GetComponent<Text> ().color = negative;
-			burnRate.GetComponent<ImageFlash>().Flash(negative);
+			cashFlow.GetComponent<ImageFlash>().Flash(negative);
 		}
 	}
 	public void SpawnMessage (string messageString) {
