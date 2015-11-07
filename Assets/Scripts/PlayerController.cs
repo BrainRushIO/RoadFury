@@ -133,7 +133,7 @@ public class PlayerController : MonoBehaviour {
 				transform.Translate( Vector3.right * playerLateralMovement);
 			} else if ( Mathf.Abs(distanceFromCenterOfRoad) > playerBounds + tempPitstopBoundsOffset) {
 				Vector2 playerDirFromRoadCenter = (playerPos - projVector).normalized;
-//				transform.position = new Vector3( projVector.x, transform.position.y, projVector.y ) + new Vector3( playerDirFromRoadCenter.x, 0f, playerDirFromRoadCenter.y ) * (playerBounds*Mathf.Sign(-distanceFromCenterOfRoad)) ;
+				transform.position = new Vector3( projVector.x, transform.position.y, projVector.y ) + new Vector3( playerDirFromRoadCenter.x, 0f, playerDirFromRoadCenter.y ) * playerBounds;
 			} else {
 				//Debug.Log( "Trying to move out of bounds." );
 			}
