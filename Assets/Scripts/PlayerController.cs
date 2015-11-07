@@ -165,7 +165,6 @@ public class PlayerController : MonoBehaviour {
 			GameManager.s_instance.SwitchToCutscene ();
 		} else if (other.tag == "pitstop") {
 			GameManager.s_instance.SwitchToPitStop ();
-			pitstopEntranceAvailable = false;
 			respawnPos = other.GetComponent<PitStopRespawn> ().respawnPosition;
 		} else if (other.tag == "pitstopEnter") {
 			pitstopEntranceAvailable = true;
@@ -195,7 +194,7 @@ public class PlayerController : MonoBehaviour {
 			Debug.LogError( "No respawn position set for this trigger." );
 			return;
 		}
-
+		pitstopEntranceAvailable = false;
 		transform.position = respawnPos.position;
 	}
 
