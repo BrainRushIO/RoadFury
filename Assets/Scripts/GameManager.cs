@@ -120,7 +120,7 @@ public class GameManager : MonoBehaviour {
 		GUIManager.s_instance.MainMenuGUI.SetActive (false);
 		Camera.main.transform.SetParent(GameObject.FindGameObjectWithTag("Player").transform);
 		GameObject.FindGameObjectWithTag ("CamPos").GetComponent<Cinematographer> ().quaternions [0] = Camera.main.transform;
-		GameObject.FindGameObjectWithTag ("CamPos").GetComponent<Cinematographer> ().RollCamera (.2f);
+		GameObject.FindGameObjectWithTag ("CamPos").GetComponent<Cinematographer> ().RollCamera (0.9f);
 		GameObject.FindGameObjectWithTag ("Player").GetComponent<Animator> ().SetTrigger ("run");
 		Camera.main.GetComponent<HoverFollowCam> ().enabled = true;
 		//				inGameGUI.SetActive (true);
