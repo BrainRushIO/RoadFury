@@ -8,7 +8,7 @@ public class PlayerController : MonoBehaviour {
 	private float strafeSpeed = 4.5f, moveSpeed = 14f;
 
 	private float playerBounds = 4f;
-	private float pitStopBoundsOffset = 4.5f;
+	private float pitStopBoundsOffset = 4.9f;
 	private bool pitstopEntranceAvailable = false;
 	private bool isOnHorizontalRoad = false;
 	private Animator myAnimator;
@@ -103,7 +103,7 @@ public class PlayerController : MonoBehaviour {
 			// Calculate if we are entering a pitstop
 			float tempPitstopBoundsOffset = 0f;
 			if( pitstopEntranceAvailable ) {
-				tempPitstopBoundsOffset = pitStopBoundsOffset;
+				tempPitstopBoundsOffset = pitStopBoundsOffset/2f;
 			}
 
 			// Find distance from center of road
@@ -112,7 +112,14 @@ public class PlayerController : MonoBehaviour {
 
 			Vector2 roadToPlayerVector = playerPos - currentRoadPos;
 			float moveDirVectorLength = roadToPlayerVector.magnitude;
-			Vector2 projVector = ( Vector2.Dot( moveDirVector*moveDirVectorLength ,roadToPlayerVector )/( moveDirVectorLength*moveDirVectorLength ) ) * (moveDirVector*moveDirVectorLength) ;
+			Vector2 projVector = ( Vector2.Dot( moveDirVector*moveDirVectorLength ,roadToPlayerVector )/( moveDirVectorLength*moveDirVectorLength ) ) * (moveDirVector*moveDirVectorLength);
+
+			// Shift center point to the right if we are in the pitstop area
+			if( pitstopEntranceAvailable ) {
+				Vector2 orthoV = new Vector2( moveDirVector.y, -moveDirVector.x );
+				projVector += orthoV*(pitStopBoundsOffset/2f);
+			}
+
 			projVector += currentRoadPos; // for gizmos
 			projV = new Vector3( projVector.x, 0f, projVector.y );
 			float distanceFromCenterOfRoad = Vector2.Distance( playerPos, projVector );
