@@ -115,10 +115,12 @@ public class PlayerController : MonoBehaviour {
 				Vector2 orthoV = new Vector2( moveDirVector.y, -moveDirVector.x );
 				projVector += orthoV*(pitStopBoundsOffset/2f);
 			}
-#if DEBUG_MODE
 			projVector += currentRoadPos; // for gizmos
-#endif
+
+#if DEBUG_MODE
 			projV = new Vector3( projVector.x, 0f, projVector.y );
+#endif
+
 			float distanceFromCenterOfRoad = Vector2.Distance( playerPos, projVector );
 
 			// Check if the player is to the left or right of road center
