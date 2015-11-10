@@ -17,7 +17,7 @@ public class PlayerStats : MonoBehaviour {
 
 	public int age = 15;
 	public float money = 1000f;
-	public float cashFlow = -200f;
+	public float income = -200f;
 	public float happiness = 0.5f;
 	public float happinessDecreaseRate = 0.01f;
 
@@ -65,8 +65,8 @@ public class PlayerStats : MonoBehaviour {
 			GUIManager.s_instance.DisplayNotification( "Notice!", "Eric pressed the Return key!" );
 
 		if( GameManager.s_instance.currentGameState == GameState.Playing ) {
-			// Add cashFlow to money
-			money += cashFlow * (1/secondsPerYear) * Time.deltaTime;
+			// Add income to money
+			money += income * (1/secondsPerYear) * Time.deltaTime;
 
 			// Happiness calculation / check
 			happiness -= happinessDecreaseRate*Time.deltaTime;

@@ -30,7 +30,9 @@ public class RoadManager : MonoBehaviour {
 		}
 	}
 
-	//called from RoadPiece on collision
+	/// <summary>
+	/// Spawns the new piece. Called from RoadPiece on collision.
+	/// </summary>
 	public void SpawnNewPiece () { 
 		GameObject newPiece = Instantiate (roadPiecePrefab);
 		newPiece.transform.SetParent (RoadManager.s_instance.transform, true);

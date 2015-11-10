@@ -12,7 +12,7 @@ public class GUIManager : MonoBehaviour {
 	public Transform[] notificationSpawnAreas;
 	public Transform pauseMenuTexts;
 	public Slider happinessBar; 
-	public Text cashFlow, moneyText;
+	public Text incomeText, moneyText;
 	public Text notificationTitle, notificationDesc, birthdayText, tutorialTitle, tutorialDesc;
 	public Animator notificationAnimator, birthdayAnimator, tutorialAnimator, pauseMenuAnimator;
 
@@ -44,7 +44,7 @@ public class GUIManager : MonoBehaviour {
 	
 	void Update () {
 		moneyText.text = "$" + NumberToString.Convert( PlayerStats.s_instance.money );
-		cashFlow.text = "$" + Mathf.CeilToInt (PlayerStats.s_instance.cashFlow).ToString () + "/year";
+		incomeText.text = "$" + Mathf.CeilToInt (PlayerStats.s_instance.income).ToString () + "/year";
 		happinessBar.value = PlayerStats.s_instance.happiness*100f;
 	}
 
@@ -67,19 +67,19 @@ public class GUIManager : MonoBehaviour {
 		temp.transform.localPosition = new Vector3(0,0,0);
 	}
 
-	public void SpawnBurnRate (float cashFlowValue) {
+	public void SpawnBurnRate (float incomeValue) {
 		GameObject temp = Instantiate (message);
-		temp.GetComponent<Text> ().text = "Cash Flow $" + cashFlowValue;
+		temp.GetComponent<Text> ().text = "Income $" + incomeValue;
 
 		temp.transform.SetParent ( notificationSpawnAreas[GetNextAvailableNotificationArea()] );
 		temp.transform.localScale = Vector3.one;
 		temp.transform.localPosition = new Vector3(0,0,0);
-		if (cashFlowValue > 0) {
+		if (incomeValue > 0) {
 			temp.GetComponent<Text> ().color = positive;
-			cashFlow.GetComponent<ImageFlash>().Flash(positive);
+			incomeText.GetComponent<ImageFlash>().Flash(positive);
 		} else {
 			temp.GetComponent<Text> ().color = negative;
-			cashFlow.GetComponent<ImageFlash>().Flash(negative);
+			incomeText.GetComponent<ImageFlash>().Flash(negative);
 		}
 	}
 	public void SpawnMessage (string messageString) {
@@ -96,7 +96,7 @@ public class GUIManager : MonoBehaviour {
 			pauseMenuAnimator.SetTrigger ("pitstop");
 			pauseMenuTexts.transform.GetChild (0).GetComponent<Text> ().text = "Age: " + PlayerStats.s_instance.age;
 			pauseMenuTexts.transform.GetChild (1).GetComponent<Text> ().text = "Total Money: $" + NumberToString.Convert (PlayerStats.s_instance.money);
-			pauseMenuTexts.transform.GetChild (2).GetComponent<Text> ().text = "Cash Flow: $" + NumberToString.Convert (PlayerStats.s_instance.cashFlow);
+			pauseMenuTexts.transform.GetChild (2).GetComponent<Text> ().text = "Income: $" + NumberToString.Convert (PlayerStats.s_instance.income);
 			pauseMenuTexts.transform.GetChild (3).GetComponent<Text> ().text = "Happiness: " + Mathf.CeilToInt(PlayerStats.s_instance.happiness*100) + "/100";
 	}
 

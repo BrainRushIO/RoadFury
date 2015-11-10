@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public class Family : MonoBehaviour {
@@ -26,7 +26,7 @@ public class Family : MonoBehaviour {
 	public void AddKid() {
 		numKids++;
 		PlayerStats.s_instance.happiness += kidHappinessReward;
-		PlayerStats.s_instance.cashFlow -= kidMoneyCost;
+		PlayerStats.s_instance.income -= kidMoneyCost;
 
 		// TODO Activate child models
 	}

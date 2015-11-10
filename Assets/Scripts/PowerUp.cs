@@ -4,11 +4,9 @@ using UnityEngine.UI;
 
 
 public class PowerUp : MonoBehaviour {
-
-
 	public Text thisText;
 	public string nameOfObj, guiMessage;
-	public float happiness, burnRate;
+	public float happiness, incomeModifier;
 	public int cost;
 	public AudioSource playOnCollision;
 
@@ -24,8 +22,8 @@ public class PowerUp : MonoBehaviour {
 			if (happiness != 0)
 				GUIManager.s_instance.SpawnHappiness (happiness);
 
-			if (burnRate != 0)
-				GUIManager.s_instance.SpawnBurnRate (burnRate);
+			if (incomeModifier != 0)
+				GUIManager.s_instance.SpawnBurnRate (incomeModifier);
 		}
 	}
 

@@ -1,4 +1,4 @@
-﻿//#define DEBUG_MODE
+﻿//#define PLAYER_CONTROLLER_DEBUG
 
 using UnityEngine;
 using System.Collections;
@@ -147,7 +147,7 @@ public class PlayerController : MonoBehaviour {
 			}
 			projVector += currentRoadPos; // for gizmos
 
-#if DEBUG_MODE
+#if PLAYER_CONTROLLER_DEBUG
 			projV = new Vector3( projVector.x, 0f, projVector.y );
 #endif
 
@@ -184,8 +184,8 @@ public class PlayerController : MonoBehaviour {
 			if (temp.cost != 0f) {
 				PlayerStats.s_instance.money += temp.cost;
 			}
-			if (temp.burnRate != 0f) {
-				PlayerStats.s_instance.cashFlow += temp.burnRate;
+			if (temp.incomeModifier != 0f) {
+				PlayerStats.s_instance.income += temp.incomeModifier;
 			}
 			if (temp.happiness != 0f) {
 				PlayerStats.s_instance.happiness += temp.happiness / 100f;
@@ -254,7 +254,7 @@ public class PlayerController : MonoBehaviour {
 		myAnimator.speed = 1f;
 
 	}
-#if DEBUG_MODE
+#if PLAYER_CONTROLLER_DEBUG
 	void OnDrawGizmos() {
 		Gizmos.color = Color.yellow;
 		Gizmos.DrawSphere( currentRoadSection.position, 1f );
