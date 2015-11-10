@@ -11,7 +11,9 @@ public class PlayerController : MonoBehaviour {
 
 	// Movement and bounds
 	private float strafeSpeed = 4.5f, moveSpeed = 14f;
-
+	private float horizontalInput = 0f;
+	private const float inputWeight = 3f;
+	private const float inputGravity = 3f;
 	private float playerBounds = 4f;
 	private float pitStopBoundsOffset = 4.9f;
 	private bool pitstopEntranceAvailable = false;
@@ -79,18 +81,38 @@ public class PlayerController : MonoBehaviour {
 				transform.Translate (Vector3.forward*moveSpeed*Time.deltaTime);
 		}
 		if (GameManager.s_instance.currentGameState == GameState.Playing) {
-			float horizontalInput = Input.GetAxis ("Horizontal");
-	
+			// Managing input
+#if UNITY_EDITOR
+			horizontalInput = Input.GetAxis( "Horizontal" );
+#elif UNITY_IOS || UNITY_ANDROID
+			float inputVelocity = 0f;
 			if (Input.touchCount > 0) {
+				// Add to movement
 				Touch touch = Input.GetTouch (0);
 				if (touch.position.x > Screen.width / 2) {
-					//go right
-					horizontalInput = 1f;
-				} else if (touch.position.x < Screen.width / 2) {
-					horizontalInput = -1f;
+					// Go Right
+					inputVelocity += inputWeight*Time.deltaTime;
+				}
+				if (touch.position.x < Screen.width / 2) {
+					// Go Left
+					inputVelocity -= inputWeight*Time.deltaTime;
+				}
+			} else {
+				// Movement Decay
+				if( horizontalInput != 0f ) {
+					float calculatedInput = horizontalInput - ( inputGravity*Time.deltaTime*Mathf.Sign(horizontalInput) );
+					if( horizontalInput < 0f && calculatedInput >= 0f )
+						horizontalInput = 0f;
+					else if( horizontalInput > 0f && calculatedInput <= 0f)
+						horizontalInput = 0f;
+					else 
+						horizontalInput = calculatedInput;
 				}
 			}
 
+			horizontalInput += inputVelocity;
+#endif
+			horizontalInput = Mathf.Clamp( horizontalInput, -1f, 1f );
 			myAnimator.SetFloat ("Turn", horizontalInput * .6f);
 			transform.Translate (Vector3.forward*moveSpeed*Time.deltaTime);
 
