@@ -17,18 +17,15 @@ public class PowerUp : MonoBehaviour {
 			playOnCollision.Play();
 		}
 		if (other.gameObject.tag == "Player") {
-			if (cost != 0) {
-				GUIManager.s_instance.SpawnCost (cost);
-			}
-			if (happiness != 0) {
-				GUIManager.s_instance.SpawnHappiness (happiness);
-			}
-
-			if (burnRate != 0) {
-				GUIManager.s_instance.SpawnBurnRate (burnRate);
-
-			}
 			GUIManager.s_instance.SpawnMessage (guiMessage);
+			if (cost != 0)
+				GUIManager.s_instance.SpawnCost (cost);
+
+			if (happiness != 0)
+				GUIManager.s_instance.SpawnHappiness (happiness);
+
+			if (burnRate != 0)
+				GUIManager.s_instance.SpawnBurnRate (burnRate);
 		}
 	}
 

@@ -2,16 +2,15 @@
 using System.Collections;
 using UnityEngine.UI;
 
-
-/*
-This class handles all changes to the GUI - except for the pitstopgui which has its own class
-*/
-
+/// <summary>
+/// This class handles all changes to the GUI - except for the pitstopgui which has its own class.
+/// </summary>
 public class GUIManager : MonoBehaviour {
 	
 	public Color positive, negative, neutral;
 	public GameObject message;
-	public Transform costSpawn, multiplierSpawn, messageSpawn, pauseMenuTexts;
+	public Transform[] notificationSpawnAreas;
+	public Transform pauseMenuTexts;
 	public Slider happinessBar; 
 	public Text cashFlow, moneyText;
 	public Text notificationTitle, notificationDesc, birthdayText, tutorialTitle, tutorialDesc;
@@ -22,6 +21,8 @@ public class GUIManager : MonoBehaviour {
 	public GameObject inGameGUI;
 	public GameObject MainMenuGUI;
 	public GameObject faderObj;
+
+	private int currentSpawnAreaIndex = 0; // used in conjunction with notificationSpawnAreas above.
 
 	public static GUIManager s_instance;
 
@@ -35,12 +36,20 @@ public class GUIManager : MonoBehaviour {
 			}
 		}
 	}
+
+	void Start() {
+		if( notificationSpawnAreas.Length < 1 )
+			Debug.LogError( "Game Manager doesn't have reference to spawn areas for notifications." );
+	}
 	
 	void Update () {
 		moneyText.text = "$" + NumberToString.Convert( PlayerStats.s_instance.money );
 		cashFlow.text = "$" + Mathf.CeilToInt (PlayerStats.s_instance.cashFlow).ToString () + "/year";
 		happinessBar.value = PlayerStats.s_instance.happiness*100f;
+	}
 
+	void LateUpdate() {
+		currentSpawnAreaIndex = 0;
 	}
 	
 	public void SpawnCost (int costValue) {
@@ -53,7 +62,7 @@ public class GUIManager : MonoBehaviour {
 			moneyText.GetComponent<ImageFlash>().Flash(negative);
 
 		}
-		temp.transform.SetParent (costSpawn);
+		temp.transform.SetParent ( notificationSpawnAreas[GetNextAvailableNotificationArea()] );
 		temp.transform.localScale = Vector3.one;
 		temp.transform.localPosition = new Vector3(0,0,0);
 	}
@@ -62,7 +71,7 @@ public class GUIManager : MonoBehaviour {
 		GameObject temp = Instantiate (message);
 		temp.GetComponent<Text> ().text = "Cash Flow $" + cashFlowValue;
 
-		temp.transform.SetParent (multiplierSpawn);
+		temp.transform.SetParent ( notificationSpawnAreas[GetNextAvailableNotificationArea()] );
 		temp.transform.localScale = Vector3.one;
 		temp.transform.localPosition = new Vector3(0,0,0);
 		if (cashFlowValue > 0) {
@@ -77,7 +86,7 @@ public class GUIManager : MonoBehaviour {
 		GameObject temp = Instantiate (message);
 		temp.GetComponent<Text> ().text = messageString;
 		temp.GetComponent<Text> ().color = neutral;
-		temp.transform.SetParent (messageSpawn);
+		temp.transform.SetParent ( notificationSpawnAreas[GetNextAvailableNotificationArea()] );
 		temp.transform.localScale = Vector3.one;
 		temp.transform.localPosition = new Vector3(0,0,0);
 
@@ -220,5 +229,14 @@ public class GUIManager : MonoBehaviour {
 			DisplayNotification("Loans", "You took out a college loan - manage it in the Pit Stop", true);
 			break;
 		}
+	}
+
+	private int GetNextAvailableNotificationArea() {
+		int currVal = currentSpawnAreaIndex;
+		currentSpawnAreaIndex++;
+		if( currentSpawnAreaIndex >= notificationSpawnAreas.Length )
+			currentSpawnAreaIndex = 0;
+
+		return currVal;
 	}
 }

@@ -5,10 +5,9 @@ using UnityEngine.UI;
 public enum GameState {Pause, MainMenu, Intro, Playing, Cutscene, Notification, PitStop, InventoryMode, GameOver, Win};
 public enum AgeState {YoungAdult, Adult, OldAdult, SeniorCitizen};
 
-/*
-This class manages game states, switches between game states
- */
-
+/// <summary>
+/// This class manages game states, switches between game states.
+/// </summary>
 public class GameManager : MonoBehaviour {
 
 	public GameState currentGameState = GameState.Playing;

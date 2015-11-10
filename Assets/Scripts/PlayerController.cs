@@ -4,10 +4,9 @@ using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
 
-/*
-This class handles the physical aspects of the player object
- */
-
+/// <summary>
+/// This class handles the physical aspects of the player object.
+/// </summary>
 public class PlayerController : MonoBehaviour {
 
 	// Movement and bounds
@@ -16,7 +15,6 @@ public class PlayerController : MonoBehaviour {
 	private float playerBounds = 4f;
 	private float pitStopBoundsOffset = 4.9f;
 	private bool pitstopEntranceAvailable = false;
-	private bool isOnHorizontalRoad = false;
 	private Animator myAnimator;
 	public Transform currentRoadSection;
 	public Vector2 moveDirVector;				// x component being world x; y component being world z (topdown view)
@@ -32,7 +30,7 @@ public class PlayerController : MonoBehaviour {
 	private Animator currentCartAnimator;
 	private LerpToGuyCart.CartDirection cartDirection;
 
-
+	// Gizmos
 	Vector3 projV = Vector3.zero;
 
 
@@ -179,16 +177,6 @@ public class PlayerController : MonoBehaviour {
 			GameManager.s_instance.SwitchToPaused();
 		}
 
-	}
-
-	void OnTriggerExit(Collider other) {
-		if (other.tag == "branch") {
-			isOnHorizontalRoad = !isOnHorizontalRoad;
-			if(other.GetComponent<RoadBranch>().GUIObject.name == "Retire"){
-				myAnimator.SetTrigger ("Retired");
-				transform.Translate(0,0,0);
-			}
-		}
 	}
 
 	public void SetAtRespawnPos() {
