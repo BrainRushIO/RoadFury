@@ -139,7 +139,7 @@ public class GameManager : MonoBehaviour {
 		if (currentGameState == GameState.Playing) {
 			switchToPitstop = true;
 			GUIManager.s_instance.PitstopFlashEnter ();
-			GameObject.FindGameObjectWithTag("Player").GetComponent<Animator>().StartPlayback();
+			PlayerController.s_instance.PausePlayerAnimator ();
 			PitStopGUIManager.s_instance.DisplayCurrentMenu(); //fixes the update issue where money incorrectly displayed
 		}
 
@@ -152,7 +152,7 @@ public class GameManager : MonoBehaviour {
 	public void SwitchToGame () {
 		if (currentGameState == GameState.PitStop) {
 			// Player
-			GameObject.FindGameObjectWithTag("Player").GetComponent<Animator>().StopPlayback();
+			PlayerController.s_instance.StartPlayerAnimator ();
 
 			playerController.SetAtRespawnPos();
 			GUIManager.s_instance.PitstopFlashExit();
@@ -161,7 +161,8 @@ public class GameManager : MonoBehaviour {
 
 		if (currentGameState == GameState.Pause) {
 			GUIManager.s_instance.ClosePauseMenu();
-			GameObject.FindGameObjectWithTag("Player").GetComponent<Animator>().StopPlayback();
+			PlayerController.s_instance.StartPlayerAnimator ();
+
 			switchToGame = true;
 		} else if ( currentGameState == GameState.Intro ) {
 			playerController.CheckGroundOrientation();
@@ -180,11 +181,11 @@ public class GameManager : MonoBehaviour {
 
 	public void SwitchToPaused () {
 		switchToPaused = true;
-		GameObject.FindGameObjectWithTag("Player").GetComponent<Animator>().StartPlayback();
+		PlayerController.s_instance.PausePlayerAnimator ();
 	}
 	public void SwitchToPauseMenu () {
 		if (GameManager.s_instance.currentGameState == GameState.Playing) {
-			GameObject.FindGameObjectWithTag("Player").GetComponent<Animator>().StartPlayback();
+			PlayerController.s_instance.PausePlayerAnimator ();
 			switchToPaused = true;
 			GUIManager.s_instance.DisplayPauseMenu ();
 		}

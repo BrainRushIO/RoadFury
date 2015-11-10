@@ -33,6 +33,16 @@ public class PlayerController : MonoBehaviour {
 	// Gizmos
 	Vector3 projV = Vector3.zero;
 
+	public static PlayerController s_instance;
+
+	void Awake(){
+		if (s_instance==null) {
+			s_instance = this;
+		}
+		else if (s_instance!=this) {
+			Destroy(gameObject);
+		}
+	}
 
 	//TODO add attrition rate increases depending on if player gets wife or gf or not
 	void Start(){
@@ -142,7 +152,7 @@ public class PlayerController : MonoBehaviour {
 				//Debug.Log( "Trying to move out of bounds." );
 			}
 		} else {
-			myAnimator.SetFloat ("Turn", 0);
+//			myAnimator.SetFloat ("Turn", 0);
 		}
 	}
 	
@@ -212,6 +222,15 @@ public class PlayerController : MonoBehaviour {
 			// This won't work for the first ground piece. Set the ground piece directly under player
 			Debug.LogError( "PlayerContoller's CheckGroundOrientation didn't detect any gound under player." );
 		}
+	}
+
+	public void PausePlayerAnimator() {
+		myAnimator.speed = 0;
+	}
+
+	public void StartPlayerAnimator() {
+		myAnimator.speed = 1f;
+
 	}
 #if DEBUG_MODE
 	void OnDrawGizmos() {
