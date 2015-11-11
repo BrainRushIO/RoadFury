@@ -3,10 +3,10 @@ using System.Collections;
 
 public class HoverFollowCam : MonoBehaviour
 {
-	Transform camPos;
-	int layerMask;
-	float camDistanceToCamPos;
-	float smoothRate = 8f;
+	private Transform camPos;
+	private int layerMask;
+	private float camDistanceToCamPos;
+	private float smoothRate = 8f;
 	public enum CameraMode {normalMode};
 	public CameraMode thisCameraMode = CameraMode.normalMode;
 	
@@ -17,8 +17,7 @@ public class HoverFollowCam : MonoBehaviour
 		camPos = GameObject.FindGameObjectWithTag("CamPos").transform;
 	}
 	
-	void Update()
-	{
+	void Update() {
 		switch (thisCameraMode) {
 		case CameraMode.normalMode :
 			if (GameManager.s_instance.currentGameState == GameState.Playing) {
