@@ -21,6 +21,7 @@ public class GUIManager : MonoBehaviour {
 	public GameObject inGameGUI;
 	public GameObject MainMenuGUI;
 	public GameObject faderObj;
+	public Text debug;
 
 	private int currentSpawnAreaIndex = 0; // used in conjunction with notificationSpawnAreas above.
 

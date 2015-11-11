@@ -31,6 +31,7 @@ public class PlayerController : MonoBehaviour {
 	private bool isOnCart = false;
 	private Animator currentCartAnimator;
 	private LerpToGuyCart.CartDirection cartDirection;
+	private Gyroscope myGyro;
 
 	// Gizmos
 	Vector3 projV = Vector3.zero;
@@ -49,10 +50,16 @@ public class PlayerController : MonoBehaviour {
 	//TODO add attrition rate increases depending on if player gets wife or gf or not
 	void Start(){
 		myAnimator = GetComponent<Animator> ();
+		myGyro = Input.gyro;
+		myGyro.enabled = true;
 		moveDirVector = new Vector2( 0f, 1f );
 	}
 	
 	void Update () {
+		float val = myGyro.attitude.eulerAngles.x;
+		val = Mathf.RoundToInt(val);
+		GUIManager.s_instance.debug.text = "Roll: " + val.ToString();
+
 		if( isLerpingToGuyCart ) {
 			float t = lerpTimer / lerpDuration;
 			transform.position = Vector3.Lerp( lerpToStartPos, lerpToEndPos, t );
