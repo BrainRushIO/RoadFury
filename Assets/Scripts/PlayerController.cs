@@ -1,6 +1,12 @@
-﻿using UnityEngine;
+﻿//#define DEBUG_MODE
+
+using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+
+/*
+This class handles the physical aspects of the player object
+ */
 
 public class PlayerController : MonoBehaviour {
 
@@ -8,7 +14,7 @@ public class PlayerController : MonoBehaviour {
 	private float strafeSpeed = 4.5f, moveSpeed = 14f;
 
 	private float playerBounds = 4f;
-	private float pitStopBoundsOffset = 4.5f;
+	private float pitStopBoundsOffset = 4.9f;
 	private bool pitstopEntranceAvailable = false;
 	private bool isOnHorizontalRoad = false;
 	private Animator myAnimator;
@@ -28,24 +34,14 @@ public class PlayerController : MonoBehaviour {
 
 
 	Vector3 projV = Vector3.zero;
-	// Rotation
-//	private bool isRotateLerp;
-//	private float rotateLerpTimer;
-//	private float rotateLerpDuration = 0.8f;
-//	private Quaternion startLerp, endLerp;
+
 
 	//TODO add attrition rate increases depending on if player gets wife or gf or not
 	void Start(){
 		myAnimator = GetComponent<Animator> ();
 		moveDirVector = new Vector2( 0f, 1f );
 	}
-
-//	void StartRotateLerp() {
-//		startLerp = transform.rotation;
-//		rotateLerpTimer = Time.time;
-//		isRotateLerp = true;
-//	}
-
+	
 	void Update () {
 		if( isLerpingToGuyCart ) {
 			float t = lerpTimer / lerpDuration;
@@ -103,7 +99,7 @@ public class PlayerController : MonoBehaviour {
 			// Calculate if we are entering a pitstop
 			float tempPitstopBoundsOffset = 0f;
 			if( pitstopEntranceAvailable ) {
-				tempPitstopBoundsOffset = pitStopBoundsOffset;
+				tempPitstopBoundsOffset = pitStopBoundsOffset/2f;
 			}
 
 			// Find distance from center of road
@@ -112,9 +108,19 @@ public class PlayerController : MonoBehaviour {
 
 			Vector2 roadToPlayerVector = playerPos - currentRoadPos;
 			float moveDirVectorLength = roadToPlayerVector.magnitude;
-			Vector2 projVector = ( Vector2.Dot( moveDirVector*moveDirVectorLength ,roadToPlayerVector )/( moveDirVectorLength*moveDirVectorLength ) ) * (moveDirVector*moveDirVectorLength) ;
+			Vector2 projVector = ( Vector2.Dot( moveDirVector*moveDirVectorLength ,roadToPlayerVector )/( moveDirVectorLength*moveDirVectorLength ) ) * (moveDirVector*moveDirVectorLength);
+
+			// Shift center point to the right if we are in the pitstop area
+			if( pitstopEntranceAvailable ) {
+				Vector2 orthoV = new Vector2( moveDirVector.y, -moveDirVector.x );
+				projVector += orthoV*(pitStopBoundsOffset/2f);
+			}
 			projVector += currentRoadPos; // for gizmos
+
+#if DEBUG_MODE
 			projV = new Vector3( projVector.x, 0f, projVector.y );
+#endif
+
 			float distanceFromCenterOfRoad = Vector2.Distance( playerPos, projVector );
 
 			// Check if the player is to the left or right of road center
@@ -133,7 +139,7 @@ public class PlayerController : MonoBehaviour {
 				transform.Translate( Vector3.right * playerLateralMovement);
 			} else if ( Mathf.Abs(distanceFromCenterOfRoad) > playerBounds + tempPitstopBoundsOffset) {
 				Vector2 playerDirFromRoadCenter = (playerPos - projVector).normalized;
-//				transform.position = new Vector3( projVector.x, transform.position.y, projVector.y ) + new Vector3( playerDirFromRoadCenter.x, 0f, playerDirFromRoadCenter.y ) * (playerBounds*Mathf.Sign(-distanceFromCenterOfRoad)) ;
+				transform.position = new Vector3( projVector.x, transform.position.y, projVector.y ) + new Vector3( playerDirFromRoadCenter.x, 0f, playerDirFromRoadCenter.y ) * playerBounds;
 			} else {
 				//Debug.Log( "Trying to move out of bounds." );
 			}
@@ -161,10 +167,12 @@ public class PlayerController : MonoBehaviour {
 			GameManager.s_instance.SwitchToCutscene ();
 		} else if (other.tag == "pitstop") {
 			GameManager.s_instance.SwitchToPitStop ();
-			pitstopEntranceAvailable = false;
 			respawnPos = other.GetComponent<PitStopRespawn> ().respawnPosition;
-		} else if (other.tag == "pitstopRoad") {
+		} else if (other.tag == "pitstopEnter") {
 			pitstopEntranceAvailable = true;
+		} else if( other.tag == "pitstopExit" ) {
+			pitstopEntranceAvailable = false;
+			SoundtrackManager.s_instance.PlayAudioSource(SoundtrackManager.s_instance.pitstop);
 		} else if (other.tag == "tutorial") {
 			SoundtrackManager.s_instance.PlayAudioSource(SoundtrackManager.s_instance.click2);
 			GUIManager.s_instance.DisplayTutorial(other.name);
@@ -180,10 +188,6 @@ public class PlayerController : MonoBehaviour {
 				myAnimator.SetTrigger ("Retired");
 				transform.Translate(0,0,0);
 			}
-		} else if( other.tag == "pitstopRoad" ) {
-			pitstopEntranceAvailable = false;
-			SoundtrackManager.s_instance.PlayAudioSource(SoundtrackManager.s_instance.pitstop);
-
 		}
 	}
 
@@ -192,7 +196,7 @@ public class PlayerController : MonoBehaviour {
 			Debug.LogError( "No respawn position set for this trigger." );
 			return;
 		}
-
+		pitstopEntranceAvailable = false;
 		transform.position = respawnPos.position;
 	}
 
@@ -221,7 +225,7 @@ public class PlayerController : MonoBehaviour {
 			Debug.LogError( "PlayerContoller's CheckGroundOrientation didn't detect any gound under player." );
 		}
 	}
-
+#if DEBUG_MODE
 	void OnDrawGizmos() {
 		Gizmos.color = Color.yellow;
 		Gizmos.DrawSphere( currentRoadSection.position, 1f );
@@ -232,4 +236,5 @@ public class PlayerController : MonoBehaviour {
 		Gizmos.color = Color.cyan ;
 		Gizmos.DrawSphere( currentRoadSection.position + new Vector3(moveDirVector.x, 0f, moveDirVector.y ), 0.5f );
 	}
+#endif
 }

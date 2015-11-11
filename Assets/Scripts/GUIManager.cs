@@ -2,15 +2,26 @@
 using System.Collections;
 using UnityEngine.UI;
 
+
+/*
+This class handles all changes to the GUI - except for the pitstopgui which has its own class
+*/
+
 public class GUIManager : MonoBehaviour {
 	
 	public Color positive, negative, neutral;
 	public GameObject message;
 	public Transform costSpawn, multiplierSpawn, messageSpawn, pauseMenuTexts;
 	public Slider happinessBar; 
-	public Text burnRate, moneyText;
+	public Text cashFlow, moneyText;
 	public Text notificationTitle, notificationDesc, birthdayText, tutorialTitle, tutorialDesc;
 	public Animator notificationAnimator, birthdayAnimator, tutorialAnimator, pauseMenuAnimator;
+
+	public GameObject camera1;
+	public GameObject pitStopGUI;
+	public GameObject inGameGUI;
+	public GameObject MainMenuGUI;
+	public GameObject faderObj;
 
 	public static GUIManager s_instance;
 
@@ -27,7 +38,7 @@ public class GUIManager : MonoBehaviour {
 	
 	void Update () {
 		moneyText.text = "$" + NumberToString.Convert( PlayerStats.s_instance.money );
-		burnRate.text = "$" + Mathf.CeilToInt (PlayerStats.s_instance.cashFlow).ToString () + "/year";
+		cashFlow.text = "$" + Mathf.CeilToInt (PlayerStats.s_instance.cashFlow).ToString () + "/year";
 		happinessBar.value = PlayerStats.s_instance.happiness*100f;
 
 	}
@@ -47,19 +58,19 @@ public class GUIManager : MonoBehaviour {
 		temp.transform.localPosition = new Vector3(0,0,0);
 	}
 
-	public void SpawnBurnRate (float burnRateValue) {
+	public void SpawnBurnRate (float cashFlowValue) {
 		GameObject temp = Instantiate (message);
-		temp.GetComponent<Text> ().text = "Cash Flow $" + burnRateValue;
+		temp.GetComponent<Text> ().text = "Cash Flow $" + cashFlowValue;
 
 		temp.transform.SetParent (multiplierSpawn);
 		temp.transform.localScale = Vector3.one;
 		temp.transform.localPosition = new Vector3(0,0,0);
-		if (burnRateValue > 0) {
+		if (cashFlowValue > 0) {
 			temp.GetComponent<Text> ().color = positive;
-			burnRate.GetComponent<ImageFlash>().Flash(positive);
+			cashFlow.GetComponent<ImageFlash>().Flash(positive);
 		} else {
 			temp.GetComponent<Text> ().color = negative;
-			burnRate.GetComponent<ImageFlash>().Flash(negative);
+			cashFlow.GetComponent<ImageFlash>().Flash(negative);
 		}
 	}
 	public void SpawnMessage (string messageString) {
@@ -103,37 +114,6 @@ public class GUIManager : MonoBehaviour {
 		birthdayAnimator.SetBool( "hide", true );
 	}
 
-	public void DisplayTutorial(string index) {
-		switch (index) {
-		case "0" : 
-			DisplayNotification("Controls", "Touch the screen to steer", true);
-			break;
-		case "1" : 
-			DisplayNotification("Power-Ups", "Power-Ups affect your happiness and money", true);
-			break;
-		case "2" : 
-			DisplayNotification("Age", "Objective: Retire at 65", true);
-			break;
-		case "3" : 
-			DisplayNotification("Happiness", "If you run out of happiness - GAME OVER", true);
-			break;
-		case "4" : 
-			DisplayNotification("Cash Flow", "You are losing money, get a job!", true);
-			break;
-		case "5" : 
-			DisplayNotification("Obstacles", "Be careful, some Power-Ups hurt you", true);
-			break;
-		case "6" :
-			DisplayNotification("Pit Stop", "Goto a Pit-Stop to manage your Financial Assets", true);
-			break;
-		case "7" :
-			DisplayNotification("Life Decision", "Left: Goto College \n Right: Join the Workforce", true);
-		break;
-		case "8" :
-			DisplayNotification("Loans", "You took out a college loan - manage it in the Pit Stop", true);
-			break;
-		}
-	}
 
 	public void DisplayNotification( string title, string details, bool tutorial=false ) {
 		if (tutorial) {
@@ -176,6 +156,69 @@ public class GUIManager : MonoBehaviour {
 			happinessBar.GetComponentInChildren<ImageFlash>().Flash(positive);
 		} else {
 			happinessBar.GetComponentInChildren<ImageFlash>().Flash(negative);
+		}
+	}
+
+	public void PitstopFlashEnter() {
+		StartCoroutine("FlashIn");
+	}
+	
+	public void PitstopFlashExit() {
+		StartCoroutine("FlashOut");
+	}
+	
+	private IEnumerator FlashIn() {
+		print ("FLASH IN");
+		faderObj.GetComponent<Fader>().StartFadeIn();
+		yield return new WaitForSeconds(1f);
+		// UI
+		inGameGUI.GetComponent<Animator> ().SetTrigger("pitstop");
+		pitStopGUI.GetComponent<Animator>().SetTrigger("pitstop");
+		//switch camera
+		camera1.GetComponent<Camera> ().enabled = false;
+		GameObject.FindGameObjectWithTag ("Camera2").GetComponent<Camera>().enabled = true;
+		faderObj.GetComponent<Fader>().StartFadeOut();
+	}
+	private IEnumerator FlashOut() {
+		faderObj.GetComponent<Fader>().StartFadeIn();
+		yield return new WaitForSeconds(1f);
+		inGameGUI.GetComponent<Animator> ().SetTrigger ("pitstop");
+		pitStopGUI.GetComponent<Animator> ().SetTrigger ("pitstop");
+		//switch camera
+		GameObject.FindGameObjectWithTag ("Camera2").GetComponent<Camera>().enabled = false;
+		camera1.GetComponent<Camera> ().enabled = true;
+		faderObj.GetComponent<Fader>().StartFadeOut();
+	}
+
+	public void DisplayTutorial(string index) {
+		switch (index) {
+		case "0" : 
+			DisplayNotification("Controls", "Touch the screen to steer", true);
+			break;
+		case "1" : 
+			DisplayNotification("Power-Ups", "Power-Ups affect your happiness and money", true);
+			break;
+		case "2" : 
+			DisplayNotification("Age", "Objective: Retire at 65", true);
+			break;
+		case "3" : 
+			DisplayNotification("Happiness", "If you run out of happiness - GAME OVER", true);
+			break;
+		case "4" : 
+			DisplayNotification("Cash Flow", "You are losing money, get a job!", true);
+			break;
+		case "5" : 
+			DisplayNotification("Obstacles", "Be careful, some Power-Ups hurt you", true);
+			break;
+		case "6" :
+			DisplayNotification("Pit Stop", "Goto a Pit-Stop to manage your Financial Assets", true);
+			break;
+		case "7" :
+			DisplayNotification("Life Decision", "Left: Goto College \n Right: Join the Workforce", true);
+			break;
+		case "8" :
+			DisplayNotification("Loans", "You took out a college loan - manage it in the Pit Stop", true);
+			break;
 		}
 	}
 }

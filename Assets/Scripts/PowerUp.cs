@@ -5,22 +5,12 @@ using UnityEngine.UI;
 
 public class PowerUp : MonoBehaviour {
 
-//	public enum PowerUpType{Girlfriend, Pet, None};
-//	public PowerUpType thisPowerUpType = PowerUpType.None;
+
 	public Text thisText;
 	public string nameOfObj, guiMessage;
 	public float happiness, burnRate;
 	public int cost;
 	public AudioSource playOnCollision;
-	// Use this for initialization
-	void Start () {
-//		thisText.text = nameOfObj;
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
 
 	void OnTriggerEnter (Collider other) {
 		if (playOnCollision != null) {

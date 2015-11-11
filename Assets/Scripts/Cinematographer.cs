@@ -28,7 +28,8 @@ public class Cinematographer : MonoBehaviour {
 	float lerpDuration = 2f;
 	bool isLerping;
 
-	public void RollCamera () {
+	public void RollCamera (float rollTime = 2f) {
+		lerpDuration = rollTime;
 		pauseTimer = Time.time;
 		Camera.main.transform.localRotation = quaternions[currentIndex].localRotation;
 		Camera.main.transform.localPosition = quaternions[currentIndex].localPosition;

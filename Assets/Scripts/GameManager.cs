@@ -5,6 +5,10 @@ using UnityEngine.UI;
 public enum GameState {Pause, MainMenu, Intro, Playing, Cutscene, Notification, PitStop, InventoryMode, GameOver, Win};
 public enum AgeState {YoungAdult, Adult, OldAdult, SeniorCitizen};
 
+/*
+This class manages game states, switches between game states
+ */
+
 public class GameManager : MonoBehaviour {
 
 	public GameState currentGameState = GameState.Playing;
@@ -34,16 +38,8 @@ public class GameManager : MonoBehaviour {
 	float cameraRotateStartTime;
 	bool isCamRotateUp, isCamRotateDown;
 
-	public GameObject camera1;
 	public GameObject tutorialCam;
-	public GameObject pitStopGUI;
-	public GameObject inGameGUI;
-	public GameObject MainMenuGUI;
-	public GameObject faderObj;
 	public Animator[] allAnimators;
-	int textIterator = 0;
-	float slideDuration = 3f;
-	float slideTimer;
 
 	public GameObject currentGUIseries;
 	public GameState previousGameState;
@@ -62,29 +58,19 @@ public class GameManager : MonoBehaviour {
 			Debug.LogError( "GameManager didn't find a reference to a PlayerController in the scene." );
 	}
 
-
-
-	//Swipe up to switchToInventory
-	//Swipe down to switchToRoad
-
-	// Update is called once per frame
 	void Update () {
-//		print (currentGameState);
 		switch (currentGameState) {
-
 		case GameState.MainMenu : 
 			if (userPressedStart) {
 				userPressedStart = false;
 				currentGameState = GameState.Playing;
 			}
 			break;
-
 		case GameState.Pause :
 			if (switchToGame) {
 				switchToGame = false;
 				currentGameState = GameState.Playing;
 			}
-
 			break;
 		case GameState.Playing :
 			if (switchToCutScene) {
@@ -95,14 +81,11 @@ public class GameManager : MonoBehaviour {
 				switchToPitstop = false;
 				currentGameState = GameState.PitStop;
 			}
-
 			if (switchToPaused) {
 				switchToPaused = false;
 				currentGameState = GameState.Pause;
 			}
-
 			break;
-
 		case GameState.Cutscene : 
 			if (switchToGame) {
 				switchToGame = false;
@@ -129,29 +112,23 @@ public class GameManager : MonoBehaviour {
 				currentGameState = GameState.PitStop;
 			}
 			break;
-		
 	}
 	
 }
-
-
 	public void StartGame () {
 		userPressedStart = true;
-		MainMenuGUI.SetActive (false);
+		GUIManager.s_instance.MainMenuGUI.SetActive (false);
 		Camera.main.transform.SetParent(GameObject.FindGameObjectWithTag("Player").transform);
 		GameObject.FindGameObjectWithTag ("CamPos").GetComponent<Cinematographer> ().quaternions [0] = Camera.main.transform;
-		GameObject.FindGameObjectWithTag ("CamPos").GetComponent<Cinematographer> ().RollCamera ();
+		GameObject.FindGameObjectWithTag ("CamPos").GetComponent<Cinematographer> ().RollCamera (0.9f);
 		GameObject.FindGameObjectWithTag ("Player").GetComponent<Animator> ().SetTrigger ("run");
 		Camera.main.GetComponent<HoverFollowCam> ().enabled = true;
 		//				inGameGUI.SetActive (true);
-		inGameGUI.GetComponent<Animator> ().SetTrigger ("show");
+		GUIManager.s_instance.inGameGUI.GetComponent<Animator> ().SetTrigger ("show");
 	}
 
 	public void SwitchToCutscene () {
-		slideTimer = 0;
-		inGameGUI.GetComponent<Animator> ().SetTrigger("hide");
-		//inGameGUI.SetActive (false);
-		textIterator = 0;
+		GUIManager.s_instance.inGameGUI.GetComponent<Animator> ().SetTrigger("hide");
 		switchToGame = false;
 		switchToCutScene = true;
 		Camera.main.GetComponent<Cinematographer> ().RollCamera();
@@ -162,14 +139,13 @@ public class GameManager : MonoBehaviour {
 	public void SwitchToPitStop () {
 		if (currentGameState == GameState.Playing) {
 			switchToPitstop = true;
-			PitstopFlashEnter ();
+			GUIManager.s_instance.PitstopFlashEnter ();
 			GameObject.FindGameObjectWithTag("Player").GetComponent<Animator>().StartPlayback();
-
+			PitStopGUIManager.s_instance.DisplayCurrentMenu(); //fixes the update issue where money incorrectly displayed
 		}
 
 		if (currentGameState == GameState.Notification) {
 			switchToPitstop = true;
-
 		}
 			
 			
@@ -180,7 +156,7 @@ public class GameManager : MonoBehaviour {
 			GameObject.FindGameObjectWithTag("Player").GetComponent<Animator>().StopPlayback();
 
 			playerController.SetAtRespawnPos();
-			PitstopFlashExit();
+			GUIManager.s_instance.PitstopFlashExit();
 			switchToGame = true;
 		}
 
@@ -191,7 +167,7 @@ public class GameManager : MonoBehaviour {
 		} else if ( currentGameState == GameState.Intro ) {
 			playerController.CheckGroundOrientation();
 		} else if ( currentGameState == GameState.Cutscene ) {
-			inGameGUI.GetComponent<Animator> ().SetTrigger("show");
+			GUIManager.s_instance.inGameGUI.GetComponent<Animator> ().SetTrigger("show");
 			switchToGame = true;
 		}
 	}
@@ -202,36 +178,7 @@ public class GameManager : MonoBehaviour {
 			previousGameState = currentGameState;
 	}
 
-	public void PitstopFlashEnter() {
-		StartCoroutine("FlashIn");
-	}
 
-	public void PitstopFlashExit() {
-		StartCoroutine("FlashOut");
-	}
-
-	private IEnumerator FlashIn() {
-		print ("FLASH IN");
-		faderObj.GetComponent<Fader>().StartFadeIn();
-		yield return new WaitForSeconds(1f);
-		// UI
-		inGameGUI.GetComponent<Animator> ().SetTrigger("pitstop");
-		pitStopGUI.GetComponent<Animator>().SetTrigger("pitstop");
-		//switch camera
-		camera1.GetComponent<Camera> ().enabled = false;
-		GameObject.FindGameObjectWithTag ("Camera2").GetComponent<Camera>().enabled = true;
-		faderObj.GetComponent<Fader>().StartFadeOut();
-	}
-	private IEnumerator FlashOut() {
-		faderObj.GetComponent<Fader>().StartFadeIn();
-		yield return new WaitForSeconds(1f);
-		inGameGUI.GetComponent<Animator> ().SetTrigger ("pitstop");
-		pitStopGUI.GetComponent<Animator> ().SetTrigger ("pitstop");
-		//switch camera
-		GameObject.FindGameObjectWithTag ("Camera2").GetComponent<Camera>().enabled = false;
-		camera1.GetComponent<Camera> ().enabled = true;
-		faderObj.GetComponent<Fader>().StartFadeOut();
-	}
 	public void SwitchToPaused () {
 		switchToPaused = true;
 		GameObject.FindGameObjectWithTag("Player").GetComponent<Animator>().StartPlayback();

@@ -3,35 +3,38 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
 
+/*
+This class handles the the text and clickable options displayed in the PitStop sections
+*/
+
 public class PitStopGUIManager : MonoBehaviour {
 
 	
 	public enum PitStopState {Main, Business, SelectBusiness, StartNewBusiness, Loans, SelectLoan, Investment, SelectInvestment, RealEstate, SelectRealEstate};
 	public PitStopState currentPitStopState = PitStopState.Main;
 	public List<Text> allTextObjects;
+	public static PitStopGUIManager s_instance;
 
-
-	void Start () {
-	}
-
-	void Update() {
-		if (currentPitStopState == PitStopState.Main && GameManager.s_instance.currentGameState == GameState.PitStop) {
-			DisplayCurrentMenu ();
+	void Awake () {
+		if (s_instance == null) {
+			s_instance = this;
 		}
-//		print (currentPitStopState);
+		else {
+			if (s_instance!=this) {
+				Destroy(gameObject);
+			}
+		}
 	}
 
 	public int lastIndexClicked; //used to refer to index in list of player Loan/Business/etc...
 
 	public void HandlePitStopClick(int index) {
 		if (GameManager.s_instance.currentGameState == GameState.PitStop) {
-			print ("handle click");
 			SoundtrackManager.s_instance.PlayAudioSource(SoundtrackManager.s_instance.click); 	
 			if (currentPitStopState == PitStopState.Loans ||
 				currentPitStopState == PitStopState.Investment ||
 				currentPitStopState == PitStopState.RealEstate ||
 				currentPitStopState == PitStopState.Business) {
-				print ("last index set");
 				lastIndexClicked = index;
 			}
 
@@ -139,7 +142,6 @@ public class PitStopGUIManager : MonoBehaviour {
 			#endregion
 			#region Business
 			case PitStopState.Business:
-				print (lastIndexClicked + " LIC");
 				if (lastIndexClicked < 4 && PlayerStats.s_instance.playerBusinesses [lastIndexClicked] != null) {
 					currentPitStopState = PitStopState.SelectBusiness;
 				} else if (lastIndexClicked > 3 && lastIndexClicked < 7) {
