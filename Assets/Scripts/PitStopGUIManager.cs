@@ -1,11 +1,10 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
 
 /*
 This class handles the the text and clickable options displayed in the PitStop sections
-
 */
 
 public class PitStopGUIManager : MonoBehaviour {
@@ -31,13 +30,11 @@ public class PitStopGUIManager : MonoBehaviour {
 
 	public void HandlePitStopClick(int index) {
 		if (GameManager.s_instance.currentGameState == GameState.PitStop) {
-			print ("handle click");
 			SoundtrackManager.s_instance.PlayAudioSource(SoundtrackManager.s_instance.click); 	
 			if (currentPitStopState == PitStopState.Loans ||
 				currentPitStopState == PitStopState.Investment ||
 				currentPitStopState == PitStopState.RealEstate ||
 				currentPitStopState == PitStopState.Business) {
-				print ("last index set");
 				lastIndexClicked = index;
 			}
 
@@ -206,7 +203,7 @@ public class PitStopGUIManager : MonoBehaviour {
 			allTextObjects[2].text = "Businesses";
 			allTextObjects[3].text = "Real Estate";
 			allTextObjects[5].text = "Total Money: $" + NumberToString.Convert (PlayerStats.s_instance.money);
-			allTextObjects[6].text = "Cash Flow: $" + NumberToString.Convert (PlayerStats.s_instance.cashFlow);
+			allTextObjects[6].text = "Income: $" + NumberToString.Convert (PlayerStats.s_instance.income);
 
 			allTextObjects[7].text = "Back to Road";
 			break;

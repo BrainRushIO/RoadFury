@@ -4,41 +4,26 @@ using UnityEngine.UI;
 
 
 public class PowerUp : MonoBehaviour {
-
-//	public enum PowerUpType{Girlfriend, Pet, None};
-//	public PowerUpType thisPowerUpType = PowerUpType.None;
 	public Text thisText;
 	public string nameOfObj, guiMessage;
-	public float happiness, burnRate;
+	public float happiness, incomeModifier;
 	public int cost;
 	public AudioSource playOnCollision;
-	// Use this for initialization
-	void Start () {
-//		thisText.text = nameOfObj;
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
 
 	void OnTriggerEnter (Collider other) {
 		if (playOnCollision != null) {
 			playOnCollision.Play();
 		}
 		if (other.gameObject.tag == "Player") {
-			if (cost != 0) {
-				GUIManager.s_instance.SpawnCost (cost);
-			}
-			if (happiness != 0) {
-				GUIManager.s_instance.SpawnHappiness (happiness);
-			}
-
-			if (burnRate != 0) {
-				GUIManager.s_instance.SpawnBurnRate (burnRate);
-
-			}
 			GUIManager.s_instance.SpawnMessage (guiMessage);
+			if (cost != 0)
+				GUIManager.s_instance.SpawnCost (cost);
+
+			if (happiness != 0)
+				GUIManager.s_instance.SpawnHappiness (happiness);
+
+			if (incomeModifier != 0)
+				GUIManager.s_instance.SpawnBurnRate (incomeModifier);
 		}
 	}
 
