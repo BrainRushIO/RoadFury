@@ -10,9 +10,4 @@ public class ScreenLock : MonoBehaviour {
 		Screen.autorotateToLandscapeRight = false;
 		Screen.autorotateToPortraitUpsideDown = false;
 	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
 }

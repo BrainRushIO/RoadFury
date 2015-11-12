@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
@@ -203,7 +203,7 @@ public class PitStopGUIManager : MonoBehaviour {
 			allTextObjects[2].text = "Businesses";
 			allTextObjects[3].text = "Real Estate";
 			allTextObjects[5].text = "Total Money: $" + NumberToString.Convert (PlayerStats.s_instance.money);
-			allTextObjects[6].text = "Cash Flow: $" + NumberToString.Convert (PlayerStats.s_instance.cashFlow);
+			allTextObjects[6].text = "Income: $" + NumberToString.Convert (PlayerStats.s_instance.income);
 
 			allTextObjects[7].text = "Back to Road";
 			break;

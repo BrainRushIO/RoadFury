@@ -7,28 +7,26 @@ public class ImageFlash : MonoBehaviour {
 	float startTime, fadeTime = 3;
 	Color currentColor, flashColor;
 	bool isText = false;
-	// Use this for initialization
+
 	void Start () {
-		if (GetComponent<Image>()!=null) currentColor = GetComponent<Image>().color;
+		if (GetComponent<Image>()!=null) 
+			currentColor = GetComponent<Image>().color;
 		else {
 			currentColor = GetComponent<Text>().color;
 			isText = true;
 		}
 	}
-	
-	// Update is called once per frame
+
 	void Update () {
 		if (isFadingBack) {
 			float timePassed = (Time.time - startTime);
 			float fracJourney = timePassed / fadeTime;
+
 			if(isText) {
 				GetComponent<Text>().color = Color.Lerp (flashColor, currentColor, fracJourney);
-			}
-			else {
+			} else {
 				GetComponent<Image>().color = Color.Lerp (flashColor, currentColor, fracJourney);
 			}
-
-
 		}
 	}
 
