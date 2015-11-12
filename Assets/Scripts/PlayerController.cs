@@ -56,9 +56,11 @@ public class PlayerController : MonoBehaviour {
 	}
 	
 	void Update () {
-		float val = myGyro.attitude.eulerAngles.x;
-		val = Mathf.RoundToInt(val);
-		GUIManager.s_instance.debug.text = "Roll: " + val.ToString();
+		int x,y,z;
+		x = (int)myGyro.attitude.eulerAngles.x;
+		y = (int)myGyro.attitude.eulerAngles.y;
+		z = (int)myGyro.attitude.eulerAngles.z;
+		GUIManager.s_instance.debug.text = "Gyro:\n"+x+" "+y+" "+z+"\n"+"Orientation:\n"+Input.deviceOrientation.ToString();
 
 		if( isLerpingToGuyCart ) {
 			float t = lerpTimer / lerpDuration;
