@@ -3,6 +3,7 @@
 using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using InControl;
 
 /// <summary>
 /// This class handles the physical aspects of the player object.
@@ -130,6 +131,17 @@ public class PlayerController : MonoBehaviour {
 			}
 
 			horizontalInput += inputVelocity;
+
+			myInputDevice = InputManager.ActiveDevice;
+			
+			if( myInputDevice.DPadUp.IsPressed )
+				SwipeUp();
+			else if( myInputDevice.DPadDown.IsPressed )
+				SwipeDown();
+			else if( myInputDevice.DPadLeft.IsPressed )
+				SwipeLeft();
+			else if( myInputDevice.DPadRight.IsPressed )
+				SwipeRight();
 #endif
 			horizontalInput = Mathf.Clamp( horizontalInput, -1f, 1f );
 			myAnimator.SetFloat ("Turn", horizontalInput * .6f);
@@ -186,7 +198,7 @@ public class PlayerController : MonoBehaviour {
 //			myAnimator.SetFloat ("Turn", 0);
 		}
 	}
-	
+
 	void OnTriggerEnter(Collider other) {
 		if (other.gameObject.tag == "powerUp") {
 			PowerUp temp = other.gameObject.GetComponent<PowerUp> ();
@@ -217,6 +229,22 @@ public class PlayerController : MonoBehaviour {
 			GUIManager.s_instance.DisplayTutorial(other.name);
 			GameManager.s_instance.SwitchToPaused();
 		}
+
+	}
+
+	void SwipeUp() {
+
+	}
+
+	void SwipeDown() {
+
+	}
+
+	void SwipeLeft() {
+
+	}
+
+	void SwipeRight() {
 
 	}
 
